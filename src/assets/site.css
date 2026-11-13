@@ -36,7 +36,7 @@ summary{cursor:pointer;font-weight:600}
 .foot h2{font-size:1rem;margin:1rem 0 .25rem}
 .draft{color:var(--muted);font-style:italic}
 .routed{font-weight:600}
-.ws-intro,.ws-disclosure{font-size:.9rem;color:var(--muted);padding-left:1.1rem}
+.ws-intro,.ws-disclosure,.ws-towing{font-size:.9rem;color:var(--muted);padding-left:1.1rem}
 .note{font-size:.9rem;margin:.4rem 0 0}
 .ws-list{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr))}
 .ws-card{border:1px solid var(--line);border-radius:.5rem;padding:1rem}

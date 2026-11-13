@@ -387,3 +387,38 @@ test("towing cards carry no banned phrases", () => {
     for (const c of cards(read(rel))) assert.doesNotMatch(dec(c.body.replace(/<[^>]+>/g, " ")), TOWING_BANNED, `${rel} ${c.id}`);
   }
 });
+
+test("towing note shows only on towing cards (throwaway build with a fixture towing workshop)", () => {
+  const NOTE = { en: "Ask for the full price before the tow starts, and agree on which workshop your car goes to.",
+    ms: "Minta harga penuh sebelum kereta ditunda, dan tetapkan bengkel mana kereta anda akan dihantar." };
+  for (const f of htmlFiles(path.join(ROOT, "_site"))) {
+    const html = dec(fs.readFileSync(f, "utf8"));
+    assert.ok(!html.includes(NOTE.en) && !html.includes(NOTE.ms), `${f}: no towing workshop is listed yet`);
+  }
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "jbcf-"));
+  for (const item of ["src", "lib", "public", "eleventy.config.js", "package.json"]) {
+    fs.cpSync(path.join(ROOT, item), path.join(tmp, item), { recursive: true });
+  }
+  fs.symlinkSync(path.join(ROOT, "node_modules"), path.join(tmp, "node_modules"));
+  const rp = path.join(tmp, "src/_data/routing.json");
+  const r = JSON.parse(fs.readFileSync(rp, "utf8"));
+  const hours = r.workshops[r.areas.kulai[0]].hours;
+  r.workshops["ws-test-tow"] = { workshop_id: "ws-test-tow", workshop: { name: "Test Tow", area: "Skudai", coverage: { en: "Towing around Testville", ms: "Tunda sekitar Testville" } },
+    phone: "+60123456783", phone_display: "012-345 6783", whatsapp: null, tenant_status: "trial", hours, services: ["towing-kereta"] };
+  r.services["towing-kereta"] = ["ws-test-tow"];
+  r.areas.skudai = ["ws-test-tow", "ws-acs-skudai"]; // a towing workshop on an area page: no note there
+  fs.writeFileSync(rp, JSON.stringify(r));
+  execFileSync(process.execPath, [path.join(ROOT, "node_modules/@11ty/eleventy/cmd.cjs"), "--quiet"], { cwd: tmp, stdio: "pipe" });
+  const out = path.join(tmp, "_site");
+  for (const [rel, lang] of [["towing-kereta/index.html", "ms"], ["en/car-towing/index.html", "en"]]) {
+    const cs = cards(read(rel, out));
+    assert.deepEqual(cs.map((c) => c.id), ["ws-test-tow"], rel);
+    assert.ok(dec(cs[0].body).includes(`<p class="ws-towing">${NOTE[lang]}</p>`), rel);
+    assert.doesNotMatch(dec(cs[0].body.replace(/<[^>]+>/g, " ")), TOWING_BANNED, rel);
+  }
+  for (const f of htmlFiles(out)) {
+    if (/towing-kereta|car-towing/.test(f)) continue;
+    assert.doesNotMatch(fs.readFileSync(f, "utf8"), /class="ws-towing"/, f);
+  }
+  fs.rmSync(tmp, { recursive: true, force: true });
+});

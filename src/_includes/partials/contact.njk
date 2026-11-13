@@ -38,6 +38,9 @@
       <a class="btn btn-wa" href="{{ w | waLink(i18n.whatsappText[entry.lang], entry.key, entry.lang, routing) }}" rel="noopener" data-ev="click_whatsapp">{{ w.whatsapp_label or s.whatsappLabel }}</a>
       {%- endif %}
     </p>
+    {%- if entry.eventService == "towing-kereta" %}
+    <p class="ws-towing">{{ s.towingCardNote }}</p>
+    {%- endif %}
     {%- if hasTenant %}
     <p class="ws-disclosure">{{ (disclosures.tenantCard if w.tenant_status == "tenant" else disclosures.trialCard)[entry.lang] | fill({ workshop: w.workshop }) }}</p>
     {%- endif %}

@@ -90,7 +90,8 @@
       "hoursLabel": "Waktu operasi (Google Maps)",
       "servicesOnlyLabel": "Perkhidmatan",
       "generalService": "Pembaikan am dan servis",
-      "orgDescription": "{{ brand }} ialah panduan bebas bengkel kereta di Johor Bahru. Kami bukan bengkel. Harga, masa siap dan jaminan kerja ditentukan oleh bengkel itu sendiri. Setiap halaman menyatakan sama ada bengkel yang disenaraikan membayar kami."
+      "orgDescription": "{{ brand }} ialah panduan bebas bengkel kereta di Johor Bahru. Kami bukan bengkel. Harga, masa siap dan jaminan kerja ditentukan oleh bengkel itu sendiri. Setiap halaman menyatakan sama ada bengkel yang disenaraikan membayar kami.",
+      "towingCardNote": "Minta harga penuh sebelum kereta ditunda, dan tetapkan bengkel mana kereta anda akan dihantar."
     },
     "en": {
       "htmlLang": "en",
@@ -130,7 +131,8 @@
       "hoursLabel": "Opening hours (Google Maps)",
       "servicesOnlyLabel": "Services",
       "generalService": "General repair and servicing",
-      "orgDescription": "{{ brand }} is an independent guide to car workshops in Johor Bahru. We're not a workshop. Prices, timing and any warranty come from the workshop itself. Each page says whether a listed workshop pays us."
+      "orgDescription": "{{ brand }} is an independent guide to car workshops in Johor Bahru. We're not a workshop. Prices, timing and any warranty come from the workshop itself. Each page says whether a listed workshop pays us.",
+      "towingCardNote": "Ask for the full price before the tow starts, and agree on which workshop your car goes to."
     }
   }
 }
