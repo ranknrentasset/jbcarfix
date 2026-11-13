@@ -83,3 +83,9 @@ test("indexHold is an empty list for now (the mechanism stays; tested in a throw
   const site = JSON.parse(fs.readFileSync(new URL("../src/_data/site.json", import.meta.url), "utf8"));
   assert.deepEqual(site.indexHold, []);
 });
+
+test("hours: seven daily lines or empty lists (hidden); anything else is refused", () => {
+  assert.doesNotThrow(() => checkWorkshop("ws-real", { ...real, hours: { en: [], ms: [] } }));
+  assert.throws(() => checkWorkshop("ws-real", { ...real, hours: { en: real.hours.en.slice(0, 3), ms: real.hours.ms } }), /hours\.en/);
+  assert.throws(() => checkWorkshop("ws-real", { ...real, hours: undefined }), /hours/);
+});

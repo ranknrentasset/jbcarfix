@@ -1,6 +1,6 @@
 {
-  "_comment": "Who receives calls and WhatsApp messages. Leads never go to the site owner. 'workshops' holds each workshop once; 'areas' and 'services' list which workshops (up to 2) appear on each area page and JB-wide service page. A page with an empty or missing list shows a neutral 'coming soon' note (the 'unassigned' default). Trial workshops get call/WhatsApp buttons only; the form appears only for a tenant with its own web3forms_key. Every change here goes through a pull request that Muhammad merges.",
-  "_fields": "workshop_id: stable short slug, sent with analytics events; never change it once live. workshop.name, workshop.area (area or town), workshop.coverage {en, ms}: the line under the name. phone: E.164 (+60...) for the tel: link; phone_display: the number exactly as shown on the page. phone_label (optional): short text shown next to the number. whatsapp (optional, digits only, or null for call-only); whatsapp_label (optional button text). hours {en, ms}: one line per day, from the workshop's Google Maps listing. tenant_status: trial | tenant. services (optional): restricts the workshop to these services ('general' = general repair and servicing); a restricted workshop is skipped on other service pages. web3forms_key: only for a tenant (enables the form). Never add a logo or photo for a trial workshop.",
+  "_comment": "Who receives calls and WhatsApp messages. Leads never go to the site owner. 'workshops' holds each workshop once; 'areas' and 'services' list which workshops (up to 2) appear on each area page and JB-wide service page. A page with an empty or missing list shows a neutral 'coming soon' note (the 'unassigned' default). Trial workshops get call/WhatsApp buttons only; the form appears only for a tenant with its own web3forms_key. Every change here goes through a pull request that Muhammad merges. A workshop in 'workshops' that no area or service lists (e.g. a backup) is stored but shown nowhere.",
+  "_fields": "workshop_id: stable short slug, sent with analytics events; never change it once live. workshop.name, workshop.area (area or town), workshop.coverage {en, ms}: the line under the name. phone: E.164 (+60...) for the tel: link; phone_display: the number exactly as shown on the page. phone_label (optional): short text shown next to the number. whatsapp (optional, digits only, or null for call-only); whatsapp_label (optional button text). hours {en, ms}: one line per day, from the workshop's Google Maps listing, or empty lists [] to hide the hours box. tenant_status: trial | tenant. services (optional): restricts the workshop to these services ('general' = general repair and servicing); a restricted workshop is skipped on other service pages. web3forms_key: only for a tenant (enables the form). Never add a logo or photo for a trial workshop.",
   "default": "unassigned",
   "workshops": {
     "ws-fresh-air-jb": {
@@ -1011,6 +1011,101 @@
         ]
       },
       "whatsapp": null
+    },
+    "ws-ahbao": {
+      "workshop_id": "ws-ahbao",
+      "workshop": {
+        "name": "Ah Bao Car Spray Painting",
+        "area": "Bukit Indah",
+        "coverage": {
+          "en": "Workshop in Taman Bukit Indah",
+          "ms": "Bengkel di Taman Bukit Indah"
+        }
+      },
+      "phone": "+60177472940",
+      "phone_display": "017-747 2940",
+      "whatsapp": null,
+      "tenant_status": "trial",
+      "hours": {
+        "en": [],
+        "ms": []
+      }
+    },
+    "ws-gc-auto": {
+      "workshop_id": "ws-gc-auto",
+      "workshop": {
+        "name": "GC Auto Body & Paint",
+        "area": "Mount Austin",
+        "coverage": {
+          "en": "Workshop in Taman Mount Austin",
+          "ms": "Bengkel di Taman Mount Austin"
+        }
+      },
+      "phone": "+60182794313",
+      "phone_display": "018-279 4313",
+      "whatsapp": null,
+      "tenant_status": "trial",
+      "hours": {
+        "en": [],
+        "ms": []
+      }
+    },
+    "ws-mega-car-paint": {
+      "workshop_id": "ws-mega-car-paint",
+      "workshop": {
+        "name": "Mega Car Paint Spraying Workshop",
+        "area": "Johor Jaya",
+        "coverage": {
+          "en": "Workshop in Taman Johor Jaya",
+          "ms": "Bengkel di Taman Johor Jaya"
+        }
+      },
+      "phone": "+60197790613",
+      "phone_display": "019-779 0613",
+      "whatsapp": null,
+      "tenant_status": "trial",
+      "hours": {
+        "en": [],
+        "ms": []
+      }
+    },
+    "ws-ty-towing": {
+      "workshop_id": "ws-ty-towing",
+      "workshop": {
+        "name": "T.Y Towing Service",
+        "area": "Skudai",
+        "coverage": {
+          "en": "Towing base in Taman Sri Skudai",
+          "ms": "Pangkalan tunda di Taman Sri Skudai"
+        }
+      },
+      "phone": "+60167990517",
+      "phone_display": "016-799 0517",
+      "whatsapp": "60167990517",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [],
+        "ms": []
+      }
+    },
+    "ws-kone-towing": {
+      "workshop_id": "ws-kone-towing",
+      "workshop": {
+        "name": "K One Towing & Transport",
+        "area": "Bukit Indah",
+        "coverage": {
+          "en": "Towing base in Bukit Indah",
+          "ms": "Pangkalan tunda di Bukit Indah"
+        }
+      },
+      "phone": "+60187708989",
+      "phone_display": "018-770 8989",
+      "whatsapp": null,
+      "tenant_status": "trial",
+      "hours": {
+        "en": [],
+        "ms": []
+      }
     }
   },
   "areas": {
@@ -1044,6 +1139,14 @@
     "tayar": [
       "ws-continental-pelangi",
       "ws-hawk-tebrau"
+    ],
+    "cat-kereta": [
+      "ws-ahbao",
+      "ws-gc-auto"
+    ],
+    "towing-kereta": [
+      "ws-ty-towing",
+      "ws-kone-towing"
     ]
   },
   "utm": {

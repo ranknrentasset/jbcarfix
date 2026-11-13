@@ -21,6 +21,7 @@
     {%- if w.services %}
     <p class="ws-services">{{ s.servicesOnlyLabel }}: {% for k in w.services %}{{ s.generalService if k == "general" else services[k].name[entry.lang] }}{% if not loop.last %}, {% endif %}{% endfor %}</p>
     {%- endif %}
+    {%- if w.hours and w.hours[entry.lang] and w.hours[entry.lang].length %}
     <details class="hours">
       <summary>{{ s.hoursLabel }}</summary>
       <dl>
@@ -29,6 +30,7 @@
       {%- endfor %}
       </dl>
     </details>
+    {%- endif %}
     <p class="cta">
       <a class="btn" href="tel:{{ w.phone }}" data-ev="click_call">{{ s.callLabel }} {{ w.phone_display or w.phone }}</a>
       {%- if w.phone_label %}

@@ -116,11 +116,15 @@ Each workshop has:
 | Larkin | TIPTOP Garage Workshop; Petronas AutoExpert by Prestige Contitech - Larkin |
 | Aircond (JB-wide) | Fresh Air Car Aircond Service; ACS CAR SERVICE - Skudai |
 | Tyres (JB-wide) | Continental Syarikat Lim Chin Hin; Hawk Tyre Service Sdn Bhd - Tebrau |
+| Body and paint (JB-wide) | Ah Bao Car Spray Painting; GC Auto Body & Paint |
+| Towing (JB-wide) | T.Y Towing Service (Call and WhatsApp); K One Towing & Transport |
 
-Every other page has no contact box yet: home, servicing, battery, 24-hour mechanic, gearbox, body paint, towing and near KSL.
+Mega Car Paint Spraying Workshop is stored in `routing.json` as a body-and-paint backup but listed on no page.
+
+Every other page has no contact box yet: home, servicing, battery, 24-hour mechanic, gearbox and near KSL.
 
 Each workshop gets its own card with:
-- its name, coverage line and opening hours
+- its name, coverage line and opening hours (left out when `hours` is empty, as for the body-and-paint and towing workshops)
 - a Call button
 - a WhatsApp button, only if it has one
 
@@ -138,6 +142,11 @@ The disclosure wording (approved wording) comes from `disclosures.json`:
 
 Each towing card shows `towingCardNote` from `site.json`: "Ask for the full price before the tow starts, and agree on which workshop your car goes to." Towing cards must not mention the operator's own workshop, claim services, "20–30 min" / "20–30 minit" or "no hidden fees" / "tiada caj tersembunyi". A test checks the towing pages and any workshop listed for towing.
 - **when any card has WhatsApp:** a note from `i18n.json` that quotes the WhatsApp pre-fill.
+
+
+### Copy shown only with workshops
+
+Imported copy can wrap text in `[WITH-WORKSHOPS]` … `[/WITH-WORKSHOPS]`. That text only shows on a page that lists at least one workshop; on a page without workshops it is removed, and a block or FAQ left empty is dropped. The markers never reach the page: the build fails if one does.
 
 ### Brand and WhatsApp text
 

@@ -83,9 +83,11 @@ test("each page shows exactly the workshops routing.json lists, one card each", 
   const expectPage = { "kulai/index.html": routing.areas.kulai, "en/kulai/index.html": routing.areas.kulai,
     "skudai/index.html": routing.areas.skudai, "larkin/index.html": routing.areas.larkin,
     "gelang-patah/index.html": routing.areas["gelang-patah"], "en/bukit-indah/index.html": routing.areas["bukit-indah"],
-    "tayar/index.html": routing.services.tayar, "en/car-aircon/index.html": routing.services["aircond-kereta"] };
+    "tayar/index.html": routing.services.tayar, "en/car-aircon/index.html": routing.services["aircond-kereta"],
+    "cat-kereta/index.html": ["ws-ahbao", "ws-gc-auto"], "en/car-body-paint/index.html": ["ws-ahbao", "ws-gc-auto"],
+    "towing-kereta/index.html": ["ws-ty-towing", "ws-kone-towing"], "en/car-towing/index.html": ["ws-ty-towing", "ws-kone-towing"] };
   for (const [rel, ids] of Object.entries(expectPage)) assert.deepEqual(cards(read(rel)).map((c) => c.id), ids, rel);
-  for (const rel of ["index.html", "en/index.html", "servis/index.html", "bateri/index.html", "mekanik-24-jam/index.html", "pakar-gearbox/index.html", "cat-kereta/index.html", "towing-kereta/index.html", "en/near-ksl/index.html"]) {
+  for (const rel of ["index.html", "en/index.html", "servis/index.html", "bateri/index.html", "mekanik-24-jam/index.html", "pakar-gearbox/index.html", "en/near-ksl/index.html"]) {
     const html = read(rel);
     assert.equal(cards(html).length, 0, rel);
     assertNoWorkshopHints(html, rel);
@@ -101,7 +103,7 @@ test("pages with no workshop carry no buttons and no wording that hints at a wor
     assertNoWorkshopHints(html, f);
     checked++;
   }
-  assert.ok(checked >= 10, `only ${checked} no-workshop pages checked`);
+  assert.equal(checked, 12, "no-workshop pages: home x2, battery x2, servicing x2, 24-hour x2, gearbox x2, near KSL, 404");
 });
 
 test("trial cards: name, coverage, hours, call always, WhatsApp only when set, no form", () => {
@@ -289,7 +291,7 @@ test("thin-page guard: placeholder pages are noindex,follow, out of the sitemap,
   // The hold list is empty, so body-and-paint and towing stay hidden only through the placeholder rule.
   for (const rel of ["cat-kereta/index.html", "en/car-body-paint/index.html", "towing-kereta/index.html", "en/car-towing/index.html"]) {
     assert.match(read(rel), /<meta name="robots" content="noindex,follow">/, rel);
-    assertNoWorkshopHints(read(rel), rel);
+    assert.ok(cards(read(rel)).length === 2, `${rel} lists its workshops but stays hidden: copy is placeholder`);
   }
   for (const f of htmlFiles(site)) {
     const html = fs.readFileSync(f, "utf8");
@@ -361,7 +363,6 @@ test("thin-page guard lifts once copy is real, with or without workshops; held p
     const html = read(rel, out);
     assert.match(html, /<meta name="robots" content="noindex,follow">/, `${rel} is on the hold list`);
     assert.doesNotMatch(html, /<link rel="alternate" hreflang=/, rel);
-    assertNoWorkshopHints(html, rel);
   }
 
   fs.rmSync(tmp, { recursive: true, force: true });
@@ -391,9 +392,15 @@ test("towing cards carry no banned phrases", () => {
 test("towing note shows only on towing cards (throwaway build with a fixture towing workshop)", () => {
   const NOTE = { en: "Ask for the full price before the tow starts, and agree on which workshop your car goes to.",
     ms: "Minta harga penuh sebelum kereta ditunda, dan tetapkan bengkel mana kereta anda akan dihantar." };
+  for (const [rel, lang] of [["towing-kereta/index.html", "ms"], ["en/car-towing/index.html", "en"]]) {
+    const cs = cards(read(rel));
+    assert.deepEqual(cs.map((c) => c.id), ["ws-ty-towing", "ws-kone-towing"], rel);
+    for (const c of cs) assert.ok(dec(c.body).includes(`<p class="ws-towing">${NOTE[lang]}</p>`), `${rel} ${c.id}`);
+  }
   for (const f of htmlFiles(path.join(ROOT, "_site"))) {
+    if (/towing-kereta|car-towing/.test(f)) continue;
     const html = dec(fs.readFileSync(f, "utf8"));
-    assert.ok(!html.includes(NOTE.en) && !html.includes(NOTE.ms), `${f}: no towing workshop is listed yet`);
+    assert.ok(!html.includes(NOTE.en) && !html.includes(NOTE.ms), `${f}: towing note outside the towing pages`);
   }
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "jbcf-"));
   for (const item of ["src", "lib", "public", "eleventy.config.js", "package.json"]) {
@@ -405,7 +412,7 @@ test("towing note shows only on towing cards (throwaway build with a fixture tow
   const hours = r.workshops[r.areas.kulai[0]].hours;
   r.workshops["ws-test-tow"] = { workshop_id: "ws-test-tow", workshop: { name: "Test Tow", area: "Skudai", coverage: { en: "Towing around Testville", ms: "Tunda sekitar Testville" } },
     phone: "+60123456783", phone_display: "012-345 6783", whatsapp: null, tenant_status: "trial", hours, services: ["towing-kereta"] };
-  r.services["towing-kereta"] = ["ws-test-tow"];
+  r.services["towing-kereta"] = ["ws-test-tow"]; // replaces the real towing list in this throwaway build
   r.areas.skudai = ["ws-test-tow", "ws-acs-skudai"]; // a towing workshop on an area page: no note there
   fs.writeFileSync(rp, JSON.stringify(r));
   execFileSync(process.execPath, [path.join(ROOT, "node_modules/@11ty/eleventy/cmd.cjs"), "--quiet"], { cwd: tmp, stdio: "pipe" });
@@ -419,6 +426,65 @@ test("towing note shows only on towing cards (throwaway build with a fixture tow
   for (const f of htmlFiles(out)) {
     if (/towing-kereta|car-towing/.test(f)) continue;
     assert.doesNotMatch(fs.readFileSync(f, "utf8"), /class="ws-towing"/, f);
+  }
+  fs.rmSync(tmp, { recursive: true, force: true });
+});
+
+test("body-and-paint and towing cards: call/WhatsApp as listed, no hours box, no 24-hour, arrival, price, cross-border or insurance wording", () => {
+  const FORBIDDEN = /24[- ]?(hour|jam)|arriv|tiba dalam|\bminit\b|\bmins?\b|RM\s?\d|price from|harga dari|murah|cheap|singapore|singapura|cross[- ]border|rentas sempadan|insuran|insurance/i;
+  for (const rel of ["cat-kereta/index.html", "en/car-body-paint/index.html", "towing-kereta/index.html", "en/car-towing/index.html"]) {
+    for (const c of cards(read(rel))) {
+      const w = routing.workshops[c.id];
+      assert.equal(w.tenant_status, "trial", c.id);
+      assert.ok(c.body.includes(`href="tel:${w.phone}"`) && c.body.includes(w.phone_display), c.id);
+      assert.equal(c.body.includes("wa.me/"), c.id === "ws-ty-towing", `${c.id} WhatsApp`);
+      assert.doesNotMatch(c.body, /class="hours"/, c.id);
+      assert.doesNotMatch(dec(c.body.replace(/<[^>]+>/g, " ")).replace("full price", ""), FORBIDDEN, `${rel} ${c.id}`);
+    }
+  }
+  assert.ok(read("en/car-towing/index.html").includes('href="https://wa.me/60167990517?text='));
+});
+
+test("the backup body-and-paint workshop is stored but rendered nowhere", () => {
+  assert.ok(routing.workshops["ws-mega-car-paint"], "stored in routing.json");
+  for (const ids of [...Object.values(routing.areas), ...Object.values(routing.services)]) assert.ok(!ids.includes("ws-mega-car-paint"));
+  for (const f of htmlFiles(path.join(ROOT, "_site"))) {
+    const html = fs.readFileSync(f, "utf8");
+    assert.doesNotMatch(html, /ws-mega-car-paint|Mega Car Paint|019-779 0613|60197790613/, f);
+  }
+});
+
+test("[WITH-WORKSHOPS] copy shows only on pages with workshops; markers never reach the page (throwaway build)", () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "jbcf-"));
+  for (const item of ["src", "lib", "public", "eleventy.config.js", "package.json"]) {
+    fs.cpSync(path.join(ROOT, item), path.join(tmp, item), { recursive: true });
+  }
+  fs.symlinkSync(path.join(ROOT, "node_modules"), path.join(tmp, "node_modules"));
+  const mark = (rel) => {
+    const p = path.join(tmp, "src/_data", rel);
+    const d = JSON.parse(fs.readFileSync(p, "utf8"));
+    for (const l of ["ms", "en"]) {
+      d[l].intro = `Always shown ${l}.[WITH-WORKSHOPS] Pick one of the workshops below ${l}.[/WITH-WORKSHOPS] Also always ${l}.`;
+      d[l].blocks = [{ id: "always", heading: `Kept ${l}`, body: `Kept body ${l}.` },
+        { id: "ww", heading: `Workshop tips ${l}`, body: `[WITH-WORKSHOPS]Only with workshops ${l}.[/WITH-WORKSHOPS]` }];
+    }
+    fs.writeFileSync(p, JSON.stringify(d));
+  };
+  mark("areas/kulai.json");   // has workshops
+  mark("home.json");           // no workshops
+  execFileSync(process.execPath, [path.join(ROOT, "node_modules/@11ty/eleventy/cmd.cjs"), "--quiet"], { cwd: tmp, stdio: "pipe" });
+  const out = path.join(tmp, "_site");
+  for (const f of htmlFiles(out)) assert.doesNotMatch(fs.readFileSync(f, "utf8"), /WITH-WORKSHOPS/, f);
+  for (const [rel, l] of [["kulai/index.html", "ms"], ["en/kulai/index.html", "en"]]) {
+    const html = dec(read(rel, out));
+    assert.ok(html.includes(`Always shown ${l}. Pick one of the workshops below ${l}. Also always ${l}.`), rel);
+    assert.ok(html.includes(`Only with workshops ${l}.`) && html.includes(`Workshop tips ${l}`), rel);
+  }
+  for (const [rel, l] of [["index.html", "ms"], ["en/index.html", "en"]]) {
+    const html = dec(read(rel, out));
+    assert.ok(html.includes(`Always shown ${l}. Also always ${l}.`), rel);
+    assert.ok(!html.includes(`Pick one of the workshops below`) && !html.includes("Only with workshops") && !html.includes("Workshop tips"), rel);
+    assert.ok(html.includes(`Kept body ${l}.`), rel);
   }
   fs.rmSync(tmp, { recursive: true, force: true });
 });

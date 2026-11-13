@@ -75,6 +75,7 @@ export default function (eleventyConfig) {
     const filled = content.replace(/\{\{\s*brand\s*\}\}/g, out.endsWith(".html") ? escHtml(site.brand) : site.brand);
     const left = filled.match(/\{\{[^}]*\}\}/);
     if (left) throw new Error(`${out}: unfilled template variable ${left[0]}`);
+    if (/\[\/?WITH-WORKSHOPS\]/.test(filled)) throw new Error(`${out}: a [WITH-WORKSHOPS] marker reached the page`);
     return filled;
   });
 
