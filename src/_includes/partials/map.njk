@@ -1,0 +1,6 @@
+{#- Opt-in map. Nothing map-related loads until the button is tapped: map.js then adds
+{%- from "partials/icons.njk" import icon -%}
+    the self-hosted Leaflet files and OpenStreetMap tiles. Pins come from the cards on the
+    page that carry data-lat/data-lng (taken from each workshop's public Google Maps listing). #}
+{%- set s = site.strings[entry.lang] -%}
+<button type="button" class="map-btn" data-map-btn aria-expanded="false" aria-controls="ws-map" data-show="{{ s.mapShow }}" data-hide="{{ s.mapHide }}" data-dir-label="{{ s.directionsLabel }}" data-js="{{ '/assets/leaflet/leaflet.js' | assetHash }}" data-css="{{ '/assets/leaflet/leaflet.css' | assetHash }}">{{ icon("map") }}<span>{{ s.mapShow }}</span></button>

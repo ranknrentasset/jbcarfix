@@ -1,0 +1,39 @@
+{
+  "_comment": "English-only landing page. No Malay version exists, so hreflang only lists English (plus x-default pointing to this page).",
+  "key": "near-ksl",
+  "status": "placeholder",
+  "langs": [
+    "en"
+  ],
+  "slug": {
+    "en": "near-ksl"
+  },
+  "name": {
+    "en": "Near KSL"
+  },
+  "routing": "near-ksl",
+  "en": {
+    "title": "Car workshops near KSL (DRAFT) | {{ brand }}",
+    "description": "DRAFT – content pending: meta description for Car workshops near KSL.",
+    "h1": "Car workshops near KSL – DRAFT",
+    "intro": "DRAFT – content pending: opening paragraph for Car workshops near KSL.",
+    "blocks": [
+      {
+        "id": "getting-there",
+        "heading": "DRAFT – Getting there",
+        "body": "DRAFT – content pending."
+      },
+      {
+        "id": "what-to-expect",
+        "heading": "DRAFT – What to expect",
+        "body": "DRAFT – content pending."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "DRAFT – question 1 (Car workshops near KSL)",
+        "a": "DRAFT – content pending."
+      }
+    ]
+  }
+}

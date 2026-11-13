@@ -1,2 +1,272 @@
-# jbcarfix
-jbcarfix.com - bilingual car workshop site for Johor Bahru (Eleventy + Cloudflare Pages)
+# jbcarfix.com
+
+The website for jbcarfix.com. It's a simple, fast site in two languages:
+**Malay** at the main address (`/`) and **English** under `/en/`.
+
+The site is **an independent guide to local car workshops** in Johor Bahru. It is not a workshop.
+
+> **Nothing goes live until you merge a pull request.** All work happens on side branches. Each pull request can get a private preview link (on `*.pages.dev`, hidden from Google). Only when you merge into `main` does Cloudflare publish it to jbcarfix.com.
+
+These pages have real imported copy: home, Kulai, tyres, battery, servicing, body and paint, and towing, in both languages. The other area and service pages are still placeholder, marked **"DRAFT – content pending"**.
+
+## How it works, in one paragraph
+
+The pages are built by a free tool called [Eleventy](https://www.11ty.dev/). Each area and each service has its own small text file holding that page's words. Eleventy pours those words into shared page layouts and produces plain web pages. Cloudflare Pages then hosts those pages for free.
+
+## Folder layout
+
+```
+src/
+  _data/
+    site.json        Main settings: web address, brand, the tenantMode switch, button and form wording
+    i18n.json        Short shared strings, such as the WhatsApp pre-filled message
+    disclosures.json The disclosure lines shown next to a workshop's contact buttons
+    routing.json     Which phone / WhatsApp number each area uses
+    home.json        Home page text (Malay + English)
+    privacy.json     Privacy notice text (placeholder for now)
+    areas/           One file per area (kulai.json, skudai.json, ...)
+    services/        One file per service (tayar.json, bateri.json, ...)
+    landings/        Special pages, such as near-ksl.json (English only)
+    pages.js         Builds the list of pages from the files above (no need to edit)
+  _includes/         Page layouts (how pages look). These hold no page text of their own.
+  assets/            site.css (styles) and site.js (form checks + UTM capture)
+  page.njk, 404.njk, sitemap.njk, robots.njk
+public/
+  _headers           Security and caching rules for Cloudflare, and "hide previews from Google"
+  favicon.svg
+lib/                 Small helpers: page list, schema (structured data), similarity check
+scripts/
+  check-unique.mjs   The "no copy-paste area pages" check
+tests/               Automatic tests for the form checks, routing safety and the similarity check
+```
+
+## Pages right now
+
+| Malay | English |
+|---|---|
+| `/` | `/en/` |
+| `/tayar/` | `/en/tyres/` |
+| `/bateri/` | `/en/car-battery/` |
+| `/servis/` | `/en/car-servicing/` |
+| `/mekanik-24-jam/` | `/en/24-hour-mechanic/` |
+| `/aircond-kereta/` | `/en/car-aircon/` |
+| `/pakar-gearbox/` | `/en/gearbox-repair/` |
+| `/cat-kereta/` | `/en/car-body-paint/` |
+| `/towing-kereta/` | `/en/car-towing/` |
+| `/kulai/` | `/en/kulai/` |
+| `/gelang-patah/` | `/en/gelang-patah/` |
+| `/bukit-indah/` | `/en/bukit-indah/` |
+| `/skudai/` | `/en/skudai/` |
+| `/larkin/` | `/en/larkin/` |
+| (none) | `/en/near-ksl/` |
+| `/privasi/` | `/en/privacy/` (placeholder, hidden from Google for now) |
+
+`sitemap.xml` and `robots.txt` are made automatically.
+
+### Thin-page guard (automatic noindex)
+
+A page stays hidden from Google while **either** of these is true:
+- its copy is still placeholder (`status: "placeholder"`, or any text still marked DRAFT);
+- it is on the manual hold list, `indexHold` in `site.json`. That list matches the last part of the URL (for example `cat-kereta` or `car-body-paint`). It is empty for now.
+
+A hidden page gets `<meta name="robots" content="noindex,follow">` and is left out of `sitemap.xml`. If either language of a page is hidden, the hreflang pair between the two languages is dropped, both in the page head and in the sitemap. The guard lifts by itself once a page has real copy, **even if it lists no workshop**.
+
+A page with no workshop shows no contact box at all: no buttons and no "coming soon" note. Battery and servicing have real copy but no workshop cards yet, because servicing has no approved routing and battery is also unassigned.
+
+**The sitemap lists the imported pages** (home, Kulai, tyres, battery, servicing, body and paint, and towing, in both languages). Remaining placeholder pages stay hidden from Google.
+
+## How to add an area
+
+1. Copy any file in `src/_data/areas/`, for example `kulai.json`, and name it after the new area, like `senai.json`.
+2. Inside, set `slug` to `senai` and fill in `name`.
+3. Write **new text for every field** in both `ms` and `en`: intro, sections, FAQs and the WhatsApp message. Never copy another area's text and only change the town name.
+4. Add the area to `areaOrder` in `src/_data/site.json`.
+5. In `src/_data/routing.json`, add `"senai": []` under `areas`. The page shows no contact box until workshops are added.
+6. Change `status` from `placeholder` to `draft` once real text is in.
+7. Run `npm run check:unique`. It fails if two area pages share more than about 40% of their text.
+
+The build stops with a clear message if something doesn't line up, for example an area listed in `site.json` that has no file.
+
+## How contact routing works
+
+Leads never go to the site owner. Calls and WhatsApp messages go straight to the workshops listed in `src/_data/routing.json`:
+
+- `workshops` holds each workshop once, under its `workshop_id`.
+- `areas` lists the workshops shown on each area page, up to 2.
+- `services` optionally lists JB-wide workshops for a service page, up to 2.
+- A page with no list shows no contact box at all. That's the `unassigned` default.
+
+Each workshop has:
+- `workshop_id`: a short, permanent ID, sent with analytics events
+- `workshop`: `name`, `area` and `coverage` (the line under the name, in `en` and `ms`)
+- `phone`: in `+60…` form, for the Call link. `phone_display` is the number exactly as shown, and `phone_label` (optional) is a short note shown next to it.
+- `whatsapp` (optional, `null` = call only) and `whatsapp_label` (optional button text)
+- `hours`: one line per day in `en` and `ms`, from the workshop's Google Maps listing
+- `tenant_status`: `trial` or `tenant`
+- `services` (optional): limits the workshop to those services. `general` means general repair and servicing. A limited workshop is skipped on other service pages.
+
+**Who shows where now (trial):**
+
+| Page | Workshops |
+|---|---|
+| Kulai | Tyreplus - Overseas Tyre Services Centre; Hankook Masters - Car Pit Stop Kulai |
+| Gelang Patah | Kuga Auto Workshop; Fateh Tyre & Auto - Hoof Nexen |
+| Bukit Indah | Jag Tech Auto Service; Overseas Tyre And Services |
+| Skudai | ACS CAR SERVICE - Skudai; KAR Auto Service Center |
+| Larkin | TIPTOP Garage Workshop; Petronas AutoExpert by Prestige Contitech - Larkin |
+| Aircond (JB-wide) | Fresh Air Car Aircond Service; ACS CAR SERVICE - Skudai |
+| Tyres (JB-wide) | Continental Syarikat Lim Chin Hin; Hawk Tyre Service Sdn Bhd - Tebrau |
+| Body and paint (JB-wide) | Ah Bao Car Spray Painting; GC Auto Body & Paint |
+| Towing (JB-wide) | T.Y Towing Service (Call and WhatsApp); K One Towing & Transport |
+
+Mega Car Paint Spraying Workshop is stored in `routing.json` as a body-and-paint backup but listed on no page.
+
+Every other page has no contact box yet: home, servicing, battery, 24-hour mechanic, gearbox and near KSL.
+
+Each workshop gets its own card with:
+- its name, coverage line and opening hours (left out when `hours` is empty, as for the body-and-paint and towing workshops)
+- a Call button
+- a WhatsApp button, only if it has one
+
+Each card sends its own analytics events with its own `workshop_id`. The intro line appears once per page. Trial workshops never get a form or a logo; the form only appears for a `tenant` that has its own `web3forms_key`.
+
+The build refuses a workshop with missing or placeholder details, a page with more than 2 workshops, or a trial workshop with a logo or photo. Workshop names and numbers appear **only in visible text and buttons**, never in the page's structured data or meta tags. A test checks this on every build.
+
+To change who shows on a page, edit `routing.json` and open a pull request. Nothing changes on the site until you merge it.
+
+The disclosure wording (approved wording) comes from `disclosures.json`:
+
+- **All cards trial:** one intro above the cards: "Here are well-reviewed local workshops for this area. Call or WhatsApp them directly. {{ brand }} is an independent guide and isn't affiliated with them. Chosen from public Google reviews and, where known, years in business. We aren't paid by the workshops we suggest."
+- **Any tenant card on the page:** the shared intro is only the first two sentences. Each tenant card gets "{{ brand }} is a car workshop guide. {{ workshop.name }} pays {{ brand }} a flat fee to be featured here. It doesn't change the price they quote you." Each trial card gets its own line: "{{ brand }} isn't affiliated with {{ workshop.name }}. Chosen from public Google reviews and, where known, years in business. {{ workshop.name }} doesn't pay us."
+- **No workshop:** nothing.
+
+A service or area file may set `trialIntro` (`en` and `ms`) to replace that shared plural intro on its pages. A missing or blank value keeps the shared intro, including the first-two-sentences rule on a mixed page. Towing, body-and-paint, tyres and aircond use their own intros.
+
+Each towing card shows `towingCardNote` from `site.json`: "Ask for the full price before the tow starts, and agree on which workshop your car goes to." Towing cards must not mention the operator's own workshop, claim services, "20–30 min" / "20–30 minit" or "no hidden fees" / "tiada caj tersembunyi". A test checks the towing pages and any workshop listed for towing.
+- **when any card has WhatsApp:** a note from `i18n.json` that quotes the WhatsApp pre-fill.
+
+
+### Links to pages that are still held back
+
+Any link to one of our own pages that the thin-page guard keeps out of Google (placeholder copy, or on `indexHold`) is turned into plain words at build time: the link goes, the words stay. This applies everywhere: body copy, the home chips and search results, the service and area grids, the header, breadcrumb and footer. The language switch is the one exception and works as before. hreflang tags are unchanged. Links to imported pages are live; links to the remaining placeholder pages (other areas, aircond, gearbox, 24-hour) stay as plain words until those pages get real copy.
+
+On the home workshop list, a "More info" button is omitted entirely when its target page is held back (it is not shown as plain text). The Directions button always stays. When no listing has a More info button, the list intro swaps "Tap More info for each listing's details, or Directions to find it." for "Tap Directions to find each one." (Malay: "Tekan Arah untuk ke sana."). The original sentence comes back once at least one More info button shows.
+
+Body copy (intro, block text, FAQ answers) can use `[words](/path/)` for an internal link, `**bold**`, and bullet or numbered lists.
+
+### Home workshop list intro
+
+The approved intro above the home list is in `disclosures.json` (`homeList`). Its last sentence (not paid) shows only while every listed workshop is trial. The More info / Directions sentence follows the rule above.
+
+### Copy shown only with workshops
+
+Imported copy can wrap text in `[WITH-WORKSHOPS]` … `[/WITH-WORKSHOPS]`. That text only shows on a page that lists at least one workshop; on a page without workshops it is removed, and a block or FAQ left empty is dropped. The markers never reach the page: the build fails if one does.
+
+### Brand and WhatsApp text
+
+Write `{{ brand }}` anywhere in the data files, and the build fills in `brand` from `site.json`. The build stops if any `{{ ... }}` is left unfilled.
+
+The WhatsApp button opens `wa.me/<number>?text=<message>` with the area's UTM tags after it. The message comes from `i18n.json`:
+- Malay: "Hai, saya jumpa anda di {{ brand }}."
+- English: "Hi, I found you on {{ brand }}."
+
+
+## Design
+
+Mobile-first, no frameworks. Nothing loads from another host on page load (the map's tiles load only after a tap, see below).
+
+- **Type:** Plus Jakarta Sans as one self-hosted variable font (`src/assets/fonts/`, Latin subset, woff2, about 21 KB, `font-display: swap`, preloaded). The licence (SIL OFL) sits next to it. If the font file changes, give it a new file name (for example `.v2.woff2`): `/assets/*` is cached for a year.
+- **Colours:** deep navy with a warm amber accent, set as CSS variables at the top of `site.css`. A dark version follows the visitor's device setting (`prefers-color-scheme`).
+- **Pictures:** inline SVG only, with no photos or logos. The hero picture is an abstract road-and-map drawing (`partials/hero-art.njk`), and the service icons are in `partials/icons.njk`.
+- **Layout:** breadcrumb, language switch, service cards with icons, area chips, FAQ accordions (`<details>`, no JavaScript) and workshop cards with large Call and WhatsApp buttons. The WhatsApp pre-fill note sits under each WhatsApp button.
+- **Mobile bar:** on pages with workshops, phones get a bar at the bottom that jumps to the cards. It holds no phone or WhatsApp link itself, so every tracked click still comes from a card with its own `workshop_id`. Pages without workshops never show it.
+- **Motion:** light CSS-only motion, switched off for visitors who ask for reduced motion.
+- **Home search and list:** the home hero has a search box (`partials/finder.njk`, `src/assets/finder.js`) that shows the matching service and area pages, with chips linking to every service and area page underneath. Below that, "Browse workshops" (`partials/directory.njk`) lists every workshop that some area or service page lists, once each (a stored backup never appears), with filter buttons by service and area. Each entry has Directions and "More info", which goes to the page that lists it. Call and WhatsApp stay on that page, under its own intro.
+- **Directions:** every card whose workshop has a `location` in `routing.json` gets a Directions button to Google Maps directions for the name and address on its public Google Maps listing. A workshop with no confirmed location gets no button and no pin.
+- **Map (opt-in):** pages with located workshops (and the home list) show a "Show map" button. Nothing map-related loads until it is tapped. Then `src/assets/map.js` adds the self-hosted Leaflet 1.9.4 (`src/assets/leaflet/`, BSD-2-Clause licence in `LICENSE.txt` there) and OpenStreetMap tiles. The CSP allows `https://tile.openstreetmap.org` for images only. Pins sit only at each workshop's `location.lat`/`lng`, copied from its public Google Maps listing; never estimate one. Where each pin came from is recorded in a private note outside the repo, which a test checks when it is present.
+- **Tests:** they check that the CSS stays under 25 KB, that there are no inline styles or scripts (the CSP blocks them) and no third-party assets, and that the font is preloaded.
+
+## The contact form
+
+**The form only appears for a `tenant` workshop that has its own `web3forms_key`. Trial pages have Call and WhatsApp buttons only.**
+
+The visitor's browser sends the form **straight to Web3Forms** (`https://api.web3forms.com/submit`), which emails it to the workshop whose key is on that page. There is no server code. That's why it works on Web3Forms' free plan.
+
+- The Web3Forms access key is public by design. It only tells Web3Forms which inbox gets the email, so it's fine for it to sit in the page.
+- The browser checks the name, phone and consent before sending: HTML rules plus a small script in `src/assets/site.js`.
+- A hidden `botcheck` box catches bots.
+- The form also sends the `workshop_id`.
+- The UTM tags the visitor arrived with are sent along, together with a per-area subject line and the workshop name.
+- Afterwards the visitor lands on the thank-you page (`/terima-kasih/` or `/en/thank-you/`), with or without JavaScript.
+- The consent line links to the privacy notice.
+
+## Analytics events
+
+When someone taps a contact button or sends the form, `src/assets/site.js` fires these events:
+
+- `click_call`
+- `click_whatsapp`
+- `click_directions` (Directions on a card, in the home list, or in a map pin's popup)
+- `generate_lead`
+
+Each event carries:
+- `area`
+- `service`: the service slug on service pages, otherwise `area` (on the home list: the area or service of the page that lists that workshop)
+- `workshop_id`
+- `tenant_status`
+- `lang`
+- `page_path`
+
+**GA4 is built in and switched off until an ID is set.** Put the measurement ID in `site.json` as `ga4_measurement_id`, for example `G-XXXXXXX`.
+- **Empty (today):** no Google script loads at all.
+- **Set:** every page loads `gtag.js` (async) from googletagmanager.com, `src/assets/ga4.js` runs `gtag('config', ID)`, and the events above go to GA4.
+
+The CSP in `public/_headers` already allows Google's addresses. Tests confirm both cases: no GA tag when the ID is empty, and with a test ID the tag is present and the events reach `gtag`.
+
+## Tracking must be verified on the PR preview before merge
+
+Only two things remain:
+
+- [ ] Add Muhammad's GA4 measurement ID to `ga4_measurement_id` in `src/_data/site.json`, through a pull request.
+- [ ] On that pull request's preview link, with a test area set to `trial`, open GA4 **Admin → DebugView**. Tapping the call and WhatsApp buttons should show `click_call` and `click_whatsapp`, each with `area`, `service`, `workshop_id`, `tenant_status` and `lang`.
+
+## Decisions made
+
+- **The form posts straight from the browser to Web3Forms, on the free plan.** Web3Forms' free plan doesn't accept posts sent from a server, so there is no server function. The public access key sits in `routing.json`, one per workshop.
+- **The English servicing page is `/en/car-servicing/`** (the Malay page stays `/servis/`). The team chose this wording for clearer English.
+
+## Still needed before launch
+
+- [ ] Web3Forms access key(s), from Muhammad's own Web3Forms sign-up (one per workshop inbox)
+- [ ] The brand name (the site shows "JBCarFix" for now)
+- [x] Real page text for home, Kulai, tyres, battery, servicing, body and paint, and towing (both languages)
+- [ ] Real page text for the remaining area and service pages
+- [ ] The privacy notice text. Then remove its noindex rules in `public/_headers` and set `status` in `privacy.json`
+- [ ] Muhammad's GA4 measurement ID, then the DebugView check above
+
+## Structured data (schema)
+
+While no workshop has signed, every page says the site is an **Organization** that offers a **Service** in the JB areas, plus FAQs where a page has them. It never claims to be a workshop and never includes a street address, map pin, ratings, reviews or prices.
+
+When a workshop signs, put its real details under `tenant` in `site.json` and change `"tenantMode": false` to `true`.
+
+## Commands (for whoever builds the site)
+
+You need Node.js 18 or newer.
+
+```
+npm install            # first time only
+npm start              # local preview at http://localhost:8080
+npm run build          # build the site into _site/
+npm run check:unique   # area pages must not be copies of each other
+npm test               # automatic tests
+```
+
+Cloudflare Pages settings when connected: build command `npm run build`, output folder `_site`.
+
+## Rules this repo follows
+
+- No secrets in the code. (The Web3Forms access key is public by design.)
+- No tracking scripts, no web fonts and no CSS frameworks, which keeps pages fast.
+- Preview links on `*.pages.dev` are hidden from search engines. jbcarfix.com is not.
+- `main` is protected: changes arrive only by pull request, and only you merge.

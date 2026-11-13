@@ -1,0 +1,7 @@
+{%- set s = site.strings[entry.lang] -%}
+{%- set pre = "" if entry.lang == "ms" else "/en" -%}
+{%- from "partials/icons.njk" import icon -%}
+{% include "partials/blocks.njk" %}
+{% include "partials/directory.njk" %}
+{% include "partials/faqs.njk" %}
+{% include "partials/contact.njk" %}

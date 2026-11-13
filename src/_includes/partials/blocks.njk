@@ -1,0 +1,10 @@
+{%- if entry.content.blocks and entry.content.blocks.length %}
+<div class="blocks">
+{%- for b in entry.content.blocks %}
+<section class="block" id="{{ b.id }}">
+  <h2>{{ b.heading | markupInline | safe }}</h2>
+  <div class="copy">{{ b.body | markup | safe }}</div>
+</section>
+{%- endfor %}
+</div>
+{%- endif %}

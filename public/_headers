@@ -1,0 +1,44 @@
+# Cloudflare Pages headers. Based on the Nook & Root production file, trimmed.
+# The CSP allows this site itself, Web3Forms (lead form) and Google Analytics 4
+# (gtag.js is only loaded when site.json ga4_measurement_id is set), plus OpenStreetMap
+# map tiles (images only, loaded after a visitor taps "Show map"; Leaflet itself is self-hosted).
+# Remove the two privacy noindex rules once real copy is in.
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Cross-Origin-Opener-Policy: same-origin
+  Strict-Transport-Security: max-age=31536000
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: https://tile.openstreetmap.org; font-src 'self'; connect-src 'self' https://api.web3forms.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com; form-action 'self' https://api.web3forms.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'
+
+# CSS/JS are linked with a content hash (?v=...), so they can be cached for a year
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/favicon.svg
+  Cache-Control: public, max-age=604800
+
+/sitemap.xml
+  Cache-Control: public, max-age=3600
+
+# Thank-you and draft privacy pages are not for search
+/terima-kasih/
+  X-Robots-Tag: noindex
+/terima-kasih/*
+  X-Robots-Tag: noindex
+/en/thank-you/
+  X-Robots-Tag: noindex
+/en/thank-you/*
+  X-Robots-Tag: noindex
+/privasi/
+  X-Robots-Tag: noindex
+/en/privacy/
+  X-Robots-Tag: noindex
+
+# Preview deployments on *.pages.dev must never be indexed. Production (jbcarfix.com) stays indexable.
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex, nofollow
+
+https://:version.:project.pages.dev/*
+  X-Robots-Tag: noindex, nofollow

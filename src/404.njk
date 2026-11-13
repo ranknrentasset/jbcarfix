@@ -1,0 +1,19 @@
+---
+permalink: /404.html
+layout: layouts/base.njk
+eleventyExcludeFromCollections: true
+entry:
+  type: notfound
+  lang: ms
+  url: /404.html
+  noindex: true
+  alternates: {}
+  content:
+    title: "Halaman tidak dijumpai / Page not found | {{ brand }}"
+---
+<section class="hero">
+  <h1>{{ site.strings.ms.notFoundTitle }}</h1>
+  <p>{{ site.strings.ms.notFoundBody }} <a href="/">{{ site.strings.ms.homeLink }}</a></p>
+  <h2 lang="en">{{ site.strings.en.notFoundTitle }}</h2>
+  <p lang="en">{{ site.strings.en.notFoundBody }} <a href="/en/">{{ site.strings.en.homeLink }}</a></p>
+</section>

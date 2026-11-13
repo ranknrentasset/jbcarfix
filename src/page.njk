@@ -1,0 +1,10 @@
+---
+pagination:
+  data: pages
+  size: 1
+  alias: entry
+permalink: "{{ entry.url }}index.html"
+layout: layouts/base.njk
+eleventyExcludeFromCollections: true
+---
+{% include "partials/" + entry.type + ".njk" %}

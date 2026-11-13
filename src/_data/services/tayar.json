@@ -1,0 +1,109 @@
+{
+  "_comment": "One file per JB-wide service page. Write this service's own text in every field. Optional trialIntro {en, ms} replaces the shared plural trial intro from disclosures.json when it is non-empty.",
+  "key": "tayar",
+  "status": "draft",
+  "slug": {
+    "ms": "tayar",
+    "en": "tyres"
+  },
+  "name": {
+    "ms": "Tayar",
+    "en": "Tyres"
+  },
+  "trialIntro": {
+    "en": "Here are well-reviewed local tyre shops in Johor Bahru. Contact them directly. {{ brand }} is an independent guide and isn't affiliated with them. Chosen from public Google ratings and reviews and, where known, years in business. We aren't paid by the shops we suggest.",
+    "ms": "Berikut ialah kedai tayar tempatan di Johor Bahru yang mendapat ulasan baik. Hubungi mereka terus. {{ brand }} ialah panduan bebas dan tidak bergabung dengan kedai-kedai ini. Dipilih berdasarkan penilaian dan ulasan Google awam dan, jika diketahui, tempoh beroperasi. Kami tidak dibayar oleh kedai yang kami cadangkan."
+  },
+  "ms": {
+    "title": "Kedai Tayar JB: Tukar, Tampal & Alignment | {{ brand }}",
+    "description": "Kedai tayar di JB untuk tayar baru, tampal tayar bocor dan alignment. Lihat kedai tayar tempatan yang kami cadangkan dan hubungi mereka terus.",
+    "h1": "Kedai Tayar JB: Tukar Tayar, Tampal Tayar Bocor dan Alignment di Johor Bahru",
+    "intro": "**Jawapan ringkas:** Jika anda mencari kedai tayar di JB, halaman ini mencadangkan kedai tayar tempatan yang mendapat ulasan baik. Anda boleh hubungi atau WhatsApp mereka terus untuk tayar baru, tampal tayar bocor atau alignment. {{ brand }} bukan kedai tayar. Harga dan stok ditentukan oleh kedai itu sendiri.",
+    "blocks": [
+      {
+        "id": "when-to-replace",
+        "heading": "Bila perlu tukar tayar",
+        "body": "- **Bunga tayar sudah rata dengan penanda haus.** Setiap tayar ada bonggol kecil di dalam alur. Jika bunga tayar sudah sama paras dengan bonggol itu, tayar perlu ditukar.\n- **Tayar sudah lama, walaupun bunganya nampak elok.** Kod empat digit di dinding tayar menunjukkan minggu dan tahun tayar dibuat. Contohnya \"2321\" bermaksud minggu ke-23 tahun 2021. Getah menjadi keras kerana usia dan panas, jadi minta kedai periksa tayar yang sudah lama.\n- **Ada retak, benjol atau koyak di dinding tayar.** Benjol bermaksud bahagian dalam tayar sudah rosak. Jangan memandu jauh dengannya.\n- **Kereta bergegar pada kelajuan tinggi atau stereng menarik ke satu sisi.** Puncanya mungkin balancing atau alignment, bukan tayar itu sendiri. Kedai tayar boleh memeriksa kedua-duanya."
+      },
+      {
+        "id": "puncture-repair",
+        "heading": "Tayar bocor: tampal atau tukar?",
+        "body": "Lubang paku kecil di bahagian bunga tayar selalunya boleh ditampal. Lubang di dinding tayar atau terlalu dekat dengannya biasanya tidak selamat untuk ditampal, jadi tayar perlu ditukar. Jika anda telah memandu jauh dengan tayar pancit, bahagian dalam tayar mungkin rosak walaupun lubangnya kecil. Minta kedai periksa bahagian dalam dahulu."
+      },
+      {
+        "id": "alignment-balancing",
+        "heading": "Alignment dan balancing",
+        "body": "**Alignment** melaraskan sudut roda supaya kereta bergerak lurus. Periksa alignment selepas terlanggar lubang jalan atau bahu jalan dengan kuat, selepas menukar tayar atau komponen suspensi, atau jika stereng tidak lurus semasa kereta bergerak lurus. **Balancing** menghilangkan gegaran pada kelajuan tinggi dengan meletakkan pemberat kecil pada setiap roda. Kebanyakan kedai tayar melakukan kedua-duanya."
+      },
+      {
+        "id": "questions-before-buying",
+        "heading": "Soalan untuk ditanya sebelum membeli",
+        "body": "- Jenama dan saiz apa yang ada dalam stok untuk kereta anda hari ini?\n- Adakah harga termasuk pemasangan, balancing, injap baru dan pelupusan tayar lama?\n- Adakah mereka mencadangkan alignment bersama tayar baru, dan berapa caj tambahannya?\n- Apakah waranti yang diberi oleh pengeluar tayar?"
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Ada kedai tayar 24 jam di JB?",
+        "a": "Sesetengah kedai tayar buka hingga lewat malam, tetapi kami tidak menjanjikan waktu operasi. Semak waktu buka di Google atau tanya kedai melalui WhatsApp sebelum pergi."
+      },
+      {
+        "q": "Di mana kedai tayar murah di JB?",
+        "a": "Kami tidak memaparkan harga kerana ia berubah mengikut jenama, saiz dan stok. Minta sebut harga daripada dua atau tiga kedai untuk saiz dan jenama yang sama, dan tanya apa yang termasuk dalam harga itu."
+      },
+      {
+        "q": "Patutkah saya beli tayar second hand?",
+        "a": "Harganya lebih rendah, tetapi anda tidak selalu tahu bagaimana tayar itu disimpan atau dibaiki. Jika membeli, semak kod tarikh dan dinding tayar, dan elakkan tayar yang ada tampalan dekat tepinya."
+      },
+      {
+        "q": "Perlukah saya tukar keempat-empat tayar sekali gus?",
+        "a": "Tidak semestinya. Banyak kedai mencadangkan tayar ditukar berpasangan pada gandar yang sama supaya cengkamannya sekata. Tanya kedai apa yang sesuai untuk kereta anda."
+      }
+    ]
+  },
+  "en": {
+    "title": "Tyre Shop JB: Tyres, Punctures & Alignment | {{ brand }}",
+    "description": "Tyre shop in JB for new tyres, puncture repair and wheel alignment. See well-reviewed local tyre shops we suggest and contact them directly.",
+    "h1": "Tyre Shop JB: New Tyres, Puncture Repair and Wheel Alignment in Johor Bahru",
+    "intro": "**Short answer:** If you need a tyre shop in JB, this page suggests a well-reviewed local tyre shop you can call or WhatsApp directly for new tyres, puncture repair or wheel alignment. {{ brand }} isn't a tyre shop. Prices and stock come from the shop itself.",
+    "blocks": [
+      {
+        "id": "when-to-replace",
+        "heading": "When to replace your tyres",
+        "body": "- **Tread is down to the wear bars.** Every tyre has small raised bars in the grooves. When the tread is level with them, the tyre needs replacing.\n- **The tyre is old, even if the tread looks fine.** The four-digit code on the sidewall shows the week and year it was made. \"2321\" means week 23 of 2021. Rubber hardens with age and heat, so ask the shop to check older tyres.\n- **Cracks, bulges or cuts on the sidewall.** A bulge means the inside of the tyre is damaged. Don't drive far on it.\n- **The car shakes at speed or pulls to one side.** This can be balancing or alignment rather than the tyre itself, and a tyre shop can check both."
+      },
+      {
+        "id": "puncture-repair",
+        "heading": "Puncture repair: plug, patch or replace?",
+        "body": "A small nail hole in the main tread can often be repaired. A hole near or on the sidewall usually can't be repaired safely, so the tyre needs replacing. If you've driven a long way on a flat tyre, the inside may be damaged even if the hole is small. Ask the shop to look inside before deciding."
+      },
+      {
+        "id": "alignment-balancing",
+        "heading": "Wheel alignment and balancing",
+        "body": "**Alignment** sets the angle of your wheels so the car drives straight. Get it checked after hitting a pothole or kerb hard, after new tyres or suspension parts, or if the steering wheel sits off-centre. **Balancing** stops vibration at speed by adding small weights to each wheel. Most tyre shops do both."
+      },
+      {
+        "id": "questions-before-buying",
+        "heading": "Questions to ask before you buy",
+        "body": "- Which brands and sizes do they have in stock for your car today?\n- Does the price include fitting, balancing, new valves and disposal of the old tyres?\n- Do they recommend alignment with the new tyres, and how much extra is it?\n- What warranty does the tyre maker give?"
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Is there a 24-hour tyre shop in JB?",
+        "a": "Some tyre shops open late, but we don't promise opening hours. Check the shop's hours on its Google listing or ask them on WhatsApp before you go."
+      },
+      {
+        "q": "Where can I find cheap tyres in JB?",
+        "a": "We don't list prices, because they change with brand, size and stock. Ask two or three shops for a quote for the same tyre size and brand, and check what the price includes."
+      },
+      {
+        "q": "Should I buy second-hand tyres?",
+        "a": "They cost less, but you can't always tell how they were stored or repaired. If you do, check the date code and the sidewalls, and avoid tyres with patches near the edge."
+      },
+      {
+        "q": "Do I need to change all four tyres at once?",
+        "a": "Not always. Many shops suggest changing tyres in pairs on the same axle so they grip evenly. Ask the shop what suits your car."
+      }
+    ]
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "_comment": "One file per JB-wide service page. Write this service's own text in every field.",
+  "key": "servis",
+  "status": "draft",
+  "slug": {
+    "ms": "servis",
+    "en": "car-servicing"
+  },
+  "name": {
+    "ms": "Servis kereta",
+    "en": "Car servicing"
+  },
+  "ms": {
+    "title": "Servis Kereta JB: Minyak Hitam, Brek & Lagi | {{ brand }}",
+    "description": "Servis kereta di JB: apa yang termasuk, tukar minyak hitam, brek pad dan radiator. Hubungi bengkel tempatan yang diulas baik untuk sebut harga.",
+    "h1": "Servis Kereta JB: Tukar Minyak Hitam, Brek Pad dan Pemeriksaan Rutin di Johor Bahru",
+    "intro": "**Jawapan ringkas:** Servis kereta berkala di JB bermaksud menukar minyak hitam dan penapis serta pemeriksaan keselamatan mengikut jadual dalam manual pemilik. Halaman ini menerangkan apa yang biasanya termasuk dalam servis.\n\n[WITH-WORKSHOPS] Ia juga mencadangkan bengkel tempatan yang mendapat ulasan baik untuk anda hubungi atau WhatsApp terus bagi mendapatkan sebut harga. [/WITH-WORKSHOPS]\n{{ brand }} bukan bengkel, dan kami tidak memaparkan harga.",
+    "blocks": [
+      {
+        "id": "what-a-service-includes",
+        "heading": "Apa yang biasanya termasuk dalam servis kereta",
+        "body": "- **Tukar minyak hitam dan penapis minyak.** Bahagian paling penting dalam setiap servis.\n- **Periksa penapis udara dan penapis kabin.** Penapis kabin mempengaruhi kesejukan aircond.\n- **Periksa brek.** Brek pad, cakera dan minyak brek.\n- **Periksa air radiator dan sistem penyejukan.** Paras air, kebocoran dan keadaan hos.\n- **Tayar, lampu, wiper dan bateri.** Pemeriksaan ringkas untuk mengesan masalah kecil lebih awal.\n\nMinta senarai kerja yang termasuk sebelum bengkel bermula, dan minta mereka hubungi anda dahulu sebelum membuat kerja tambahan."
+      },
+      {
+        "id": "how-often",
+        "heading": "Berapa kerap perlu servis kereta?",
+        "body": "Ikut jadual dalam manual pemilik, yang biasanya memberi had jarak dan had masa, mana yang lebih awal. Jadual yang sesuai bergantung pada kereta dan jenis minyak hitam, jadi tanya bengkel minyak apa yang digunakan dan bila servis seterusnya. Perjalanan pendek yang kerap dan jalan sesak dikira sebagai pemanduan berat, jadi kereta anda mungkin perlu diservis lebih awal."
+      },
+      {
+        "id": "brake-pads",
+        "heading": "Brek pad: tanda perlu ditukar",
+        "body": "- Bunyi berdecit nyaring semasa membrek. Banyak brek pad ada kepingan logam kecil yang berbunyi apabila pad sudah haus.\n- Bunyi mengisar, yang mungkin bermaksud pad sudah habis. Periksa dengan segera.\n- Kereta mengambil masa lebih lama untuk berhenti, atau pedal brek terasa lembut.\n- Lampu amaran brek menyala di papan pemuka."
+      },
+      {
+        "id": "radiator",
+        "heading": "Radiator dan enjin panas",
+        "body": "Jika jarum suhu naik melebihi paras biasa, ada wap keluar dari bonet, atau ada air radiator menitis di bawah kereta, berhenti di tempat selamat dan matikan enjin. Jangan buka penutup radiator semasa enjin masih panas. Minta bengkel periksa radiator, hos, pam air dan kipas sebelum memandu jauh."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Ada senarai harga servis kereta di JB?",
+        "a": "Kami tidak memaparkan harga kerana ia bergantung pada kereta, minyak hitam dan alat ganti yang digunakan. Minta sebut harga terperinci daripada bengkel sebelum mereka bermula."
+      },
+      {
+        "q": "Adakah servis di bengkel bebas menjejaskan waranti kereta?",
+        "a": "Ia bergantung pada syarat waranti pengeluar kereta anda. Semak buku waranti atau tanya pengedar sebelum memilih tempat servis untuk kereta yang masih dalam waranti."
+      },
+      {
+        "q": "Bagaimana saya tahu perlu tukar minyak hitam?",
+        "a": "Rujuk jarak atau tarikh pada pelekat servis terakhir. Jika lampu amaran minyak menyala, berhenti dan periksa paras minyak sebelum meneruskan perjalanan."
+      },
+      {
+        "q": "Berapa lama masa untuk servis rutin?",
+        "a": "Tanya bengkel semasa membuat temu janji. Masanya bergantung pada kesibukan bengkel dan keperluan kereta anda."
+      }
+    ]
+  },
+  "en": {
+    "title": "Car Servicing JB: Oil, Brakes & Radiator | {{ brand }}",
+    "description": "Car servicing in JB: what a service covers, oil changes, brake pads and radiator checks. Contact a well-reviewed local workshop directly for a quote.",
+    "h1": "Car Servicing JB: Oil Changes, Brake Pads and Routine Checks in Johor Bahru",
+    "intro": "**Short answer:** Regular car servicing in JB means an oil and filter change plus safety checks at the intervals in your owner's manual. This page explains what a service usually covers.\n\n[WITH-WORKSHOPS] It also suggests well-reviewed local workshops you can call or WhatsApp directly for a quote. [/WITH-WORKSHOPS]\n{{ brand }} isn't a workshop, and we don't list prices.",
+    "blocks": [
+      {
+        "id": "what-a-service-includes",
+        "heading": "What a routine car servicing usually includes",
+        "body": "- **Engine oil and oil filter change.** The most important part of any service.\n- **Air filter and cabin filter check.** The cabin filter affects how well your aircon blows.\n- **Brake check.** Pads, discs and brake fluid.\n- **Coolant and radiator check.** Level, leaks and the condition of the hoses.\n- **Tyres, lights, wipers and battery.** Quick checks that catch small problems early.\n\nAsk the workshop for a list of what's included before they start, and ask them to call you before doing any extra work."
+      },
+      {
+        "id": "how-often",
+        "heading": "How often should you service your car?",
+        "body": "Follow the interval in your owner's manual, which usually gives both a distance and a time limit, whichever comes first. The right interval depends on your car and the oil it uses, so ask the workshop which oil they're putting in and when the next service is due. Lots of short trips and slow traffic count as harder driving, so you may need servicing sooner."
+      },
+      {
+        "id": "brake-pads",
+        "heading": "Brake pads: signs they need replacing",
+        "body": "- A high-pitched squeal when you brake. Many pads have a small metal tab that squeals when they're worn.\n- A grinding noise, which can mean the pad is worn through. Get it checked straight away.\n- The car takes longer to stop, or the brake pedal feels softer.\n- A brake warning light on the dashboard."
+      },
+      {
+        "id": "radiator",
+        "heading": "Radiator and overheating",
+        "body": "If the temperature gauge rises above normal, steam comes from the bonnet, or you see coolant under the car, stop somewhere safe and turn the engine off. Don't open the radiator cap while the engine is hot. Have a workshop check the radiator, hoses, water pump and fan before you drive far."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Is there a car servicing price list for JB?",
+        "a": "We don't publish prices, because they depend on your car, the oil and the parts used. Ask the workshop for an itemised quote before they start."
+      },
+      {
+        "q": "Will servicing at an independent workshop affect my warranty?",
+        "a": "It depends on your car maker's warranty terms. Check your warranty booklet or ask your dealer before choosing where to service a car that's still under warranty."
+      },
+      {
+        "q": "How do I know if I need an oil change?",
+        "a": "Go by the distance or date on your last service sticker. If the oil warning light comes on, stop and check the oil level before driving further."
+      },
+      {
+        "q": "How long does a routine car servicing take?",
+        "a": "Ask the workshop when you book. Timing depends on how busy they are and what your car needs."
+      }
+    ]
+  }
+}

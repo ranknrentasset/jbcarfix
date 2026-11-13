@@ -1,0 +1,65 @@
+{
+  "_comment": "One file per JB-wide service page. Write this service's own text in every field. Optional trialIntro {en, ms} replaces the shared plural trial intro from disclosures.json when it is non-empty.",
+  "key": "aircond-kereta",
+  "status": "placeholder",
+  "slug": {
+    "ms": "aircond-kereta",
+    "en": "car-aircon"
+  },
+  "name": {
+    "ms": "Aircond kereta",
+    "en": "Car aircon"
+  },
+  "trialIntro": {
+    "en": "Here are well-reviewed local car aircon workshops in Johor Bahru. Contact them directly. {{ brand }} is an independent guide and isn't affiliated with them. Chosen from public Google ratings and reviews and, where known, years in business. We aren't paid by the workshops we suggest.",
+    "ms": "Berikut ialah bengkel aircond kereta tempatan di Johor Bahru yang mendapat ulasan baik. Hubungi mereka terus. {{ brand }} ialah panduan bebas dan tidak bergabung dengan bengkel-bengkel ini. Dipilih berdasarkan penilaian dan ulasan Google awam dan, jika diketahui, tempoh beroperasi. Kami tidak dibayar oleh bengkel yang kami cadangkan."
+  },
+  "ms": {
+    "title": "Aircond kereta (DRAFT) | {{ brand }}",
+    "description": "DRAFT – content pending: penerangan meta untuk Aircond kereta.",
+    "h1": "Aircond kereta – DRAFT",
+    "intro": "DRAFT – content pending: perenggan pembuka untuk Aircond kereta.",
+    "blocks": [
+      {
+        "id": "what-it-covers",
+        "heading": "DRAFT – Apa yang termasuk",
+        "body": "DRAFT – content pending."
+      },
+      {
+        "id": "when-to-get-help",
+        "heading": "DRAFT – Bila perlu dapatkan bantuan",
+        "body": "DRAFT – content pending."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "DRAFT – soalan lazim 1 (Aircond kereta)",
+        "a": "DRAFT – content pending."
+      }
+    ]
+  },
+  "en": {
+    "title": "Car aircon (DRAFT) | {{ brand }}",
+    "description": "DRAFT – content pending: meta description for Car aircon.",
+    "h1": "Car aircon – DRAFT",
+    "intro": "DRAFT – content pending: opening paragraph for Car aircon.",
+    "blocks": [
+      {
+        "id": "what-it-covers",
+        "heading": "DRAFT – What it covers",
+        "body": "DRAFT – content pending."
+      },
+      {
+        "id": "when-to-get-help",
+        "heading": "DRAFT – When to get help",
+        "body": "DRAFT – content pending."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "DRAFT – question 1 (Car aircon)",
+        "a": "DRAFT – content pending."
+      }
+    ]
+  }
+}

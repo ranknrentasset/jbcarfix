@@ -1,0 +1,145 @@
+{%- set s = site.strings[entry.lang] -%}
+{%- set pre = "" if entry.lang == "ms" else "/" + entry.lang -%}
+{%- set other = "en" if entry.lang == "ms" else "ms" -%}
+{%- set c = entry.content -%}
+{%- from "partials/icons.njk" import icon, mark -%}
+{%- set hasWs = entry.workshops and entry.workshops.length -%}
+<!doctype html>
+<html lang="{{ s.htmlLang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ c.title }}</title>
+{%- if c.description %}
+<meta name="description" content="{{ c.description }}">
+{%- endif %}
+{%- if entry.noindex %}
+<meta name="robots" content="noindex,follow">
+{%- endif %}
+{%- if entry.type != "notfound" %}
+<link rel="canonical" href="{{ entry.url | absUrl(site) }}">
+{%- if entry.hreflang %}
+{%- if entry.hreflang.ms %}
+<link rel="alternate" hreflang="ms" href="{{ entry.hreflang.ms | absUrl(site) }}">
+{%- endif %}
+{%- if entry.hreflang.en %}
+<link rel="alternate" hreflang="en" href="{{ entry.hreflang.en | absUrl(site) }}">
+{%- endif %}
+<link rel="alternate" hreflang="x-default" href="{{ (entry.hreflang.ms or entry.hreflang.en) | absUrl(site) }}">
+{%- endif %}
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ brand }}">
+<meta property="og:title" content="{{ c.title }}">
+{%- if c.description %}
+<meta property="og:description" content="{{ c.description }}">
+{%- endif %}
+<meta property="og:url" content="{{ entry.url | absUrl(site) }}">
+<meta property="og:locale" content="{{ 'ms_MY' if entry.lang == 'ms' else 'en_MY' }}">
+{%- endif %}
+<meta name="theme-color" content="#0e1a2b">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/assets/fonts/plus-jakarta-sans-var.v1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="{{ '/assets/site.css' | assetHash }}">
+{%- if site.ga4_measurement_id %}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ site.ga4_measurement_id }}"></script>
+<script src="{{ '/assets/ga4.js' | assetHash }}" data-ga4-id="{{ site.ga4_measurement_id }}" defer></script>
+{%- endif %}
+{%- if entry.type in ["home", "service", "area", "landing"] %}
+<script type="application/ld+json">{{ entry | jsonLd({ site: site, areas: areas, services: services }) | safe }}</script>
+<script src="{{ '/assets/site.js' | assetHash }}" defer></script>
+{%- if entry.type == "home" %}
+<script src="{{ '/assets/finder.js' | assetHash }}" defer></script>
+{%- endif %}
+{%- if entry.hasPins %}
+<script src="{{ '/assets/map.js' | assetHash }}" defer></script>
+{%- endif %}
+{%- endif %}
+</head>
+<body>
+<a class="skip" href="#main">{{ s.skip }}</a>
+<header class="top">
+  <div class="wrap top-in">
+    <span class="brand-box"><a class="brand" href="{{ pre }}/">{{ mark() }}<span>{{ brand }}</span></a></span>
+    {%- if entry.type != "notfound" %}
+    <a class="lang" hreflang="{{ other }}" lang="{{ other }}" href="{{ entry.alternates[other] or ('/' if other == 'ms' else '/en/') }}">{{ icon("globe") }}<span>{{ s.otherLangLabel }}</span></a>
+    {%- endif %}
+  </div>
+</header>
+<main id="main">
+{%- if entry.type != "notfound" %}
+  <section class="hero">
+    <div class="wrap hero-in">
+      <div class="hero-text">
+        {%- if entry.type != "home" %}
+        <nav class="crumbs" aria-label="{{ s.breadcrumbLabel }}">
+          <ol>
+            <li><a href="{{ pre }}/">{{ s.homeCrumb }}</a></li>
+            {%- if entry.type == "service" %}<li><span>{{ s.servicesHeading }}</span></li>
+            {%- elif entry.type == "area" or entry.type == "landing" %}<li><span>{{ s.areasHeading }}</span></li>{% endif %}
+            <li><span aria-current="page">{% if entry.type == "service" %}{{ services[entry.key].name[entry.lang] }}{% elif entry.type == "area" %}{{ areas[entry.key].name[entry.lang] }}{% elif entry.type == "landing" %}{{ landings[entry.key].name[entry.lang] or c.h1 }}{% else %}{{ c.h1 }}{% endif %}</span></li>
+          </ol>
+        </nav>
+        {%- endif %}
+        <p class="connect">{{ s.connectLine }}</p>
+        <h1>{{ c.h1 }}</h1>
+        <div class="lede">{{ c.intro | markup | safe }}</div>
+        {%- if entry.type == "home" %}
+        {% include "partials/finder.njk" %}
+        {%- endif %}
+        {%- if hasWs %}
+        <a class="jump" href="#contact">{{ s.jumpToWorkshops }}{{ icon("arrow") }}</a>
+        {%- endif %}
+      </div>
+      {%- if entry.type in ["home", "service", "area", "landing"] %}
+      <div class="hero-visual">{% include "partials/hero-art.njk" %}</div>
+      {%- endif %}
+    </div>
+  </section>
+{%- endif %}
+<div class="wrap body">
+{{ content | safe }}
+</div>
+</main>
+{%- if hasWs %}
+<div class="actbar"><a href="#contact">{{ icon("phone") }}<span>{{ s.jumpToWorkshops }}</span></a></div>
+{%- endif %}
+<footer class="foot">
+  <div class="wrap foot-in">
+    <div class="foot-brand">
+      <span class="brand-box"><a class="brand" href="{{ pre }}/">{{ mark() }}<span>{{ brand }}</span></a></span>
+      <p class="connect">{{ s.orgDescription }}</p>
+    </div>
+    {%- if entry.type != "notfound" %}
+    <nav class="foot-nav" aria-label="{{ s.servicesHeading }}">
+      <h2>{{ s.servicesHeading }}</h2>
+      <ul>
+      {%- for k in site.serviceOrder %}
+        <li><a href="{{ pre }}/{{ services[k].slug[entry.lang] }}/">{{ services[k].name[entry.lang] }}</a></li>
+      {%- endfor %}
+      </ul>
+    </nav>
+    <nav class="foot-nav" aria-label="{{ s.areasHeading }}">
+      <h2>{{ s.areasHeading }}</h2>
+      <ul>
+      {%- for k in site.areaOrder %}
+        <li><a href="{{ pre }}/{{ k }}/">{{ areas[k].name[entry.lang] }}</a></li>
+      {%- endfor %}
+      {%- if entry.lang == "en" %}
+      {%- for k in site.landingOrder %}
+        <li><a href="/en/{{ landings[k].slug.en }}/">{{ landings[k].name.en }}</a></li>
+      {%- endfor %}
+      {%- endif %}
+      </ul>
+    </nav>
+    {%- endif %}
+    <div class="foot-base">
+      <p><a href="{{ site.privacy[entry.lang] }}">{{ s.privacyLabel }}</a></p>
+      {%- if entry.thin or (entry.type == "privacy" and entry.noindex) %}
+      <p class="draft">{{ s.draft }}</p>
+      {%- endif %}
+    </div>
+  </div>
+</footer>
+</body>
+</html>

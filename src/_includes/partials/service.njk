@@ -1,0 +1,14 @@
+{%- set s = site.strings[entry.lang] -%}
+{%- set pre = "" if entry.lang == "ms" else "/en" -%}
+{%- from "partials/icons.njk" import icon -%}
+{% include "partials/blocks.njk" %}
+<section class="sec">
+  <h2>{{ s.areasHeading }}</h2>
+  <ul class="chips">
+  {%- for k in site.areaOrder %}
+    <li><a class="chip" href="{{ pre }}/{{ k }}/">{{ icon("pin") }}<span>{{ areas[k].name[entry.lang] }}</span></a></li>
+  {%- endfor %}
+  </ul>
+</section>
+{% include "partials/faqs.njk" %}
+{% include "partials/contact.njk" %}

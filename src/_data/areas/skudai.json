@@ -1,0 +1,86 @@
+{
+  "_comment": "One file per area. Write this area's own text in every field; never copy another area's text and swap the name. Set status to 'draft' once real text is in, then 'ready' after review. npm run check:unique skips 'placeholder' files.",
+  "slug": "skudai",
+  "status": "placeholder",
+  "name": {
+    "ms": "Skudai",
+    "en": "Skudai"
+  },
+  "aliases": [],
+  "_aliasesTodo": "TODO: other names people use for this area (used by check:unique to catch name-swapped copies).",
+  "nearby": [
+    "bukit-indah",
+    "kulai",
+    "larkin"
+  ],
+  "landmarks": [],
+  "_landmarksTodo": "TODO: real, verifiable places drivers know (no shop pins).",
+  "services": [
+    "tayar",
+    "bateri",
+    "servis",
+    "mekanik-24-jam",
+    "aircond-kereta",
+    "pakar-gearbox",
+    "cat-kereta",
+    "towing-kereta"
+  ],
+  "ms": {
+    "title": "Skudai (DRAFT) | {{ brand }}",
+    "description": "DRAFT – content pending: penerangan meta untuk Skudai.",
+    "h1": "Skudai – DRAFT",
+    "intro": "DRAFT – content pending: perenggan pembuka untuk Skudai.",
+    "blocks": [
+      {
+        "id": "local-driving",
+        "heading": "DRAFT – Pemanduan di kawasan ini",
+        "body": "DRAFT – content pending."
+      },
+      {
+        "id": "common-issues",
+        "heading": "DRAFT – Masalah kereta yang biasa",
+        "body": "DRAFT – content pending."
+      },
+      {
+        "id": "getting-help",
+        "heading": "DRAFT – Cara mendapatkan bantuan",
+        "body": "DRAFT – content pending."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "DRAFT – soalan lazim 1 (Skudai)",
+        "a": "DRAFT – content pending."
+      }
+    ]
+  },
+  "en": {
+    "title": "Skudai (DRAFT) | {{ brand }}",
+    "description": "DRAFT – content pending: meta description for Skudai.",
+    "h1": "Skudai – DRAFT",
+    "intro": "DRAFT – content pending: opening paragraph for Skudai.",
+    "blocks": [
+      {
+        "id": "local-driving",
+        "heading": "DRAFT – Driving in this area",
+        "body": "DRAFT – content pending."
+      },
+      {
+        "id": "common-issues",
+        "heading": "DRAFT – Common car problems",
+        "body": "DRAFT – content pending."
+      },
+      {
+        "id": "getting-help",
+        "heading": "DRAFT – How to get help",
+        "body": "DRAFT – content pending."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "DRAFT – question 1 (Skudai)",
+        "a": "DRAFT – content pending."
+      }
+    ]
+  }
+}

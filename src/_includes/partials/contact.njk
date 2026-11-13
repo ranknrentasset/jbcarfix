@@ -1,0 +1,76 @@
+{%- set s = site.strings[entry.lang] -%}
+{%- from "partials/icons.njk" import icon -%}
+{%- set list = entry.workshops | resolveWorkshops(routing) -%}
+{#- No workshop listed: no contact box at all (no buttons, no "coming soon" hints). #}
+{%- if list.length %}
+{%- set hasTenant = list | byStatus("tenant") | length %}
+<section class="contact" id="contact">
+  <div class="contact-head">
+  <h2>{{ s.contactHeading }}</h2>
+  {#- Shared intro, once per page. entry.trialIntro is the resolved line: a non-empty
+      per-page override, or the shared plural intro (lead only when a tenant card is present). #}
+  <p class="ws-intro">{{ entry.trialIntro | fill }}</p>
+  </div>
+{#- Workshop names and numbers appear only in these visible cards, never in JSON-LD or meta tags.
+    Each card carries its own analytics parameters (data-ev-*), read by site.js. #}
+  <div class="ws-list">
+  {%- for w in list %}
+  <article class="ws-card" data-ev-area="{{ entry.eventArea }}" data-ev-lang="{{ entry.lang }}" data-ev-workshop-id="{{ w.workshop_id }}" data-ev-tenant-status="{{ w.tenant_status }}" data-ev-service="{{ entry.eventService }}" data-ev-page-path="{{ entry.url }}"{% if w | hasPin %} data-lat="{{ w.location.lat }}" data-lng="{{ w.location.lng }}"{% endif %}>
+    {%- if w.tenant_status == "tenant" and w.workshop.logo %}
+    <img class="ws-logo" src="{{ w.workshop.logo }}" alt="{{ w.workshop.name }}" width="120" height="60">
+    {%- endif %}
+    <div class="ws-head">
+      <span class="ws-ico">{{ icon(entry.key if entry.type == "service" else "servis") }}</span>
+      <div>
+        <h3>{{ w.workshop.name }}</h3>
+        <p class="coverage">{{ icon("pin") }}{{ w.workshop.coverage[entry.lang] }}</p>
+      </div>
+    </div>
+    {%- if w.services %}
+    <p class="ws-services">{{ s.servicesOnlyLabel }}: {% for k in w.services %}{{ s.generalService if k == "general" else services[k].name[entry.lang] }}{% if not loop.last %}, {% endif %}{% endfor %}</p>
+    {%- endif %}
+    {%- if w.hours and w.hours[entry.lang] and w.hours[entry.lang].length %}
+    <details class="hours">
+      <summary>{{ icon("clock") }}{{ s.hoursLabel }}</summary>
+      <dl>
+      {%- for d in w.hours[entry.lang] %}
+        <dt>{{ d.day }}</dt><dd>{{ d.text }}</dd>
+      {%- endfor %}
+      </dl>
+    </details>
+    {%- endif %}
+    <p class="cta">
+      <a class="btn btn-call" href="tel:{{ w.phone }}" data-ev="click_call">{{ icon("phone") }}<span>{{ s.callLabel }} {{ w.phone_display or w.phone }}</span></a>
+      {%- if w.phone_label %}
+      <span class="phone-label">({{ w.phone_label }})</span>
+      {%- endif %}
+      {%- if w.whatsapp %}
+      <a class="btn btn-wa" href="{{ w | waLink(i18n.whatsappText[entry.lang], entry.key, entry.lang, routing) }}" rel="noopener" data-ev="click_whatsapp">{{ icon("wa") }}<span>{{ w.whatsapp_label or s.whatsappLabel }}</span></a>
+      {%- endif %}
+      {%- if w | hasPin %}
+      <a class="btn btn-dir" href="{{ w | directionsUrl }}" rel="noopener" data-ev="click_directions">{{ icon("route") }}<span>{{ s.directionsLabel }}</span></a>
+      {%- endif %}
+    </p>
+    {%- if w.whatsapp %}
+    <p class="note">{{ i18n | underButtonNote(entry.lang) }}</p>
+    {%- endif %}
+    {%- if entry.eventService == "towing-kereta" %}
+    <p class="ws-towing">{{ s.towingCardNote }}</p>
+    {%- endif %}
+    {%- if hasTenant %}
+    <p class="ws-disclosure">{{ (disclosures.tenantCard if w.tenant_status == "tenant" else disclosures.trialCard)[entry.lang] | fill({ workshop: w.workshop }) }}</p>
+    {%- endif %}
+    {%- if w.tenant_status == "tenant" and w.web3forms_key %}
+    {% include "partials/lead-form.njk" %}
+    {%- endif %}
+  </article>
+  {%- endfor %}
+  </div>
+  {%- if entry.hasPins %}
+  <div class="map-box">
+    {% include "partials/map.njk" %}
+    <div class="map" id="ws-map" role="region" aria-label="{{ s.mapLabel }}" hidden></div>
+  </div>
+  {%- endif %}
+</section>
+{%- endif %}

@@ -1,0 +1,1241 @@
+{
+  "_comment": "Who receives calls and WhatsApp messages. Leads never go to the site owner. 'workshops' holds each workshop once; 'areas' and 'services' list which workshops (up to 2) appear on each area page and JB-wide service page. A page with an empty or missing list shows a neutral 'coming soon' note (the 'unassigned' default). Trial workshops get call/WhatsApp buttons only; the form appears only for a tenant with its own web3forms_key. Every change here goes through a pull request that Muhammad merges. A workshop in 'workshops' that no area or service lists (e.g. a backup) is stored but shown nowhere.",
+  "_fields": "workshop_id: stable short slug, sent with analytics events; never change it once live. workshop.name, workshop.area (area or town), workshop.coverage {en, ms}: the line under the name. phone: E.164 (+60...) for the tel: link; phone_display: the number exactly as shown on the page. phone_label (optional): short text shown next to the number. whatsapp (optional, digits only, or null for call-only); whatsapp_label (optional button text). hours {en, ms}: one line per day, from the workshop's Google Maps listing, or empty lists [] to hide the hours box. tenant_status: trial | tenant. services (optional): restricts the workshop to these services ('general' = general repair and servicing); a restricted workshop is skipped on other service pages. web3forms_key: only for a tenant (enables the form). Never add a logo or photo for a trial workshop. location (optional): {address, lat, lng} copied from the workshop's public Google Maps listing (address as shown there; lat/lng from that listing's own coordinates). It drives the Directions button and the map pin. Leave it out when the listing can't be confirmed: that workshop then gets no Directions button and no pin. Never estimate a position.",
+  "default": "unassigned",
+  "workshops": {
+    "ws-fresh-air-jb": {
+      "workshop_id": "ws-fresh-air-jb",
+      "workshop": {
+        "name": "Fresh Air Car Aircond Service",
+        "area": "Johor Bahru",
+        "coverage": {
+          "en": "Workshop in Bandar Johor Bahru",
+          "ms": "Bengkel di Bandar Johor Bahru"
+        }
+      },
+      "phone": "+6073652899",
+      "phone_display": "07-365 2899",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "9:30 AM–6:00 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "9:30 AM–6:00 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "9:30 AM–6:00 PM"
+          },
+          {
+            "day": "Thursday",
+            "text": "9:30 AM–6:00 PM"
+          },
+          {
+            "day": "Friday",
+            "text": "9:30 AM–6:00 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "9:30 AM–5:00 PM"
+          },
+          {
+            "day": "Sunday",
+            "text": "Closed"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "9:30 AM–6:00 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "9:30 AM–6:00 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "9:30 AM–6:00 PM"
+          },
+          {
+            "day": "Khamis",
+            "text": "9:30 AM–6:00 PM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "9:30 AM–6:00 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "9:30 AM–5:00 PM"
+          },
+          {
+            "day": "Ahad",
+            "text": "Tutup"
+          }
+        ]
+      },
+      "whatsapp": null,
+      "location": {
+        "address": "13, Jalan Yahya Awal, Bandar Johor Bahru, 80100 Johor Bahru, Johor Darul Ta'zim",
+        "lat": 1.4661259,
+        "lng": 103.7527464
+      }
+    },
+    "ws-acs-skudai": {
+      "workshop_id": "ws-acs-skudai",
+      "workshop": {
+        "name": "ACS CAR SERVICE - Skudai",
+        "area": "Skudai",
+        "coverage": {
+          "en": "Workshop in Taman Universiti, Skudai",
+          "ms": "Bengkel di Taman Universiti, Skudai"
+        }
+      },
+      "phone": "+60193881840",
+      "phone_display": "019-388 1840",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Thursday",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Friday",
+            "text": "9:00 AM–12:30 PM and 2:30–5:30 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Sunday",
+            "text": "Closed"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Khamis",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "9:00 AM–12:30 PM dan 2:30–5:30 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Ahad",
+            "text": "Tutup"
+          }
+        ]
+      },
+      "whatsapp": null,
+      "location": {
+        "address": "61, Jalan Perdagangan 3, Taman Universiti, 81300 Skudai, Johor Darul Ta'zim",
+        "lat": 1.5433503,
+        "lng": 103.625413
+      }
+    },
+    "ws-continental-pelangi": {
+      "workshop_id": "ws-continental-pelangi",
+      "workshop": {
+        "name": "Continental Syarikat Lim Chin Hin",
+        "area": "Johor Bahru",
+        "coverage": {
+          "en": "Workshop in Taman Pelangi",
+          "ms": "Bengkel di Taman Pelangi"
+        }
+      },
+      "phone": "+60107662962",
+      "phone_display": "010-766 2962",
+      "whatsapp": "60107662962",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Thursday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Friday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Sunday",
+            "text": "Closed"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Khamis",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Ahad",
+            "text": "Tutup"
+          }
+        ]
+      },
+      "location": {
+        "address": "2 & 4, Jalan Pingai, Taman Pelangi, 80400 Johor Bahru, Johor Darul Ta'zim",
+        "lat": 1.482021,
+        "lng": 103.7726079
+      }
+    },
+    "ws-hawk-tebrau": {
+      "workshop_id": "ws-hawk-tebrau",
+      "workshop": {
+        "name": "Hawk Tyre Service Sdn Bhd - Tebrau",
+        "area": "Johor Bahru",
+        "coverage": {
+          "en": "Workshop in Taman Sri Tebrau",
+          "ms": "Bengkel di Taman Sri Tebrau"
+        }
+      },
+      "phone": "+6073365789",
+      "phone_display": "07-336 5789",
+      "whatsapp": "60186638899",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "9:00 AM–6:30 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "9:00 AM–6:30 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "9:00 AM–6:30 PM"
+          },
+          {
+            "day": "Thursday",
+            "text": "9:00 AM–6:30 PM"
+          },
+          {
+            "day": "Friday",
+            "text": "9:00 AM–6:30 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "9:00 AM–6:30 PM"
+          },
+          {
+            "day": "Sunday",
+            "text": "9:00 AM–5:00 PM"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "9:00 AM–6:30 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "9:00 AM–6:30 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "9:00 AM–6:30 PM"
+          },
+          {
+            "day": "Khamis",
+            "text": "9:00 AM–6:30 PM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "9:00 AM–6:30 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "9:00 AM–6:30 PM"
+          },
+          {
+            "day": "Ahad",
+            "text": "9:00 AM–5:00 PM"
+          }
+        ]
+      },
+      "whatsapp_label": "Hawk company WhatsApp",
+      "services": [
+        "tayar"
+      ],
+      "location": {
+        "address": "1, Jalan Perisai, Taman Sri Tebrau, 80050 Johor Bahru, Johor Darul Ta'zim",
+        "lat": 1.484259,
+        "lng": 103.7657656
+      }
+    },
+    "ws-tyreplus-kulai": {
+      "workshop_id": "ws-tyreplus-kulai",
+      "workshop": {
+        "name": "Tyreplus - Overseas Tyre Services Centre",
+        "area": "Kulai",
+        "coverage": {
+          "en": "Workshop in Bandar Putra Kulai",
+          "ms": "Bengkel di Bandar Putra Kulai"
+        }
+      },
+      "phone": "+6075988879",
+      "phone_display": "07-598 8879",
+      "whatsapp": "60177773633",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Thursday",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Friday",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Sunday",
+            "text": "Closed"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Khamis",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Ahad",
+            "text": "Tutup"
+          }
+        ]
+      },
+      "whatsapp_label": "TYREPLUS WhatsApp",
+      "location": {
+        "address": "5334 Jalan Kenari 19, Bandar Putra Kulai, 81000 Johor Bahru, Johor",
+        "lat": 1.65648,
+        "lng": 103.62938
+      }
+    },
+    "ws-hankook-kulai": {
+      "workshop_id": "ws-hankook-kulai",
+      "workshop": {
+        "name": "Hankook Masters - Car Pit Stop Kulai",
+        "area": "Kulai",
+        "coverage": {
+          "en": "Workshop in Taman Sri Kulai Baru",
+          "ms": "Bengkel di Taman Sri Kulai Baru"
+        }
+      },
+      "phone": "+60179824518",
+      "phone_display": "017-982 4518",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Thursday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Friday",
+            "text": "9:00 AM–12:30 PM and 2:30–6:00 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "9:00 AM–4:00 PM"
+          },
+          {
+            "day": "Sunday",
+            "text": "Closed"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Khamis",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "9:00 AM–12:30 PM dan 2:30–6:00 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "9:00 AM–4:00 PM"
+          },
+          {
+            "day": "Ahad",
+            "text": "Tutup"
+          }
+        ]
+      },
+      "whatsapp": null,
+      "location": {
+        "address": "47, Jalan Susur Kulai 4, Taman Sri Kulai Baru 2, 81000 Kulai, Johor Darul Ta'zim",
+        "lat": 1.6670689,
+        "lng": 103.5897531
+      }
+    },
+    "ws-kuga-gelang-patah": {
+      "workshop_id": "ws-kuga-gelang-patah",
+      "workshop": {
+        "name": "Kuga Auto Workshop",
+        "area": "Gelang Patah",
+        "coverage": {
+          "en": "Workshop in Taman Perindustrian NIP, Gelang Patah",
+          "ms": "Bengkel di Taman Perindustrian NIP, Gelang Patah"
+        }
+      },
+      "phone": "+601126655895",
+      "phone_display": "011-2665 5895",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Thursday",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Friday",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "Closed"
+          },
+          {
+            "day": "Sunday",
+            "text": "9:00 AM–7:00 PM"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Khamis",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "Tutup"
+          },
+          {
+            "day": "Ahad",
+            "text": "9:00 AM–7:00 PM"
+          }
+        ]
+      },
+      "whatsapp": null,
+      "location": {
+        "address": "Gelang Patah, 35, Jalan Nip 2/6, Taman Perindustrian, 79200 Iskandar Puteri, Johor",
+        "lat": 1.4454433,
+        "lng": 103.6009562
+      }
+    },
+    "ws-fateh-gelang-patah": {
+      "workshop_id": "ws-fateh-gelang-patah",
+      "workshop": {
+        "name": "Fateh Tyre & Auto - Hoof Nexen",
+        "area": "Gelang Patah",
+        "coverage": {
+          "en": "Workshop in Taman Nusantara, Gelang Patah",
+          "ms": "Bengkel di Taman Nusantara, Gelang Patah"
+        }
+      },
+      "phone": "+601165109897",
+      "phone_display": "011-6510 9897",
+      "whatsapp": "601165109897",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "Closed"
+          },
+          {
+            "day": "Thursday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Friday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Sunday",
+            "text": "9:00 AM–6:00 PM"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "Tutup"
+          },
+          {
+            "day": "Khamis",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Ahad",
+            "text": "9:00 AM–6:00 PM"
+          }
+        ]
+      },
+      "location": {
+        "address": "36 Jalan Nusaria 1J/1 Taman Nusantara Gelang Patah, 81550 Johor, Johor Darul Ta'zim",
+        "lat": 1.4715342,
+        "lng": 103.5842723
+      }
+    },
+    "ws-jagtech-bukit-indah": {
+      "workshop_id": "ws-jagtech-bukit-indah",
+      "workshop": {
+        "name": "Jag Tech Auto Service",
+        "area": "Bukit Indah",
+        "coverage": {
+          "en": "Workshop in Taman Bukit Indah",
+          "ms": "Bengkel di Taman Bukit Indah"
+        }
+      },
+      "phone": "+60167400227",
+      "phone_display": "016-740 0227",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "9:30 AM–7:00 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "9:30 AM–7:00 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "9:30 AM–7:00 PM"
+          },
+          {
+            "day": "Thursday",
+            "text": "9:30 AM–7:00 PM"
+          },
+          {
+            "day": "Friday",
+            "text": "9:30 AM–7:00 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "9:30 AM–7:00 PM"
+          },
+          {
+            "day": "Sunday",
+            "text": "Closed"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "9:30 AM–7:00 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "9:30 AM–7:00 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "9:30 AM–7:00 PM"
+          },
+          {
+            "day": "Khamis",
+            "text": "9:30 AM–7:00 PM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "9:30 AM–7:00 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "9:30 AM–7:00 PM"
+          },
+          {
+            "day": "Ahad",
+            "text": "Tutup"
+          }
+        ]
+      },
+      "services": [
+        "general"
+      ],
+      "whatsapp": null,
+      "location": {
+        "address": "37 & 39, Jalan Indah 16/11, Taman Bukit Indah, 81200 Johor Bahru, Johor Darul Ta'zim",
+        "lat": 1.4796258,
+        "lng": 103.6643706
+      }
+    },
+    "ws-overseas-bukit-indah": {
+      "workshop_id": "ws-overseas-bukit-indah",
+      "workshop": {
+        "name": "Overseas Tyre And Services",
+        "area": "Bukit Indah",
+        "coverage": {
+          "en": "Workshop in Taman Bukit Indah",
+          "ms": "Bengkel di Taman Bukit Indah"
+        }
+      },
+      "phone": "+6072315364",
+      "phone_display": "07-231 5364",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "9:30 AM–7:30 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "9:30 AM–7:30 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "Closed"
+          },
+          {
+            "day": "Thursday",
+            "text": "9:30 AM–7:30 PM"
+          },
+          {
+            "day": "Friday",
+            "text": "9:30 AM–7:30 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "9:30 AM–7:30 PM"
+          },
+          {
+            "day": "Sunday",
+            "text": "9:30 AM–7:30 PM"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "9:30 AM–7:30 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "9:30 AM–7:30 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "Tutup"
+          },
+          {
+            "day": "Khamis",
+            "text": "9:30 AM–7:30 PM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "9:30 AM–7:30 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "9:30 AM–7:30 PM"
+          },
+          {
+            "day": "Ahad",
+            "text": "9:30 AM–7:30 PM"
+          }
+        ]
+      },
+      "whatsapp": null,
+      "location": {
+        "address": "2, Jalan Indah 16/11, Taman Bukit Indah, 81200 Johor Bahru, Johor Darul Ta'zim",
+        "lat": 1.480535,
+        "lng": 103.6639989
+      }
+    },
+    "ws-kar-skudai": {
+      "workshop_id": "ws-kar-skudai",
+      "workshop": {
+        "name": "KAR Auto Service Center",
+        "area": "Skudai",
+        "coverage": {
+          "en": "Workshop in Taman Mutiara Rini, Skudai",
+          "ms": "Bengkel di Taman Mutiara Rini, Skudai"
+        }
+      },
+      "phone": "+601110500094",
+      "phone_display": "011-1050 0094",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "10:00 AM–8:00 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "10:00 AM–8:00 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "10:00 AM–8:00 PM"
+          },
+          {
+            "day": "Thursday",
+            "text": "10:00 AM–6:00 PM"
+          },
+          {
+            "day": "Friday",
+            "text": "10:00 AM–6:00 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "10:00 AM–6:00 PM"
+          },
+          {
+            "day": "Sunday",
+            "text": "10:00 AM–6:00 PM"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "10:00 AM–8:00 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "10:00 AM–8:00 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "10:00 AM–8:00 PM"
+          },
+          {
+            "day": "Khamis",
+            "text": "10:00 AM–6:00 PM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "10:00 AM–6:00 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "10:00 AM–6:00 PM"
+          },
+          {
+            "day": "Ahad",
+            "text": "10:00 AM–6:00 PM"
+          }
+        ]
+      },
+      "whatsapp": null,
+      "location": {
+        "address": "10, Jalan Bestari 87, Mutiara Rini, 81300 Skudai, Johor Darul Ta'zim",
+        "lat": 1.4952593,
+        "lng": 103.6171195
+      }
+    },
+    "ws-tiptop-larkin": {
+      "workshop_id": "ws-tiptop-larkin",
+      "workshop": {
+        "name": "TIPTOP Garage Workshop",
+        "area": "Larkin",
+        "coverage": {
+          "en": "Workshop in Dataran Larkin",
+          "ms": "Bengkel di Dataran Larkin"
+        }
+      },
+      "phone": "+601127362764",
+      "phone_display": "011-2736 2764",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "9:30 AM–10:00 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "9:30 AM–10:00 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "9:30 AM–12:00 AM"
+          },
+          {
+            "day": "Thursday",
+            "text": "9:30 AM–12:00 AM"
+          },
+          {
+            "day": "Friday",
+            "text": "9:30 AM–10:00 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "9:30 AM–10:00 PM"
+          },
+          {
+            "day": "Sunday",
+            "text": "Closed"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "9:30 AM–10:00 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "9:30 AM–10:00 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "9:30 AM–12:00 AM"
+          },
+          {
+            "day": "Khamis",
+            "text": "9:30 AM–12:00 AM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "9:30 AM–10:00 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "9:30 AM–10:00 PM"
+          },
+          {
+            "day": "Ahad",
+            "text": "Tutup"
+          }
+        ]
+      },
+      "whatsapp": null,
+      "location": {
+        "address": "No55 jalan dataran larkin 1, Taman, Dataran Larkin 2, 80350 Johor Bahru, Johor Darul Ta'zim",
+        "lat": 1.4985083,
+        "lng": 103.742421
+      }
+    },
+    "ws-petronas-larkin": {
+      "workshop_id": "ws-petronas-larkin",
+      "workshop": {
+        "name": "Petronas AutoExpert by Prestige Contitech - Larkin",
+        "area": "Larkin",
+        "coverage": {
+          "en": "Workshop in Taman Larkin",
+          "ms": "Bengkel di Taman Larkin"
+        }
+      },
+      "phone": "+60127204616",
+      "phone_display": "012-720 4616",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Thursday",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Friday",
+            "text": "9:00 AM–1:00 PM and 2:30–5:30 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Sunday",
+            "text": "Closed"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Khamis",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "9:00 AM–1:00 PM dan 2:30–5:30 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Ahad",
+            "text": "Tutup"
+          }
+        ]
+      },
+      "whatsapp": null,
+      "location": {
+        "address": "1-01, Jalan Dataran Larkin 5, Taman Larkin, 80350 Johor Bahru, Johor Darul Ta'zim",
+        "lat": 1.4987306,
+        "lng": 103.7416193
+      }
+    },
+    "ws-ahbao": {
+      "workshop_id": "ws-ahbao",
+      "workshop": {
+        "name": "Ah Bao Car Spray Painting",
+        "area": "Bukit Indah",
+        "coverage": {
+          "en": "Workshop in Taman Bukit Indah",
+          "ms": "Bengkel di Taman Bukit Indah"
+        }
+      },
+      "phone": "+60177472940",
+      "phone_display": "017-747 2940",
+      "whatsapp": null,
+      "tenant_status": "trial",
+      "hours": {
+        "en": [],
+        "ms": []
+      },
+      "location": {
+        "address": "11, Jalan Indah 16/11, Taman Bukit Indah, 81200 Johor Bahru, Johor Darul Ta'zim",
+        "lat": 1.480405,
+        "lng": 103.664323
+      }
+    },
+    "ws-gc-auto": {
+      "workshop_id": "ws-gc-auto",
+      "workshop": {
+        "name": "GC Auto Body & Paint",
+        "area": "Mount Austin",
+        "coverage": {
+          "en": "Workshop in Taman Mount Austin",
+          "ms": "Bengkel di Taman Mount Austin"
+        }
+      },
+      "phone": "+60182794313",
+      "phone_display": "018-279 4313",
+      "whatsapp": null,
+      "tenant_status": "trial",
+      "hours": {
+        "en": [],
+        "ms": []
+      },
+      "location": {
+        "address": "22, Jalan Mutiara Emas 5/8, Taman Mount Austin, 81100 Johor Bahru, Johor Darul Ta'zim",
+        "lat": 1.5460631,
+        "lng": 103.7729163
+      }
+    },
+    "ws-mega-car-paint": {
+      "workshop_id": "ws-mega-car-paint",
+      "workshop": {
+        "name": "Mega Car Paint Spraying Workshop",
+        "area": "Johor Jaya",
+        "coverage": {
+          "en": "Workshop in Taman Johor Jaya",
+          "ms": "Bengkel di Taman Johor Jaya"
+        }
+      },
+      "phone": "+60197790613",
+      "phone_display": "019-779 0613",
+      "whatsapp": null,
+      "tenant_status": "trial",
+      "hours": {
+        "en": [],
+        "ms": []
+      }
+    },
+    "ws-ty-towing": {
+      "workshop_id": "ws-ty-towing",
+      "workshop": {
+        "name": "T.Y Towing Service",
+        "area": "Skudai",
+        "coverage": {
+          "en": "Towing base in Taman Sri Skudai",
+          "ms": "Pangkalan tunda di Taman Sri Skudai"
+        }
+      },
+      "phone": "+60167990517",
+      "phone_display": "016-799 0517",
+      "whatsapp": "60167990517",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [],
+        "ms": []
+      },
+      "location": {
+        "address": "19, JALAN EMAS 1, TAMAN SRI SKUDAI Skudai, 81300 Johor Bahru, Johor Darul Ta'zim",
+        "lat": 1.5450244,
+        "lng": 103.6530418
+      }
+    },
+    "ws-kone-towing": {
+      "workshop_id": "ws-kone-towing",
+      "workshop": {
+        "name": "K One Towing & Transport",
+        "area": "Bukit Indah",
+        "coverage": {
+          "en": "Towing base in Bukit Indah",
+          "ms": "Pangkalan tunda di Bukit Indah"
+        }
+      },
+      "phone": "+60187708989",
+      "phone_display": "018-770 8989",
+      "whatsapp": null,
+      "tenant_status": "trial",
+      "hours": {
+        "en": [],
+        "ms": []
+      },
+      "location": {
+        "address": "17, Jalan Indah 1/5, Taman Bukit Indah, 79100 Iskandar Puteri, Johor Darul Ta'zim",
+        "lat": 1.4865585,
+        "lng": 103.6610106
+      }
+    }
+  },
+  "areas": {
+    "kulai": [
+      "ws-tyreplus-kulai",
+      "ws-hankook-kulai"
+    ],
+    "gelang-patah": [
+      "ws-kuga-gelang-patah",
+      "ws-fateh-gelang-patah"
+    ],
+    "bukit-indah": [
+      "ws-jagtech-bukit-indah",
+      "ws-overseas-bukit-indah"
+    ],
+    "skudai": [
+      "ws-acs-skudai",
+      "ws-kar-skudai"
+    ],
+    "larkin": [
+      "ws-tiptop-larkin",
+      "ws-petronas-larkin"
+    ],
+    "near-ksl": []
+  },
+  "services": {
+    "aircond-kereta": [
+      "ws-fresh-air-jb",
+      "ws-acs-skudai"
+    ],
+    "tayar": [
+      "ws-continental-pelangi",
+      "ws-hawk-tebrau"
+    ],
+    "cat-kereta": [
+      "ws-ahbao",
+      "ws-gc-auto"
+    ],
+    "towing-kereta": [
+      "ws-ty-towing",
+      "ws-kone-towing"
+    ]
+  },
+  "utm": {
+    "source": "jbcarfix",
+    "medium": "whatsapp"
+  }
+}

@@ -1,0 +1,64 @@
+{#- Home list of workshops: every workshop an area or service page already lists (never a stored
+    backup). Each entry has Directions (when its Google Maps location is known) and a link to the
+    page that lists it, where its Call/WhatsApp buttons and that page's intro sit. The filter buttons
+    work with finder.js; without JavaScript the whole list shows.
+    Names and addresses appear only here in the visible page, never in JSON-LD or meta tags. #}
+{%- set s = site.strings[entry.lang] -%}
+{%- set pre = "" if entry.lang == "ms" else "/en" -%}
+{%- from "partials/icons.njk" import icon -%}
+{%- set list = routing | directory(areas, services) -%}
+{%- if list.length %}
+<section class="sec dir" aria-labelledby="dir-h" data-dir>
+  <div class="dir-top">
+    <h2 id="dir-h">{{ s.dirHeading }}</h2>
+    {%- if entry.hasPins %}
+    {% include "partials/map.njk" %}
+    {%- endif %}
+  </div>
+  {%- set anyTenant = list | dirTenant %}
+  {%- set anyMore = list | dirHasMoreInfo(entry.lang, thinUrls) %}
+  <p class="dir-intro">{{ disclosures.homeList.leadStart[entry.lang] }} {{ (disclosures.homeList.tapMoreInfo if anyMore else disclosures.homeList.tapDirections)[entry.lang] }} {{ disclosures.homeList.leadEnd[entry.lang] | fill }}{% if not anyTenant %} {{ disclosures.homeList.trialOnly[entry.lang] }}{% endif %}</p>
+  <div class="fbar" role="group" aria-label="{{ s.filterLabel }}">
+    <button type="button" class="fchip" data-filter="" aria-pressed="true">{{ s.filterAll }}</button>
+    {%- for k in site.serviceOrder %}{% if list | dirHas("svc", k) %}
+    <button type="button" class="fchip" data-filter="svc:{{ k }}" aria-pressed="false">{{ services[k].name[entry.lang] }}</button>
+    {%- endif %}{% endfor %}
+    {%- for k in site.areaOrder %}{% if list | dirHas("area", k) %}
+    <button type="button" class="fchip" data-filter="area:{{ k }}" aria-pressed="false">{{ areas[k].name[entry.lang] }}</button>
+    {%- endif %}{% endfor %}
+  </div>
+  <div class="dir-wrap">
+    <div class="dir-list">
+    {%- for e in list %}
+    {%- set w = e.w %}
+    <article class="dir-card" data-f="{% for k in e.services %}svc:{{ k }} {% endfor %}{% if e.filterArea %}area:{{ e.filterArea }}{% endif %}" data-ev-area="{{ e.evArea }}" data-ev-lang="{{ entry.lang }}" data-ev-workshop-id="{{ w.workshop_id }}" data-ev-tenant-status="{{ w.tenant_status }}" data-ev-service="{{ e.evService }}" data-ev-page-path="{{ entry.url }}"{% if w | hasPin %} data-lat="{{ w.location.lat }}" data-lng="{{ w.location.lng }}"{% endif %}>
+      <div class="dir-head">
+        <span class="d-ico">{{ icon(e.services[0] or "servis") }}</span>
+        <div>
+          <h3>{{ w.workshop.name }}</h3>
+          <p class="coverage">{{ icon("pin") }}{{ w.workshop.coverage[entry.lang] }}</p>
+        </div>
+      </div>
+      <ul class="tags">
+        {%- for k in e.services %}<li>{{ services[k].name[entry.lang] }}</li>{% endfor %}
+        {%- if not e.services.length and w.services %}{% for k in w.services %}<li>{{ s.generalService if k == "general" else services[k].name[entry.lang] }}</li>{% endfor %}{% endif %}
+        {%- if e.filterArea %}<li>{{ areas[e.filterArea].name[entry.lang] }}</li>{% endif %}
+      </ul>
+      <p class="dir-act">
+        {%- if w | hasPin %}
+        <a class="act act-dir" href="{{ w | directionsUrl }}" rel="noopener" data-ev="click_directions">{{ icon("route") }}<span>{{ s.directionsLabel }}</span></a>
+        {%- endif %}
+        {%- if e.moreInfo[entry.lang] not in thinUrls %}
+        <a class="act" href="{{ e.moreInfo[entry.lang] }}"><span>{{ s.moreInfo }}</span>{{ icon("chev") }}</a>
+        {%- endif %}
+      </p>
+    </article>
+    {%- endfor %}
+    <p class="dir-empty" hidden>{{ s.dirEmpty }}</p>
+    </div>
+    {%- if entry.hasPins %}
+    <div class="map" id="ws-map" role="region" aria-label="{{ s.mapLabel }}" hidden></div>
+    {%- endif %}
+  </div>
+</section>
+{%- endif %}

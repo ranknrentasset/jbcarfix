@@ -1,0 +1,14 @@
+{%- set s = site.strings[entry.lang] -%}
+{%- set pre = "" if entry.lang == "ms" else "/en" -%}
+{%- from "partials/icons.njk" import icon -%}
+{% include "partials/blocks.njk" %}
+<section class="sec">
+  <h2>{{ s.servicesHeading }}</h2>
+  <ul class="svc-grid">
+  {%- for k in site.serviceOrder %}
+    <li><a class="svc" href="{{ pre }}/{{ services[k].slug[entry.lang] }}/">{{ icon(k) }}<span>{{ services[k].name[entry.lang] }}</span>{{ icon("chev", "ico chev") }}</a></li>
+  {%- endfor %}
+  </ul>
+</section>
+{% include "partials/faqs.njk" %}
+{% include "partials/contact.njk" %}
