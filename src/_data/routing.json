@@ -1,88 +1,1050 @@
 {
-  "_comment": "Who receives calls, WhatsApp messages and form leads. Leads never go to the site owner: each area points to its own workshop entry, and pages without an area use 'default'. While an entry's tenant_status is 'unassigned', its page hides the call, WhatsApp and form buttons and shows a 'coming soon' note. Set tenant_status to 'trial' or 'tenant' only once a real workshop has agreed; the build refuses to show an entry that still has TODO or all-zero values. Every change here goes through a pull request that Muhammad merges.",
-  "_fields": "workshop_id: stable short slug (lowercase, digits, dashes), sent with analytics events; never change it once live. workshop.name: shown on the page. workshop.area: the area named in 'Your enquiry goes to ...'. workshop.coverage: list of neighbourhoods it covers (optional). phone: E.164, e.g. +60123456789. whatsapp: digits only, for wa.me. web3forms_key: that workshop's own Web3Forms access key (public by design; it only says which inbox gets the email). tenant_status: unassigned | trial | tenant. Never add a logo or photo for a trial workshop; a logo is only shown for a tenant.",
+  "_comment": "Who receives calls and WhatsApp messages. Leads never go to the site owner. 'workshops' holds each workshop once; 'areas' and 'services' list which workshops (up to 2) appear on each area page and JB-wide service page. A page with an empty or missing list shows a neutral 'coming soon' note (the 'unassigned' default). Trial workshops get call/WhatsApp buttons only; the form appears only for a tenant with its own web3forms_key. Every change here goes through a pull request that Muhammad merges.",
+  "_fields": "workshop_id: stable short slug, sent with analytics events; never change it once live. workshop.name, workshop.area (area or town), workshop.coverage {en, ms}: the line under the name. phone: E.164 (+60...) for the tel: link; phone_display: the number exactly as shown on the page. phone_label (optional): short text shown next to the number. whatsapp (optional, digits only, or null for call-only); whatsapp_label (optional button text). hours {en, ms}: one line per day, from the workshop's Google Maps listing. tenant_status: trial | tenant. services (optional): restricts the workshop to these services ('general' = general repair and servicing); a restricted workshop is skipped on other service pages. web3forms_key: only for a tenant (enables the form). Never add a logo or photo for a trial workshop.",
   "default": "unassigned",
-  "areas": {
-    "kulai": "kulai",
-    "gelang-patah": "gelang-patah",
-    "bukit-indah": "bukit-indah",
-    "skudai": "skudai",
-    "larkin": "larkin",
-    "near-ksl": "unassigned"
-  },
-  "entries": {
-    "unassigned": {
-      "workshop_id": "todo-ws-unassigned",
+  "workshops": {
+    "ws-fresh-air-jb": {
+      "workshop_id": "ws-fresh-air-jb",
       "workshop": {
-        "name": "TODO-workshop-name",
+        "name": "Fresh Air Car Aircond Service",
         "area": "Johor Bahru",
-        "coverage": []
+        "coverage": {
+          "en": "Workshop in Bandar Johor Bahru",
+          "ms": "Bengkel di Bandar Johor Bahru"
+        }
       },
-      "phone": "+60000000000",
-      "whatsapp": "60000000000",
-      "web3forms_key": "TODO-public-access-key",
-      "tenant_status": "unassigned"
-    },
-    "kulai": {
-      "workshop_id": "todo-ws-kulai",
-      "workshop": {
-        "name": "TODO-workshop-name",
-        "area": "Kulai",
-        "coverage": []
+      "phone": "+6073652899",
+      "phone_display": "07-365 2899",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "9:30 AM–6:00 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "9:30 AM–6:00 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "9:30 AM–6:00 PM"
+          },
+          {
+            "day": "Thursday",
+            "text": "9:30 AM–6:00 PM"
+          },
+          {
+            "day": "Friday",
+            "text": "9:30 AM–6:00 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "9:30 AM–5:00 PM"
+          },
+          {
+            "day": "Sunday",
+            "text": "Closed"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "9:30 AM–6:00 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "9:30 AM–6:00 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "9:30 AM–6:00 PM"
+          },
+          {
+            "day": "Khamis",
+            "text": "9:30 AM–6:00 PM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "9:30 AM–6:00 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "9:30 AM–5:00 PM"
+          },
+          {
+            "day": "Ahad",
+            "text": "Tutup"
+          }
+        ]
       },
-      "phone": "+60000000000",
-      "whatsapp": "60000000000",
-      "web3forms_key": "TODO-public-access-key",
-      "tenant_status": "unassigned"
+      "whatsapp": null
     },
-    "gelang-patah": {
-      "workshop_id": "todo-ws-gelang-patah",
+    "ws-acs-skudai": {
+      "workshop_id": "ws-acs-skudai",
       "workshop": {
-        "name": "TODO-workshop-name",
-        "area": "Gelang Patah",
-        "coverage": []
-      },
-      "phone": "+60000000000",
-      "whatsapp": "60000000000",
-      "web3forms_key": "TODO-public-access-key",
-      "tenant_status": "unassigned"
-    },
-    "bukit-indah": {
-      "workshop_id": "todo-ws-bukit-indah",
-      "workshop": {
-        "name": "TODO-workshop-name",
-        "area": "Bukit Indah",
-        "coverage": []
-      },
-      "phone": "+60000000000",
-      "whatsapp": "60000000000",
-      "web3forms_key": "TODO-public-access-key",
-      "tenant_status": "unassigned"
-    },
-    "skudai": {
-      "workshop_id": "todo-ws-skudai",
-      "workshop": {
-        "name": "TODO-workshop-name",
+        "name": "ACS CAR SERVICE - Skudai",
         "area": "Skudai",
-        "coverage": []
+        "coverage": {
+          "en": "Workshop in Taman Universiti, Skudai",
+          "ms": "Bengkel di Taman Universiti, Skudai"
+        }
       },
-      "phone": "+60000000000",
-      "whatsapp": "60000000000",
-      "web3forms_key": "TODO-public-access-key",
-      "tenant_status": "unassigned"
+      "phone": "+60193881840",
+      "phone_display": "019-388 1840",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Thursday",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Friday",
+            "text": "9:00 AM–12:30 PM and 2:30–5:30 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Sunday",
+            "text": "Closed"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Khamis",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "9:00 AM–12:30 PM dan 2:30–5:30 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Ahad",
+            "text": "Tutup"
+          }
+        ]
+      },
+      "whatsapp": null
     },
-    "larkin": {
-      "workshop_id": "todo-ws-larkin",
+    "ws-continental-pelangi": {
+      "workshop_id": "ws-continental-pelangi",
       "workshop": {
-        "name": "TODO-workshop-name",
-        "area": "Larkin",
-        "coverage": []
+        "name": "Continental Syarikat Lim Chin Hin",
+        "area": "Johor Bahru",
+        "coverage": {
+          "en": "Workshop in Taman Pelangi",
+          "ms": "Bengkel di Taman Pelangi"
+        }
       },
-      "phone": "+60000000000",
-      "whatsapp": "60000000000",
-      "web3forms_key": "TODO-public-access-key",
-      "tenant_status": "unassigned"
+      "phone": "+60107662962",
+      "phone_display": "010-766 2962",
+      "whatsapp": "60107662962",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Thursday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Friday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Sunday",
+            "text": "Closed"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Khamis",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Ahad",
+            "text": "Tutup"
+          }
+        ]
+      }
+    },
+    "ws-hawk-tebrau": {
+      "workshop_id": "ws-hawk-tebrau",
+      "workshop": {
+        "name": "Hawk Tyre Service Sdn Bhd - Tebrau",
+        "area": "Johor Bahru",
+        "coverage": {
+          "en": "Workshop in Taman Sri Tebrau",
+          "ms": "Bengkel di Taman Sri Tebrau"
+        }
+      },
+      "phone": "+6073365789",
+      "phone_display": "07-336 5789",
+      "whatsapp": "60186638899",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "9:00 AM–6:30 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "9:00 AM–6:30 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "9:00 AM–6:30 PM"
+          },
+          {
+            "day": "Thursday",
+            "text": "9:00 AM–6:30 PM"
+          },
+          {
+            "day": "Friday",
+            "text": "9:00 AM–6:30 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "9:00 AM–6:30 PM"
+          },
+          {
+            "day": "Sunday",
+            "text": "9:00 AM–5:00 PM"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "9:00 AM–6:30 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "9:00 AM–6:30 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "9:00 AM–6:30 PM"
+          },
+          {
+            "day": "Khamis",
+            "text": "9:00 AM–6:30 PM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "9:00 AM–6:30 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "9:00 AM–6:30 PM"
+          },
+          {
+            "day": "Ahad",
+            "text": "9:00 AM–5:00 PM"
+          }
+        ]
+      },
+      "whatsapp_label": "Hawk company WhatsApp",
+      "services": [
+        "tayar"
+      ]
+    },
+    "ws-tyreplus-kulai": {
+      "workshop_id": "ws-tyreplus-kulai",
+      "workshop": {
+        "name": "Tyreplus - Overseas Tyre Services Centre",
+        "area": "Kulai",
+        "coverage": {
+          "en": "Workshop in Bandar Putra Kulai",
+          "ms": "Bengkel di Bandar Putra Kulai"
+        }
+      },
+      "phone": "+6075988879",
+      "phone_display": "07-598 8879",
+      "whatsapp": "60177773633",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Thursday",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Friday",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Sunday",
+            "text": "Closed"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Khamis",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Ahad",
+            "text": "Tutup"
+          }
+        ]
+      },
+      "whatsapp_label": "TYREPLUS WhatsApp"
+    },
+    "ws-hankook-kulai": {
+      "workshop_id": "ws-hankook-kulai",
+      "workshop": {
+        "name": "Hankook Masters - Car Pit Stop Kulai",
+        "area": "Kulai",
+        "coverage": {
+          "en": "Workshop in Taman Sri Kulai Baru",
+          "ms": "Bengkel di Taman Sri Kulai Baru"
+        }
+      },
+      "phone": "+60179824518",
+      "phone_display": "017-982 4518",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Thursday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Friday",
+            "text": "9:00 AM–12:30 PM and 2:30–6:00 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "9:00 AM–4:00 PM"
+          },
+          {
+            "day": "Sunday",
+            "text": "Closed"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Khamis",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "9:00 AM–12:30 PM dan 2:30–6:00 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "9:00 AM–4:00 PM"
+          },
+          {
+            "day": "Ahad",
+            "text": "Tutup"
+          }
+        ]
+      },
+      "whatsapp": null
+    },
+    "ws-kuga-gelang-patah": {
+      "workshop_id": "ws-kuga-gelang-patah",
+      "workshop": {
+        "name": "Kuga Auto Workshop",
+        "area": "Gelang Patah",
+        "coverage": {
+          "en": "Workshop in Taman Perindustrian NIP, Gelang Patah",
+          "ms": "Bengkel di Taman Perindustrian NIP, Gelang Patah"
+        }
+      },
+      "phone": "+601126655895",
+      "phone_display": "011-2665 5895",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Thursday",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Friday",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "Closed"
+          },
+          {
+            "day": "Sunday",
+            "text": "9:00 AM–7:00 PM"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Khamis",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "9:00 AM–7:00 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "Tutup"
+          },
+          {
+            "day": "Ahad",
+            "text": "9:00 AM–7:00 PM"
+          }
+        ]
+      },
+      "whatsapp": null
+    },
+    "ws-fateh-gelang-patah": {
+      "workshop_id": "ws-fateh-gelang-patah",
+      "workshop": {
+        "name": "Fateh Tyre & Auto - Hoof Nexen",
+        "area": "Gelang Patah",
+        "coverage": {
+          "en": "Workshop in Taman Nusantara, Gelang Patah",
+          "ms": "Bengkel di Taman Nusantara, Gelang Patah"
+        }
+      },
+      "phone": "+601165109897",
+      "phone_display": "011-6510 9897",
+      "whatsapp": "601165109897",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "Closed"
+          },
+          {
+            "day": "Thursday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Friday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Sunday",
+            "text": "9:00 AM–6:00 PM"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "Tutup"
+          },
+          {
+            "day": "Khamis",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "9:00 AM–6:00 PM"
+          },
+          {
+            "day": "Ahad",
+            "text": "9:00 AM–6:00 PM"
+          }
+        ]
+      }
+    },
+    "ws-jagtech-bukit-indah": {
+      "workshop_id": "ws-jagtech-bukit-indah",
+      "workshop": {
+        "name": "Jag Tech Auto Service",
+        "area": "Bukit Indah",
+        "coverage": {
+          "en": "Workshop in Taman Bukit Indah",
+          "ms": "Bengkel di Taman Bukit Indah"
+        }
+      },
+      "phone": "+60167400227",
+      "phone_display": "016-740 0227",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "9:30 AM–7:00 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "9:30 AM–7:00 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "9:30 AM–7:00 PM"
+          },
+          {
+            "day": "Thursday",
+            "text": "9:30 AM–7:00 PM"
+          },
+          {
+            "day": "Friday",
+            "text": "9:30 AM–7:00 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "9:30 AM–7:00 PM"
+          },
+          {
+            "day": "Sunday",
+            "text": "Closed"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "9:30 AM–7:00 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "9:30 AM–7:00 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "9:30 AM–7:00 PM"
+          },
+          {
+            "day": "Khamis",
+            "text": "9:30 AM–7:00 PM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "9:30 AM–7:00 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "9:30 AM–7:00 PM"
+          },
+          {
+            "day": "Ahad",
+            "text": "Tutup"
+          }
+        ]
+      },
+      "services": [
+        "general"
+      ],
+      "whatsapp": null
+    },
+    "ws-overseas-bukit-indah": {
+      "workshop_id": "ws-overseas-bukit-indah",
+      "workshop": {
+        "name": "Overseas Tyre And Services",
+        "area": "Bukit Indah",
+        "coverage": {
+          "en": "Workshop in Taman Bukit Indah",
+          "ms": "Bengkel di Taman Bukit Indah"
+        }
+      },
+      "phone": "+6072315364",
+      "phone_display": "07-231 5364",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "9:30 AM–7:30 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "9:30 AM–7:30 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "Closed"
+          },
+          {
+            "day": "Thursday",
+            "text": "9:30 AM–7:30 PM"
+          },
+          {
+            "day": "Friday",
+            "text": "9:30 AM–7:30 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "9:30 AM–7:30 PM"
+          },
+          {
+            "day": "Sunday",
+            "text": "9:30 AM–7:30 PM"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "9:30 AM–7:30 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "9:30 AM–7:30 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "Tutup"
+          },
+          {
+            "day": "Khamis",
+            "text": "9:30 AM–7:30 PM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "9:30 AM–7:30 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "9:30 AM–7:30 PM"
+          },
+          {
+            "day": "Ahad",
+            "text": "9:30 AM–7:30 PM"
+          }
+        ]
+      },
+      "whatsapp": null
+    },
+    "ws-kar-skudai": {
+      "workshop_id": "ws-kar-skudai",
+      "workshop": {
+        "name": "KAR AUTO SERVICE CENTER",
+        "area": "Skudai",
+        "coverage": {
+          "en": "Workshop in Mutiara Rini, Skudai",
+          "ms": "Bengkel di Mutiara Rini, Skudai"
+        }
+      },
+      "phone": "+601110500094",
+      "phone_display": "+601110500094",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "10:00 AM–8:00 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "10:00 AM–8:00 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "10:00 AM–8:00 PM"
+          },
+          {
+            "day": "Thursday",
+            "text": "10:00 AM–6:00 PM"
+          },
+          {
+            "day": "Friday",
+            "text": "10:00 AM–6:00 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "10:00 AM–6:00 PM"
+          },
+          {
+            "day": "Sunday",
+            "text": "10:00 AM–6:00 PM"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "10:00 AM–8:00 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "10:00 AM–8:00 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "10:00 AM–8:00 PM"
+          },
+          {
+            "day": "Khamis",
+            "text": "10:00 AM–6:00 PM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "10:00 AM–6:00 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "10:00 AM–6:00 PM"
+          },
+          {
+            "day": "Ahad",
+            "text": "10:00 AM–6:00 PM"
+          }
+        ]
+      },
+      "whatsapp": null
+    },
+    "ws-tiptop-larkin": {
+      "workshop_id": "ws-tiptop-larkin",
+      "workshop": {
+        "name": "TIPTOP Garage Workshop",
+        "area": "Larkin",
+        "coverage": {
+          "en": "Workshop in Dataran Larkin",
+          "ms": "Bengkel di Dataran Larkin"
+        }
+      },
+      "phone": "+601127362764",
+      "phone_display": "011-2736 2764",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "9:30 AM–10:00 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "9:30 AM–10:00 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "9:30 AM–12:00 AM"
+          },
+          {
+            "day": "Thursday",
+            "text": "9:30 AM–12:00 AM"
+          },
+          {
+            "day": "Friday",
+            "text": "9:30 AM–10:00 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "9:30 AM–10:00 PM"
+          },
+          {
+            "day": "Sunday",
+            "text": "Closed"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "9:30 AM–10:00 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "9:30 AM–10:00 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "9:30 AM–12:00 AM"
+          },
+          {
+            "day": "Khamis",
+            "text": "9:30 AM–12:00 AM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "9:30 AM–10:00 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "9:30 AM–10:00 PM"
+          },
+          {
+            "day": "Ahad",
+            "text": "Tutup"
+          }
+        ]
+      },
+      "whatsapp": null
+    },
+    "ws-petronas-larkin": {
+      "workshop_id": "ws-petronas-larkin",
+      "workshop": {
+        "name": "Petronas AutoExpert by Prestige Contitech - Larkin",
+        "area": "Larkin",
+        "coverage": {
+          "en": "Workshop in Taman Larkin",
+          "ms": "Bengkel di Taman Larkin"
+        }
+      },
+      "phone": "+60127204616",
+      "phone_display": "012-720 4616",
+      "tenant_status": "trial",
+      "hours": {
+        "en": [
+          {
+            "day": "Monday",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Tuesday",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Wednesday",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Thursday",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Friday",
+            "text": "9:00 AM–1:00 PM and 2:30–5:30 PM"
+          },
+          {
+            "day": "Saturday",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Sunday",
+            "text": "Closed"
+          }
+        ],
+        "ms": [
+          {
+            "day": "Isnin",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Selasa",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Rabu",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Khamis",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Jumaat",
+            "text": "9:00 AM–1:00 PM dan 2:30–5:30 PM"
+          },
+          {
+            "day": "Sabtu",
+            "text": "9:00 AM–5:30 PM"
+          },
+          {
+            "day": "Ahad",
+            "text": "Tutup"
+          }
+        ]
+      },
+      "whatsapp": null
     }
+  },
+  "areas": {
+    "kulai": [
+      "ws-tyreplus-kulai",
+      "ws-hankook-kulai"
+    ],
+    "gelang-patah": [
+      "ws-kuga-gelang-patah",
+      "ws-fateh-gelang-patah"
+    ],
+    "bukit-indah": [
+      "ws-jagtech-bukit-indah",
+      "ws-overseas-bukit-indah"
+    ],
+    "skudai": [
+      "ws-acs-skudai",
+      "ws-kar-skudai"
+    ],
+    "larkin": [
+      "ws-tiptop-larkin",
+      "ws-petronas-larkin"
+    ],
+    "near-ksl": []
+  },
+  "services": {
+    "aircond-kereta": [
+      "ws-fresh-air-jb",
+      "ws-acs-skudai"
+    ],
+    "tayar": [
+      "ws-continental-pelangi",
+      "ws-hawk-tebrau"
+    ]
   },
   "utm": {
     "source": "jbcarfix",

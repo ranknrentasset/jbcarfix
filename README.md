@@ -69,7 +69,7 @@ Every page tells Google about its other-language twin (hreflang) and its own mai
 2. Inside, set `slug` to `senai` and fill in `name`.
 3. Write **new text for every field** in both `ms` and `en`: intro, sections, FAQs and the WhatsApp message. Never copy another area's text and only change the town name.
 4. Add the area to `areaOrder` in `src/_data/site.json`.
-5. In `src/_data/routing.json`, copy an existing placeholder entry under `entries` with the area's slug as its name (`tenant_status` `unassigned`), and add `"senai": "senai"` under `areas`.
+5. In `src/_data/routing.json`, add `"senai": []` under `areas`. That shows "coming soon" until workshops are added.
 6. Change `status` from `placeholder` to `draft` once real text is in.
 7. Run `npm run check:unique`. It fails if two area pages share more than about 40% of their text.
 
@@ -77,42 +77,55 @@ The build stops with a clear message if something doesn't line up, for example a
 
 ## How contact routing works
 
-Leads never go to the site owner. Each area sends calls, WhatsApp messages and form leads to **its own workshop**, set in `src/_data/routing.json`:
+Leads never go to the site owner. Calls and WhatsApp messages go straight to the workshops listed in `src/_data/routing.json`:
 
-- `entries` holds one entry per area (`kulai`, `skudai`, ...) plus an `unassigned` default for pages that aren't tied to one area (home, services, near KSL).
-- `areas` says which entry each area uses.
-- Each entry has:
-  - `workshop_id`: a short, permanent ID such as `ws-kulai-1`, sent with analytics events
-  - `workshop`: `name`, `area` (the area named on the page) and `coverage` (the neighbourhoods it covers)
-  - `phone`, `whatsapp`
-  - `web3forms_key`: that workshop's own key, so form leads go straight to its email
-  - `tenant_status`: `unassigned`, `trial` or `tenant`
+- `workshops` holds each workshop once, under its `workshop_id`.
+- `areas` lists the workshops shown on each area page, up to 2.
+- `services` optionally lists JB-wide workshops for a service page, up to 2.
+- A page with no list shows a neutral "coming soon" note. That's the `unassigned` default.
 
-**Right now every entry is `unassigned`, with placeholder values.** So no page shows a call button, WhatsApp button or form. Pages show a neutral "coming soon" note instead, which means no lead can go to nobody.
+Each workshop has:
+- `workshop_id`: a short, permanent ID, sent with analytics events
+- `workshop`: `name`, `area` and `coverage` (the line under the name, in `en` and `ms`)
+- `phone`: in `+60…` form, for the Call link. `phone_display` is the number exactly as shown, and `phone_label` (optional) is a short note shown next to it.
+- `whatsapp` (optional, `null` = call only) and `whatsapp_label` (optional button text)
+- `hours`: one line per day in `en` and `ms`, from the workshop's Google Maps listing
+- `tenant_status`: `trial` or `tenant`
+- `services` (optional): limits the workshop to those services. `general` means general repair and servicing. A limited workshop is skipped on other service pages.
 
-When a workshop agrees to take an area:
+**Who shows where now (trial):**
 
-1. Fill in that area's entry with its real details.
-2. Set `tenant_status` to `trial` or `tenant`.
-3. Open a pull request. Nothing changes on the site until you merge it.
+| Page | Workshops |
+|---|---|
+| Kulai | Tyreplus - Overseas Tyre Services Centre; Hankook Masters - Car Pit Stop Kulai |
+| Gelang Patah | Kuga Auto Workshop; Fateh Tyre & Auto - Hoof Nexen |
+| Bukit Indah | Jag Tech Auto Service; Overseas Tyre And Services |
+| Skudai | ACS CAR SERVICE - Skudai; KAR AUTO SERVICE CENTER |
+| Larkin | TIPTOP Garage Workshop; Petronas AutoExpert by Prestige Contitech - Larkin |
+| Aircond (JB-wide) | Fresh Air Car Aircond Service; ACS CAR SERVICE - Skudai |
+| Tyres (JB-wide) | Continental Syarikat Lim Chin Hin; Hawk Tyre Service Sdn Bhd - Tebrau |
 
-The area page then shows "Your enquiry goes to {{ workshop.name }}, a local workshop in {{ workshop.area }}" next to the buttons, plus these lines from `disclosures.json` (the approved wording):
+Every other page shows "coming soon": home, servicing, battery, 24-hour mechanic, gearbox, body paint, towing and near KSL.
+
+Each workshop gets its own card with:
+- its name, coverage line and opening hours
+- a Call button
+- a WhatsApp button, only if it has one
+
+Each card sends its own analytics events with its own `workshop_id`. The disclosure lines appear once per page. Trial workshops never get a form or a logo; the form only appears for a `tenant` that has its own `web3forms_key`.
+
+The build refuses a workshop with missing or placeholder details, a page with more than 2 workshops, or a trial workshop with a logo or photo. Workshop names and numbers appear **only in visible text and buttons**, never in the page's structured data or meta tags. A test checks this on every build.
+
+To change who shows on a page, edit `routing.json` and open a pull request. Nothing changes on the site until you merge it.
+
+The disclosure lines (approved wording) come from `disclosures.json`:
 
 - **trial:**
   - "{{ brand }} is an independent guide and isn't affiliated with them."
   - "Chosen from public Google reviews and, where known, years in business."
   - "We aren't paid by the workshops we suggest."
-- **tenant:** "{{ workshop.name }} pays {{ brand }} a flat fee to be featured here. It doesn't change the price they quote you."
-- **both:** a note under the buttons, from `i18n.json`: 'WhatsApp opens with "Hi, I found you on {{ brand }}." already typed. You can edit it before you send.' The note quotes the WhatsApp pre-fill through the same value, so the two always match, and a test checks it.
-
-Malay versions sit alongside them in the same file. `{{ workshop.name }}` is filled from that area's `routing.json` entry.
-
-The build refuses to publish a `trial` or `tenant` page while any of these are still true:
-- the entry still has TODO or all-zero values;
-- a disclosure line it needs still says TODO;
-- a trial workshop has a logo or photo. A logo can only appear for a `tenant`.
-
-The workshop's name and numbers appear **only in visible text and buttons**, never in the page's structured data or meta tags. A test checks this on every build.
+- **tenant:** "{{ workshop.name }} pays {{ brand }} a flat fee to be featured here. It doesn't change the price they quote you." This shows once per tenant workshop.
+- **when any card has WhatsApp:** a note from `i18n.json` that quotes the WhatsApp pre-fill.
 
 ### Brand and WhatsApp text
 
@@ -123,6 +136,8 @@ The WhatsApp button opens `wa.me/<number>?text=<message>` with the area's UTM ta
 - English: "Hi, I found you on {{ brand }}."
 
 ## The contact form
+
+**The form only appears for a `tenant` workshop that has its own `web3forms_key`. Trial pages have Call and WhatsApp buttons only.**
 
 The visitor's browser sends the form **straight to Web3Forms** (`https://api.web3forms.com/submit`), which emails it to the workshop whose key is on that page. There is no server code. That's why it works on Web3Forms' free plan.
 
@@ -173,7 +188,6 @@ Only two things remain:
 - [ ] Web3Forms access key(s), from Muhammad's own Web3Forms sign-up (one per workshop inbox)
 - [ ] The brand name (the site shows "JBCarFix" for now)
 - [ ] Real page text, once it has been checked and cleared
-- [ ] Real phone and WhatsApp numbers for each workshop
 - [ ] The privacy notice text. Then remove its noindex rules in `public/_headers` and set `status` in `privacy.json`
 - [ ] Muhammad's GA4 measurement ID, then the DebugView check above
 

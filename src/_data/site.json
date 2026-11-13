@@ -85,9 +85,11 @@
       "formPhoneHint": "Contoh: 012-345 6789",
       "formInvalid": "Sila semak nama, nombor telefon dan persetujuan anda.",
       "thanksBody": "Terima kasih. Permintaan anda telah dihantar.",
-      "routedLine": "Pertanyaan anda dihantar kepada {{ workshop.name }}, sebuah bengkel tempatan di {{ workshop.area }}.",
       "comingSoon": "Pilihan untuk menghubungi bengkel di kawasan ini akan datang tidak lama lagi.",
-      "formNoJs": "Borang ini dihantar terus kepada bengkel melalui Web3Forms."
+      "formNoJs": "Borang ini dihantar terus kepada bengkel melalui Web3Forms.",
+      "hoursLabel": "Waktu operasi (Google Maps)",
+      "servicesOnlyLabel": "Perkhidmatan",
+      "generalService": "Pembaikan am dan servis"
     },
     "en": {
       "htmlLang": "en",
@@ -124,9 +126,11 @@
       "formPhoneHint": "Example: 012-345 6789",
       "formInvalid": "Please check your name, phone number and consent.",
       "thanksBody": "Thank you. Your request has been sent.",
-      "routedLine": "Your enquiry goes to {{ workshop.name }}, a local workshop in {{ workshop.area }}.",
       "comingSoon": "Ways to contact a workshop in this area are coming soon.",
-      "formNoJs": "This form is sent directly to the workshop through Web3Forms."
+      "formNoJs": "This form is sent directly to the workshop through Web3Forms.",
+      "hoursLabel": "Opening hours (Google Maps)",
+      "servicesOnlyLabel": "Services",
+      "generalService": "General repair and servicing"
     }
   }
 }

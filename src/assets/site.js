@@ -57,9 +57,10 @@
     try { localStorage.setItem(STORE, JSON.stringify({ t: Date.now(), v: utm })); } catch (e) {}
   }
 
-  Array.prototype.forEach.call(document.querySelectorAll(".routing a[data-ev]"), function (a) {
+  // Each workshop card carries its own parameters, so events report that card's workshop_id.
+  Array.prototype.forEach.call(document.querySelectorAll(".ws-card a[data-ev]"), function (a) {
     a.addEventListener("click", function () {
-      track(a.getAttribute("data-ev"), eventParams(a.closest(".routing").dataset));
+      track(a.getAttribute("data-ev"), eventParams(a.closest(".ws-card").dataset));
     });
   });
 
@@ -87,7 +88,7 @@
         .catch(function () { return {}; })
         .then(function (j) {
           if (j && j.success) {
-            var box = form.closest(".routing");
+            var box = form.closest(".ws-card");
             track("generate_lead", eventParams(box ? box.dataset : {}));
             setTimeout(function () { location.href = thanks; }, 150);
             return;

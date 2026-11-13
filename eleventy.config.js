@@ -49,6 +49,13 @@ export default function (eleventyConfig) {
   });
   eleventyConfig.on("eleventy.before", () => { for (const k of Object.keys(hashes)) delete hashes[k]; });
 
+  // Workshop objects for a page's list of workshop IDs.
+  eleventyConfig.addFilter("resolveWorkshops", (ids, routing) => (ids || []).map((id) => routing.workshops[id]));
+
+  // (Nunjucks' selectattr can't compare values, so these do it explicitly.)
+  eleventyConfig.addFilter("byStatus", (list, status) => (list || []).filter((w) => w.tenant_status === status));
+  eleventyConfig.addFilter("withWhatsapp", (list) => (list || []).filter((w) => !!w.whatsapp));
+
   eleventyConfig.addFilter("jsonLd", (page, data) => buildJsonLd(page, data));
 
   // WhatsApp link: pre-filled text from i18n.json (brand filled in) plus the area's UTM tags.

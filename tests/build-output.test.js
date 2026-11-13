@@ -27,11 +27,12 @@ function machineReadable(html) {
 }
 
 function routingValues(routing) {
-  return Object.values(routing.entries).flatMap((e) => [e.workshop.name, e.phone, e.whatsapp]).filter(Boolean);
+  return Object.values(routing.workshops).flatMap((w) => [w.workshop.name, w.phone, w.phone_display, w.whatsapp]).filter(Boolean);
 }
 
 function assertNoRoutingInData(siteDir, routing) {
   const values = routingValues(routing);
+  assert.ok(values.length > 0, "expected workshops in routing.json");
   let ldCount = 0;
   for (const f of htmlFiles(siteDir)) {
     const { ld, rest } = machineReadable(fs.readFileSync(f, "utf8"));
@@ -43,31 +44,127 @@ function assertNoRoutingInData(siteDir, routing) {
   assert.ok(ldCount > 0, "expected some JSON-LD in the build");
 }
 
+const dec = (h) => h.replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, "&");
+const read = (rel, dir = path.join(ROOT, "_site")) => fs.readFileSync(path.join(dir, rel), "utf8");
+const cards = (html) => [...html.matchAll(/<article class="ws-card"([^>]*)>([\s\S]*?)<\/article>/g)].map((m) => ({ attrs: m[1], body: m[2], id: m[1].match(/data-ev-workshop-id="([^"]+)"/)[1] }));
+const routing = JSON.parse(fs.readFileSync(path.join(ROOT, "src/_data/routing.json"), "utf8"));
+
 test("no {{ ... }} left unfilled and brand appears", () => {
   for (const f of htmlFiles(path.join(ROOT, "_site"))) {
     const html = fs.readFileSync(f, "utf8");
     assert.ok(!/\{\{/.test(html), `${f} has an unfilled variable`);
   }
   const brand = JSON.parse(fs.readFileSync(path.join(ROOT, "src/_data/site.json"), "utf8")).brand;
-  const home = fs.readFileSync(path.join(ROOT, "_site/index.html"), "utf8");
-  assert.ok(home.includes(`<p class="connect">${brand} membantu`), "brand filled into Malay hero line");
+  assert.ok(read("index.html").includes(`<p class="connect">${brand} membantu`), "brand filled into Malay hero line");
 });
 
 test("no GA4 tag when ga4_measurement_id is empty", () => {
   const site = JSON.parse(fs.readFileSync(path.join(ROOT, "src/_data/site.json"), "utf8"));
   assert.equal(site.ga4_measurement_id, "");
   for (const f of htmlFiles(path.join(ROOT, "_site"))) {
-    const html = fs.readFileSync(f, "utf8");
-    assert.ok(!/googletagmanager|ga4\.js|gtag\(/.test(html), `${f} has a GA tag`);
+    assert.ok(!/googletagmanager|ga4\.js|gtag\(/.test(fs.readFileSync(f, "utf8")), `${f} has a GA tag`);
   }
 });
 
 test("built JSON-LD and meta tags contain no routing phone, WhatsApp or workshop name", () => {
-  const routing = JSON.parse(fs.readFileSync(path.join(ROOT, "src/_data/routing.json"), "utf8"));
   assertNoRoutingInData(path.join(ROOT, "_site"), routing);
 });
 
-test("trial and tenant workshops: visible text only, disclosures, no trial logo", () => {
+test("each page shows exactly the workshops routing.json lists, one card each", () => {
+  const expectPage = { "kulai/index.html": routing.areas.kulai, "en/kulai/index.html": routing.areas.kulai,
+    "skudai/index.html": routing.areas.skudai, "larkin/index.html": routing.areas.larkin,
+    "gelang-patah/index.html": routing.areas["gelang-patah"], "en/bukit-indah/index.html": routing.areas["bukit-indah"],
+    "tayar/index.html": routing.services.tayar, "en/car-aircon/index.html": routing.services["aircond-kereta"] };
+  for (const [rel, ids] of Object.entries(expectPage)) assert.deepEqual(cards(read(rel)).map((c) => c.id), ids, rel);
+  for (const rel of ["index.html", "en/index.html", "servis/index.html", "bateri/index.html", "mekanik-24-jam/index.html", "pakar-gearbox/index.html", "cat-kereta/index.html", "towing-kereta/index.html", "en/near-ksl/index.html"]) {
+    const html = read(rel);
+    assert.equal(cards(html).length, 0, rel);
+    assert.match(html, /class="soon"/, rel);
+    assert.doesNotMatch(html, /tel:|wa\.me|<form/, rel);
+  }
+});
+
+test("trial cards: name, coverage, hours, call always, WhatsApp only when set, no form", () => {
+  for (const rel of ["en/kulai/index.html", "kulai/index.html", "larkin/index.html", "tayar/index.html", "en/car-aircon/index.html"]) {
+    const html = read(rel);
+    const lang = rel.startsWith("en/") ? "en" : "ms";
+    assert.doesNotMatch(html, /<form/, rel);
+    for (const c of cards(html)) {
+      const w = routing.workshops[c.id];
+      assert.ok(dec(c.body).includes(`<h3>${w.workshop.name}</h3>`), c.id);
+      assert.ok(c.body.includes(w.workshop.coverage[lang]), c.id);
+      assert.equal((c.body.match(/<dt>/g) || []).length, 7, `${c.id} hours`);
+      assert.ok(c.body.includes(`href="tel:${w.phone}"`) && c.body.includes(w.phone_display), c.id);
+      assert.equal(c.body.includes("wa.me/"), !!w.whatsapp, `${c.id} WhatsApp button`);
+      if (w.whatsapp) assert.ok(c.body.includes(`https://wa.me/${w.whatsapp}?text=`), c.id);
+      if (w.whatsapp_label) assert.ok(c.body.includes(w.whatsapp_label), c.id);
+      assert.doesNotMatch(c.body, /<img\b/, c.id);
+      assert.match(c.attrs, /data-ev-tenant-status="trial"/);
+    }
+  }
+  assert.doesNotMatch(read("en/larkin/index.html"), /company line|phone-label/);
+});
+
+test("disclosure lines show once per page, trial wording only", () => {
+  const en = dec(read("en/kulai/index.html"));
+  const ms = read("kulai/index.html");
+  assert.equal(en.split("JBCarFix is an independent guide and isn't affiliated with them.").length - 1, 1);
+  assert.equal(en.split("Chosen from public Google reviews and, where known, years in business.").length - 1, 1);
+  assert.equal(en.split("We aren't paid by the workshops we suggest.").length - 1, 1);
+  assert.equal(ms.split("JBCarFix ialah panduan bebas dan tidak bergabung dengan bengkel ini.").length - 1, 1);
+  assert.equal(ms.split("Kami tidak dibayar oleh bengkel yang kami cadangkan.").length - 1, 1);
+  for (const f of htmlFiles(path.join(ROOT, "_site"))) assert.doesNotMatch(fs.readFileSync(f, "utf8"), /flat fee|yuran tetap/, f);
+});
+
+test("WhatsApp links are encoded correctly and the note quotes the pre-fill", () => {
+  const en = read("en/kulai/index.html"), ms = read("kulai/index.html");
+  assert.ok(en.includes('href="https://wa.me/60177773633?text=Hi%2C%20I%20found%20you%20on%20JBCarFix.&amp;utm_source='), "English wa.me link");
+  assert.ok(ms.includes('href="https://wa.me/60177773633?text=Hai%2C%20saya%20jumpa%20anda%20di%20JBCarFix.&amp;utm_source='), "Malay wa.me link");
+  for (const [html, lang] of [[en, "en"], [ms, "ms"]]) {
+    const quoted = dec(html.match(/<p class="note">([^<]*)<\/p>/)[1]).match(/"([^"]*)"/)[1];
+    const wa = dec(html.match(/href="(https:\/\/wa\.me\/[^"]+)"/)[1]);
+    assert.equal(quoted, new URL(wa).searchParams.get("text"), lang);
+  }
+  // No WhatsApp on the page -> no note.
+  assert.doesNotMatch(read("larkin/index.html"), /class="note"/);
+});
+
+// Clicks the built buttons in a mocked page and returns what reached gtag.
+function clickAll(html, siteJs) {
+  const calls = [], links = [];
+  for (const c of cards(html)) {
+    const dataset = Object.fromEntries([...c.attrs.matchAll(/data-ev-([a-z-]+)="([^"]*)"/g)].map((m) => ["ev" + m[1].replace(/(^|-)([a-z])/g, (x, d, ch) => ch.toUpperCase()), m[2]]));
+    for (const ev of [...c.body.matchAll(/data-ev="([a-z_]+)"/g)].map((m) => m[1])) {
+      const l = { getAttribute: () => ev, closest: () => ({ dataset }), addEventListener: (t, fn) => { l.fn = fn; } };
+      links.push(l);
+    }
+  }
+  const win = {
+    gtag: (...a) => calls.push([a[0], a[1], { ...a[2] }]),
+    location: { search: "", origin: "https://example.pages.dev" },
+    localStorage: { getItem: () => null, setItem: () => {} },
+    URLSearchParams,
+    document: { querySelectorAll: (sel) => (sel.includes("a[data-ev]") ? links : []) },
+  };
+  win.window = win;
+  vm.runInNewContext(siteJs, { ...win, window: win });
+  links.forEach((l) => l.fn());
+  return calls;
+}
+
+test("each card's buttons send GA events with that card's workshop_id", () => {
+  const calls = clickAll(read("en/kulai/index.html"), read("assets/site.js"));
+  const base = { area: "kulai", lang: "en", tenant_status: "trial", service: "area", page_path: "/en/kulai/" };
+  assert.deepEqual(calls, [
+    ["event", "click_call", { ...base, workshop_id: "ws-tyreplus-kulai" }],
+    ["event", "click_whatsapp", { ...base, workshop_id: "ws-tyreplus-kulai" }],
+    ["event", "click_call", { ...base, workshop_id: "ws-hankook-kulai" }],
+  ]);
+  const svc = clickAll(read("tayar/index.html"), read("assets/site.js"));
+  assert.ok(svc.length && svc.every((c) => c[2].service === "tayar" && c[2].area === "all"));
+});
+
+test("tenant workshop and GA4 ID (throwaway build): form, logo, tenant line, gtag", () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "jbcf-"));
   for (const item of ["src", "lib", "public", "eleventy.config.js", "package.json"]) {
     fs.cpSync(path.join(ROOT, item), path.join(tmp, item), { recursive: true });
@@ -75,10 +172,12 @@ test("trial and tenant workshops: visible text only, disclosures, no trial logo"
   fs.symlinkSync(path.join(ROOT, "node_modules"), path.join(tmp, "node_modules"));
 
   const rp = path.join(tmp, "src/_data/routing.json");
-  const routing = JSON.parse(fs.readFileSync(rp, "utf8"));
-  Object.assign(routing.entries.kulai, { workshop_id: "ws-test-trial", workshop: { name: "Test Trial Workshop", area: "Kulai", coverage: [] }, phone: "+60123456781", whatsapp: "60123456781", web3forms_key: "test-key-1", tenant_status: "trial" });
-  Object.assign(routing.entries.skudai, { workshop_id: "ws-test-tenant", workshop: { name: "Test Tenant Workshop", area: "Skudai", coverage: [], logo: "/assets/test-logo.png" }, phone: "+60123456782", whatsapp: "60123456782", web3forms_key: "test-key-2", tenant_status: "tenant" });
-  fs.writeFileSync(rp, JSON.stringify(routing));
+  const r = JSON.parse(fs.readFileSync(rp, "utf8"));
+  const hours = r.workshops[r.areas.kulai[0]].hours;
+  r.workshops["ws-test-tenant"] = { workshop_id: "ws-test-tenant", workshop: { name: "Test Tenant Workshop", area: "Skudai", coverage: { en: "Workshop in Testville", ms: "Bengkel di Testville" }, logo: "/assets/test-logo.png" },
+    phone: "+60123456782", phone_display: "012-345 6782", whatsapp: "60123456782", web3forms_key: "test-key-2", tenant_status: "tenant", hours };
+  r.areas.skudai = ["ws-test-tenant"];
+  fs.writeFileSync(rp, JSON.stringify(r));
   const sp = path.join(tmp, "src/_data/site.json");
   const tmpSite = JSON.parse(fs.readFileSync(sp, "utf8"));
   tmpSite.ga4_measurement_id = "G-TEST12345";
@@ -86,42 +185,16 @@ test("trial and tenant workshops: visible text only, disclosures, no trial logo"
 
   execFileSync(process.execPath, [path.join(ROOT, "node_modules/@11ty/eleventy/cmd.cjs"), "--quiet"], { cwd: tmp, stdio: "pipe" });
   const out = path.join(tmp, "_site");
+  assertNoRoutingInData(out, r);
 
-  assertNoRoutingInData(out, routing);
-
-  const kulai = fs.readFileSync(path.join(out, "en/kulai/index.html"), "utf8");
-  assert.match(kulai, /Your enquiry goes to Test Trial Workshop, a local workshop in Kulai\./);
-  const dec = (h) => h.replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, "&");
-  assert.ok(dec(kulai).includes("JBCarFix is an independent guide and isn't affiliated with them."));
-  assert.ok(kulai.includes("Chosen from public Google reviews and, where known, years in business."));
-  assert.ok(dec(kulai).includes("We aren't paid by the workshops we suggest."));
-  // The note under the buttons quotes exactly what the WhatsApp link pre-fills.
-  for (const [html, lang] of [[kulai, "en"], [fs.readFileSync(path.join(out, "kulai/index.html"), "utf8"), "ms"]]) {
-    const note = dec(html.match(/<p class="note">([^<]*)<\/p>/)[1]);
-    const quoted = note.match(/"([^"]*)"/)[1];
-    const wa = dec(html.match(/href="(https:\/\/wa\.me\/[^"]+)"/)[1]);
-    assert.equal(quoted, new URL(wa).searchParams.get("text"), lang);
-  }
-  assert.doesNotMatch(kulai, /flat fee/);
-  assert.doesNotMatch(kulai, /<img\b/);
-  assert.match(kulai, /data-ev-workshop-id="ws-test-trial"/);
-  assert.match(kulai, /data-ev-service="area"/);
-  assert.match(kulai, /name="access_key" value="test-key-1"/);
-  assert.match(kulai, /data-ev-tenant-status="trial"/);
-  assert.ok(kulai.includes('href="https://wa.me/60123456781?text=Hi%2C%20I%20found%20you%20on%20JBCarFix.&amp;utm_source='), "English wa.me link");
-  const kulaiMs = fs.readFileSync(path.join(out, "kulai/index.html"), "utf8");
-  assert.ok(kulaiMs.includes('href="https://wa.me/60123456781?text=Hai%2C%20saya%20jumpa%20anda%20di%20JBCarFix.&amp;utm_source='), "Malay wa.me link");
-  assert.ok(kulaiMs.includes("JBCarFix ialah panduan bebas dan tidak bergabung dengan bengkel ini."));
-  assert.ok(kulaiMs.includes("Kami tidak dibayar oleh bengkel yang kami cadangkan."));
-  assert.match(kulaiMs, /Pertanyaan anda dihantar kepada Test Trial Workshop, sebuah bengkel tempatan di Kulai\./);
-
-  const skudai = fs.readFileSync(path.join(out, "skudai/index.html"), "utf8");
-  assert.match(skudai, /data-ev-service="area"/);
-  assert.ok(skudai.includes("Test Tenant Workshop membayar yuran tetap kepada JBCarFix untuk dipaparkan di sini. Ia tidak mengubah harga yang mereka sebut kepada anda."));
-  const skudaiEn = fs.readFileSync(path.join(out, "en/skudai/index.html"), "utf8");
-  assert.ok(dec(skudaiEn).includes("Test Tenant Workshop pays JBCarFix a flat fee to be featured here. It doesn't change the price they quote you."));
-  assert.doesNotMatch(skudai, /panduan bebas|ulasan Google awam/);
-  assert.match(skudai, /<img[^>]+test-logo\.png/);
+  const skudaiEn = dec(read("en/skudai/index.html", out));
+  assert.ok(skudaiEn.includes("Test Tenant Workshop pays JBCarFix a flat fee to be featured here. It doesn't change the price they quote you."));
+  assert.ok(read("skudai/index.html", out).includes("Test Tenant Workshop membayar yuran tetap kepada JBCarFix untuk dipaparkan di sini. Ia tidak mengubah harga yang mereka sebut kepada anda."));
+  assert.doesNotMatch(skudaiEn, /independent guide|public Google reviews/);
+  assert.match(skudaiEn, /<img[^>]+test-logo\.png/);
+  assert.match(skudaiEn, /name="access_key" value="test-key-2"/);
+  assert.match(skudaiEn, /name="workshop_id" value="ws-test-tenant"/);
+  assert.doesNotMatch(read("en/kulai/index.html", out), /<form/);
 
   // GA4: with an ID set, gtag.js loads async on every page and config runs with that ID.
   for (const f of htmlFiles(out)) {
@@ -130,33 +203,10 @@ test("trial and tenant workshops: visible text only, disclosures, no trial logo"
     assert.match(html, /<script src="\/assets\/ga4\.js\?v=[0-9a-f]+" data-ga4-id="G-TEST12345" defer><\/script>/);
   }
   const gaWin = { document: { currentScript: { getAttribute: (n) => (n === "data-ga4-id" ? "G-TEST12345" : null) } } };
-  vm.runInNewContext(fs.readFileSync(path.join(out, "assets/ga4.js"), "utf8"), { window: gaWin });
-  const queued = gaWin.dataLayer.map((a) => Array.from(a));
-  assert.deepEqual(queued[1], ["config", "G-TEST12345"]);
-
-  // Events: click the built call/WhatsApp buttons in a mocked page and check what reaches gtag.
-  const attrs = Object.fromEntries([...kulai.matchAll(/data-ev-([a-z-]+)="([^"]*)"/g)].map((m) => ["ev" + m[1].replace(/(^|-)([a-z])/g, (x, d, c) => c.toUpperCase()), m[2]]));
-  const calls = [];
-  const handlers = {};
-  const box = { dataset: attrs };
-  const link = (ev) => ({ getAttribute: () => ev, closest: () => box, addEventListener: (t, fn) => { handlers[ev] = fn; } });
-  const win = {
-    gtag: (...a) => calls.push(a),
-    location: { search: "", origin: "https://example.pages.dev" },
-    localStorage: { getItem: () => null, setItem: () => {} },
-    URLSearchParams,
-    document: { querySelectorAll: (sel) => (sel.includes("a[data-ev]") ? [link("click_call"), link("click_whatsapp")] : []) },
-  };
-  win.window = win;
-  vm.runInNewContext(fs.readFileSync(path.join(out, "assets/site.js"), "utf8"), { ...win, window: win });
-  handlers.click_call();
-  handlers.click_whatsapp();
-  const expected = { area: "kulai", lang: "en", workshop_id: "ws-test-trial", tenant_status: "trial", service: "area", page_path: "/en/kulai/" };
-  assert.deepEqual(calls.map((c) => [c[0], c[1], { ...c[2] }]), [["event", "click_call", expected], ["event", "click_whatsapp", expected]]);
-
-  // Unassigned areas still show no buttons or form.
-  const larkin = fs.readFileSync(path.join(out, "larkin/index.html"), "utf8");
-  assert.doesNotMatch(larkin, /<form|tel:|wa\.me/);
+  vm.runInNewContext(read("assets/ga4.js", out), { window: gaWin });
+  assert.deepEqual(Array.from(gaWin.dataLayer[1]), ["config", "G-TEST12345"]);
+  const calls = clickAll(read("en/skudai/index.html", out), read("assets/site.js", out));
+  assert.deepEqual(calls.map((c) => [c[1], c[2].workshop_id, c[2].tenant_status]), [["click_call", "ws-test-tenant", "tenant"], ["click_whatsapp", "ws-test-tenant", "tenant"]]);
 
   fs.rmSync(tmp, { recursive: true, force: true });
 });

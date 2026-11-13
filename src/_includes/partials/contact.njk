@@ -1,83 +1,59 @@
 {%- set s = site.strings[entry.lang] -%}
-{%- set r = routing.entries[entry.routingKey] -%}
-{%- set isArea = entry.type == "area" -%}
-{%- set areaName = areas[entry.key].name[entry.lang] if isArea else site.region -%}
-{%- set thanksUrl = site.thanks[entry.lang] -%}
+{%- set list = entry.workshops | resolveWorkshops(routing) -%}
 <section class="contact" id="contact">
   <h2>{{ s.contactHeading }}</h2>
-{%- if r.tenant_status == "unassigned" %}
+{%- if not list.length %}
   <p class="soon">{{ s.comingSoon }}</p>
 {%- else %}
-{#- Workshop name and numbers appear only in this visible block, never in JSON-LD or meta tags.
-    Analytics parameters ride on data-ev-* attributes and are read by site.js. #}
-  <div class="routing" data-ev-area="{{ entry.eventArea }}" data-ev-lang="{{ entry.lang }}" data-ev-workshop-id="{{ r.workshop_id }}" data-ev-tenant-status="{{ r.tenant_status }}" data-ev-service="{{ entry.eventService }}" data-ev-page-path="{{ entry.url }}">
-{%- if r.tenant_status == "tenant" and r.workshop.logo %}
-  <img class="ws-logo" src="{{ r.workshop.logo }}" alt="{{ r.workshop.name }}" width="120" height="60">
-{%- endif %}
-  <p class="routed">{{ s.routedLine | fill({ workshop: r.workshop }) }}</p>
-  <p class="cta">
-    <a class="btn" href="tel:{{ r.phone }}" data-ev="click_call">{{ s.callLabel }} {{ r.phone }}</a>
-    <a class="btn btn-wa" href="{{ r | waLink(i18n.whatsappText[entry.lang], entry.key, entry.lang, routing) }}" rel="noopener" data-ev="click_whatsapp">{{ s.whatsappLabel }}</a>
-  </p>
-  <p class="note">{{ i18n | underButtonNote(entry.lang) }}</p>
-  <ul class="disclosures">
-{%- if r.tenant_status == "trial" %}
-    <li>{{ disclosures.independence[entry.lang] | fill({ workshop: r.workshop }) }}</li>
-    <li>{{ disclosures.selectionMethod[entry.lang] | fill({ workshop: r.workshop }) }}</li>
-{%- endif %}
-    <li>{{ disclosures.paidBy[r.tenant_status][entry.lang] | fill({ workshop: r.workshop }) }}</li>
-  </ul>
-  <form class="lead" action="https://api.web3forms.com/submit" method="post" data-lead-form data-thanks="{{ thanksUrl }}" data-error="{{ s.formError }}" data-invalid="{{ s.formInvalid }}" data-sending="{{ s.formSending }}">
-    <h3>{{ s.formHeading }}</h3>
-    <input type="hidden" name="access_key" value="{{ r.web3forms_key }}">
-    <input type="hidden" name="subject" value="New lead: {{ areaName }} ({{ entry.key }}, {{ entry.lang }}) via {{ brand }}">
-    <input type="hidden" name="from_name" value="{{ brand }} website">
-    <input type="hidden" name="workshop_id" value="{{ r.workshop_id }}">
-    <input type="hidden" name="routed_to" value="{{ r.workshop.name }}">
-    <input type="hidden" name="redirect" value="{{ thanksUrl | absUrl(site) }}">
-    <input type="hidden" name="lang" value="{{ entry.lang }}">
-    <input type="hidden" name="page" value="{{ entry.url }}">
-    <input type="hidden" name="utm_source" value="">
-    <input type="hidden" name="utm_medium" value="">
-    <input type="hidden" name="utm_campaign" value="">
-    <input type="hidden" name="utm_term" value="">
-    <input type="hidden" name="utm_content" value="">
-    <div class="hp" aria-hidden="true">
-      <label>Leave empty <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off"></label>
-    </div>
-    <label>{{ s.formName }}
-      <input type="text" name="name" required minlength="2" maxlength="80" autocomplete="name">
-    </label>
-    <label>{{ s.formPhone }}
-      <input type="tel" name="phone" required minlength="9" maxlength="20" pattern="\+?[0-9][0-9 \(\)\-]{7,18}[0-9]" autocomplete="tel" inputmode="tel" placeholder="{{ s.formPhoneHint }}">
-    </label>
-{%- if isArea %}
-    <input type="hidden" name="area" value="{{ entry.key }}">
-{%- else %}
-    <label>{{ s.formArea }}
-      <select name="area" required>
-        {%- for k in site.areaOrder %}
-        <option value="{{ k }}">{{ areas[k].name[entry.lang] }}</option>
-        {%- endfor %}
-        <option value="other" selected>{{ s.formOther }}</option>
-      </select>
-    </label>
-{%- endif %}
-    <label>{{ s.formService }}
-      <select name="service" required>
-        {%- for k in site.serviceOrder %}
-        <option value="{{ k }}"{% if entry.type == "service" and entry.key == k %} selected{% endif %}>{{ services[k].name[entry.lang] }}</option>
-        {%- endfor %}
-        <option value="other"{% if entry.type != "service" %} selected{% endif %}>{{ s.formOther }}</option>
-      </select>
-    </label>
-    <label>{{ s.formMessage }}
-      <textarea name="message" rows="3" maxlength="1000"></textarea>
-    </label>
-    <label class="check"><input type="checkbox" name="consent" value="yes" required> <span>{{ s.formConsent }} <a href="{{ site.privacy[entry.lang] }}">{{ s.privacyLabel }}</a></span></label>
-    <button type="submit" class="btn">{{ s.formSubmit }}</button>
-    <p class="status" role="status" aria-live="polite"></p>
-  </form>
+{#- Workshop names and numbers appear only in these visible cards, never in JSON-LD or meta tags.
+    Each card carries its own analytics parameters (data-ev-*), read by site.js. #}
+  <div class="ws-list">
+  {%- for w in list %}
+  <article class="ws-card" data-ev-area="{{ entry.eventArea }}" data-ev-lang="{{ entry.lang }}" data-ev-workshop-id="{{ w.workshop_id }}" data-ev-tenant-status="{{ w.tenant_status }}" data-ev-service="{{ entry.eventService }}" data-ev-page-path="{{ entry.url }}">
+    {%- if w.tenant_status == "tenant" and w.workshop.logo %}
+    <img class="ws-logo" src="{{ w.workshop.logo }}" alt="{{ w.workshop.name }}" width="120" height="60">
+    {%- endif %}
+    <h3>{{ w.workshop.name }}</h3>
+    <p class="coverage">{{ w.workshop.coverage[entry.lang] }}</p>
+    {%- if w.services %}
+    <p class="ws-services">{{ s.servicesOnlyLabel }}: {% for k in w.services %}{{ s.generalService if k == "general" else services[k].name[entry.lang] }}{% if not loop.last %}, {% endif %}{% endfor %}</p>
+    {%- endif %}
+    <details class="hours">
+      <summary>{{ s.hoursLabel }}</summary>
+      <dl>
+      {%- for d in w.hours[entry.lang] %}
+        <dt>{{ d.day }}</dt><dd>{{ d.text }}</dd>
+      {%- endfor %}
+      </dl>
+    </details>
+    <p class="cta">
+      <a class="btn" href="tel:{{ w.phone }}" data-ev="click_call">{{ s.callLabel }} {{ w.phone_display or w.phone }}</a>
+      {%- if w.phone_label %}
+      <span class="phone-label">({{ w.phone_label }})</span>
+      {%- endif %}
+      {%- if w.whatsapp %}
+      <a class="btn btn-wa" href="{{ w | waLink(i18n.whatsappText[entry.lang], entry.key, entry.lang, routing) }}" rel="noopener" data-ev="click_whatsapp">{{ w.whatsapp_label or s.whatsappLabel }}</a>
+      {%- endif %}
+    </p>
+    {%- if w.tenant_status == "tenant" and w.web3forms_key %}
+    {% include "partials/lead-form.njk" %}
+    {%- endif %}
+  </article>
+  {%- endfor %}
   </div>
+  {%- if list | withWhatsapp | length %}
+  <p class="note">{{ i18n | underButtonNote(entry.lang) }}</p>
+  {%- endif %}
+  {#- Disclosure lines: once per page. #}
+  <ul class="disclosures">
+  {%- if list | byStatus("trial") | length %}
+    <li>{{ disclosures.independence[entry.lang] | fill }}</li>
+    <li>{{ disclosures.selectionMethod[entry.lang] | fill }}</li>
+    <li>{{ disclosures.paidBy.trial[entry.lang] | fill }}</li>
+  {%- endif %}
+  {%- for w in list | byStatus("tenant") %}
+    <li>{{ disclosures.paidBy.tenant[entry.lang] | fill({ workshop: w.workshop }) }}</li>
+  {%- endfor %}
+  </ul>
 {%- endif %}
 </section>

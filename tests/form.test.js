@@ -2,15 +2,15 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import vm from "node:vm";
-import { checkRoutingEntry, checkDisclosures } from "../lib/content.js";
+import { checkWorkshop, checkDisclosures, workshopsFor } from "../lib/content.js";
 
 const ctx = {};
 vm.runInNewContext(fs.readFileSync(new URL("../src/assets/site.js", import.meta.url), "utf8"), { globalThis: ctx });
 const { validateLead, normalisePhone, eventParams } = ctx.JBCF;
 const good = { name: "Test User", phone: "012-345 6789", consent: true, access_key: "abc-123" };
 
-const placeholder = { workshop_id: "todo-ws-x", workshop: { name: "TODO-workshop-name", area: "Kulai", coverage: [] }, phone: "+60000000000", whatsapp: "60000000000", web3forms_key: "TODO-public-access-key" };
-const real = { workshop_id: "ws-real", workshop: { name: "Real Workshop", area: "Kulai", coverage: [] }, phone: "+60123456789", whatsapp: "60123456789", web3forms_key: "abc-123" };
+const hours = { en: Array.from({ length: 7 }, (_, i) => ({ day: "D" + i, text: "9:00 AM–6:00 PM" })), ms: Array.from({ length: 7 }, (_, i) => ({ day: "H" + i, text: "9:00 AM–6:00 PM" })) };
+const real = { workshop_id: "ws-real", workshop: { name: "Real Workshop", area: "Kulai", coverage: { en: "Workshop in X", ms: "Bengkel di X" } }, phone: "+60123456789", whatsapp: null, hours, tenant_status: "trial" };
 
 test("valid lead passes", () => assert.equal(validateLead(good).length, 0));
 
@@ -27,15 +27,27 @@ test("phone normalising", () => {
   assert.equal(normalisePhone("123"), null);
 });
 
-test("routing entries with placeholder values cannot go live", () => {
-  assert.doesNotThrow(() => checkRoutingEntry("x", { ...placeholder, tenant_status: "unassigned" }));
-  assert.throws(() => checkRoutingEntry("x", { ...placeholder, tenant_status: "trial" }), /workshop_id, workshop.name/);
-  assert.doesNotThrow(() => checkRoutingEntry("x", { ...real, tenant_status: "tenant" }));
+test("workshops with placeholder or missing values are refused", () => {
+  assert.doesNotThrow(() => checkWorkshop("ws-real", real));
+  assert.doesNotThrow(() => checkWorkshop("ws-real", { ...real, whatsapp: "60123456789", whatsapp_label: "Company WhatsApp" }));
+  assert.throws(() => checkWorkshop("ws-real", { ...real, phone: "+60000000000" }), /phone/);
+  assert.throws(() => checkWorkshop("ws-real", { ...real, workshop: { ...real.workshop, name: "TODO-workshop-name" } }), /workshop.name/);
+  assert.throws(() => checkWorkshop("ws-real", { ...real, workshop: { ...real.workshop, coverage: { en: "Workshop in X" } } }), /coverage/);
+  assert.throws(() => checkWorkshop("ws-real", { ...real, hours: { en: hours.en } }), /hours.ms/);
+  assert.throws(() => checkWorkshop("ws-other", real), /workshop_id/);
 });
 
-test("tenant_status only accepts unassigned, trial or tenant", () => {
-  assert.throws(() => checkRoutingEntry("x", { ...real, tenant_status: "rented" }));
-  assert.throws(() => checkRoutingEntry("x", { ...real, status: "trial" }));
+test("tenant_status only accepts trial or tenant", () => {
+  assert.throws(() => checkWorkshop("ws-real", { ...real, tenant_status: "rented" }));
+  assert.throws(() => checkWorkshop("ws-real", { ...real, tenant_status: "unassigned" }));
+});
+
+test("service restriction keeps a workshop off other service pages", () => {
+  const routing = { workshops: { a: { services: ["tayar"] }, b: {} }, services: { tayar: ["a", "b"], servis: ["a", "b"] }, areas: { kulai: ["a"] } };
+  assert.deepEqual(workshopsFor(routing, "service", "tayar"), ["a", "b"]);
+  assert.deepEqual(workshopsFor(routing, "service", "servis"), ["b"]);
+  assert.deepEqual(workshopsFor(routing, "area", "kulai"), ["a"]);
+  assert.deepEqual(workshopsFor(routing, "home", "home"), []);
 });
 
 test("analytics event parameters", () => {
@@ -44,8 +56,8 @@ test("analytics event parameters", () => {
 });
 
 test("trial workshops may not carry a logo or photo", () => {
-  assert.throws(() => checkRoutingEntry("x", { ...real, workshop: { ...real.workshop, logo: "/x.png" }, tenant_status: "trial" }));
-  assert.doesNotThrow(() => checkRoutingEntry("x", { ...real, workshop: { ...real.workshop, logo: "/x.png" }, tenant_status: "tenant" }));
+  assert.throws(() => checkWorkshop("ws-real", { ...real, workshop: { ...real.workshop, logo: "/x.png" }, tenant_status: "trial" }));
+  assert.doesNotThrow(() => checkWorkshop("ws-real", { ...real, workshop: { ...real.workshop, logo: "/x.png" }, tenant_status: "tenant" }));
 });
 
 test("TODO disclosure wording blocks trial/tenant pages", () => {
