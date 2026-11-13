@@ -3,7 +3,7 @@
 The website for jbcarfix.com. It's a simple, fast site in two languages:
 **Malay** at the main address (`/`) and **English** under `/en/`.
 
-The site presents itself as a service that **connects drivers with local car workshops** in Johor Bahru. It is not a workshop.
+The site is **an independent guide to local car workshops** in Johor Bahru. It is not a workshop.
 
 > **Nothing goes live until you merge a pull request.** All work happens on side branches. Each pull request can get a private preview link (on `*.pages.dev`, hidden from Google). Only when you merge into `main` does Cloudflare publish it to jbcarfix.com.
 
@@ -66,12 +66,14 @@ tests/               Automatic tests for the form checks, routing safety and the
 ### Thin-page guard (automatic noindex)
 
 A page stays hidden from Google while **either** of these is true:
-- it shows no workshops (the "coming soon" note);
-- its copy is still placeholder (`status: "placeholder"`, or any text still marked DRAFT).
+- its copy is still placeholder (`status: "placeholder"`, or any text still marked DRAFT);
+- it is on the manual hold list, `indexHold` in `site.json`. That list matches the last part of the URL. It starts with the body-and-paint and towing pages in both languages: `cat-kereta`, `car-body-paint`, `towing-kereta`, `car-towing`.
 
-A hidden page gets `<meta name="robots" content="noindex,follow">` and is left out of `sitemap.xml`. If either language of a page is hidden, the hreflang pair between the two languages is dropped, both in the page head and in the sitemap. The guard lifts by itself once a page has real copy and at least one workshop.
+A hidden page gets `<meta name="robots" content="noindex,follow">` and is left out of `sitemap.xml`. If either language of a page is hidden, the hreflang pair between the two languages is dropped, both in the page head and in the sitemap. The guard lifts by itself once a page has real copy, **even if it lists no workshop**.
 
-**Right now every page is hidden**, because all the copy is still placeholder, so the sitemap is empty. Pages with trial workshops but placeholder copy stay hidden too, for now.
+A page with no workshop shows no contact box at all: no buttons, no "coming soon" note, and nothing that suggests a workshop. A test fails if wording like that appears.
+
+**Right now every page is hidden**, because all the copy is still placeholder, so the sitemap is empty.
 
 ## How to add an area
 
@@ -79,7 +81,7 @@ A hidden page gets `<meta name="robots" content="noindex,follow">` and is left o
 2. Inside, set `slug` to `senai` and fill in `name`.
 3. Write **new text for every field** in both `ms` and `en`: intro, sections, FAQs and the WhatsApp message. Never copy another area's text and only change the town name.
 4. Add the area to `areaOrder` in `src/_data/site.json`.
-5. In `src/_data/routing.json`, add `"senai": []` under `areas`. That shows "coming soon" until workshops are added.
+5. In `src/_data/routing.json`, add `"senai": []` under `areas`. The page shows no contact box until workshops are added.
 6. Change `status` from `placeholder` to `draft` once real text is in.
 7. Run `npm run check:unique`. It fails if two area pages share more than about 40% of their text.
 
@@ -92,7 +94,7 @@ Leads never go to the site owner. Calls and WhatsApp messages go straight to the
 - `workshops` holds each workshop once, under its `workshop_id`.
 - `areas` lists the workshops shown on each area page, up to 2.
 - `services` optionally lists JB-wide workshops for a service page, up to 2.
-- A page with no list shows a neutral "coming soon" note. That's the `unassigned` default.
+- A page with no list shows no contact box at all. That's the `unassigned` default.
 
 Each workshop has:
 - `workshop_id`: a short, permanent ID, sent with analytics events
@@ -115,26 +117,24 @@ Each workshop has:
 | Aircond (JB-wide) | Fresh Air Car Aircond Service; ACS CAR SERVICE - Skudai |
 | Tyres (JB-wide) | Continental Syarikat Lim Chin Hin; Hawk Tyre Service Sdn Bhd - Tebrau |
 
-Every other page shows "coming soon": home, servicing, battery, 24-hour mechanic, gearbox, body paint, towing and near KSL.
+Every other page has no contact box yet: home, servicing, battery, 24-hour mechanic, gearbox, body paint, towing and near KSL.
 
 Each workshop gets its own card with:
 - its name, coverage line and opening hours
 - a Call button
 - a WhatsApp button, only if it has one
 
-Each card sends its own analytics events with its own `workshop_id`. The disclosure lines appear once per page. Trial workshops never get a form or a logo; the form only appears for a `tenant` that has its own `web3forms_key`.
+Each card sends its own analytics events with its own `workshop_id`. The intro line appears once per page. Trial workshops never get a form or a logo; the form only appears for a `tenant` that has its own `web3forms_key`.
 
 The build refuses a workshop with missing or placeholder details, a page with more than 2 workshops, or a trial workshop with a logo or photo. Workshop names and numbers appear **only in visible text and buttons**, never in the page's structured data or meta tags. A test checks this on every build.
 
 To change who shows on a page, edit `routing.json` and open a pull request. Nothing changes on the site until you merge it.
 
-The disclosure lines (approved wording) come from `disclosures.json`:
+The disclosure wording (approved wording) comes from `disclosures.json`:
 
-- **trial:**
-  - "{{ brand }} is an independent guide and isn't affiliated with them."
-  - "Chosen from public Google reviews and, where known, years in business."
-  - "We aren't paid by the workshops we suggest."
-- **tenant:** "{{ workshop.name }} pays {{ brand }} a flat fee to be featured here. It doesn't change the price they quote you." This shows once per tenant workshop.
+- **All cards trial:** one intro above the cards: "Here are well-reviewed local workshops for this area. Call or WhatsApp them directly. {{ brand }} is an independent guide and isn't affiliated with them. Chosen from public Google reviews and, where known, years in business. We aren't paid by the workshops we suggest."
+- **Any tenant card on the page:** the shared intro is only the first two sentences. Each tenant card gets "{{ brand }} is a car workshop guide. {{ workshop.name }} pays {{ brand }} a flat fee to be featured here. It doesn't change the price they quote you." Each trial card gets the last three sentences of the intro.
+- **No workshop:** nothing.
 - **when any card has WhatsApp:** a note from `i18n.json` that quotes the WhatsApp pre-fill.
 
 ### Brand and WhatsApp text

@@ -1,21 +1,17 @@
 {
-  "_comment": "Disclosure lines shown with the contact buttons once a workshop is attached. Approved wording. 'independence' and 'selectionMethod' show in trial mode; 'paidBy' shows in trial and tenant mode with different text. The note under the buttons lives in i18n.json. {{ brand }} comes from site.json and {{ workshop.name }} from that area's routing.json entry. The build refuses to show a TODO line on a live (trial/tenant) page.",
-  "independence": {
-    "ms": "{{ brand }} ialah panduan bebas dan tidak bergabung dengan bengkel ini.",
-    "en": "{{ brand }} is an independent guide and isn't affiliated with them."
-  },
-  "selectionMethod": {
-    "ms": "Dipilih berdasarkan ulasan Google awam dan, jika diketahui, tempoh beroperasi.",
-    "en": "Chosen from public Google reviews and, where known, years in business."
-  },
-  "paidBy": {
-    "trial": {
-      "ms": "Kami tidak dibayar oleh bengkel yang kami cadangkan.",
-      "en": "We aren't paid by the workshops we suggest."
+  "_comment": "Approved wording shown with workshop cards. 'trialIntro.lead' + 'trialIntro.trialClaims' together form the plural intro, shown once on a page whose cards are all trial. On a page with any tenant card, only 'lead' is shown as the shared intro; each tenant card gets 'tenantCard' and each trial card gets 'trialClaims'. Pages with no workshop show none of this. {{ brand }} comes from site.json and {{ workshop.name }} from routing.json. The build refuses TODO wording on a page that needs it.",
+  "trialIntro": {
+    "lead": {
+      "en": "Here are well-reviewed local workshops for this area. Call or WhatsApp them directly.",
+      "ms": "Berikut ialah bengkel tempatan yang mendapat ulasan baik di kawasan ini. Hubungi atau WhatsApp mereka terus."
     },
-    "tenant": {
-      "ms": "{{ workshop.name }} membayar yuran tetap kepada {{ brand }} untuk dipaparkan di sini. Ia tidak mengubah harga yang mereka sebut kepada anda.",
-      "en": "{{ workshop.name }} pays {{ brand }} a flat fee to be featured here. It doesn't change the price they quote you."
+    "trialClaims": {
+      "en": "{{ brand }} is an independent guide and isn't affiliated with them. Chosen from public Google reviews and, where known, years in business. We aren't paid by the workshops we suggest.",
+      "ms": "{{ brand }} ialah panduan bebas dan tidak bergabung dengan bengkel-bengkel ini. Dipilih berdasarkan ulasan Google awam dan, jika diketahui, tempoh beroperasi. Kami tidak dibayar oleh bengkel yang kami cadangkan."
     }
+  },
+  "tenantCard": {
+    "en": "{{ brand }} is a car workshop guide. {{ workshop.name }} pays {{ brand }} a flat fee to be featured here. It doesn't change the price they quote you.",
+    "ms": "{{ brand }} ialah panduan bengkel kereta. {{ workshop.name }} membayar yuran tetap kepada {{ brand }} untuk dipaparkan di sini. Ia tidak mengubah harga yang mereka sebut kepada anda."
   }
 }

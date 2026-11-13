@@ -4,6 +4,13 @@
   "brand": "JBCarFix",
   "_brandTodo": "TODO: confirm the brand name. Text anywhere in the data files can use {{ brand }} and it is filled in at build time.",
   "tenantMode": false,
+  "_indexHold": "Pages kept out of Google (noindex, no sitemap, no hreflang) even once their copy is real. Last part of the URL, both languages.",
+  "indexHold": [
+    "cat-kereta",
+    "car-body-paint",
+    "towing-kereta",
+    "car-towing"
+  ],
   "tenant": {
     "_comment": "Used ONLY when tenantMode is true. Real details of the signed workshop. Leave null until then; never invent an address, map pin, rating or review.",
     "name": null,
@@ -56,8 +63,7 @@
       "otherLangLabel": "English",
       "skip": "Langkau ke kandungan",
       "draft": "DRAFT – content pending",
-      "connectLine": "{{ brand }} membantu pemandu di sekitar Johor Bahru berhubung dengan bengkel kereta tempatan. Kami bukan bengkel dan tidak membuat kerja pembaikan sendiri.",
-      "footerLine": "{{ brand }} ialah perkhidmatan yang menghubungkan pemandu dengan bengkel kereta tempatan di Johor Bahru. Kami bukan bengkel.",
+      "connectLine": "Panduan bebas bengkel kereta tempatan di Johor Bahru.",
       "servicesHeading": "Perkhidmatan",
       "areasHeading": "Kawasan",
       "nearbyHeading": "Kawasan berdekatan",
@@ -77,7 +83,7 @@
       "formSubmit": "Hantar",
       "formSending": "Menghantar…",
       "formError": "Maaf, permintaan tidak dapat dihantar. Sila cuba lagi atau hubungi kami melalui WhatsApp.",
-      "areaServiceName": "Menghubungkan pemandu dengan bengkel kereta tempatan",
+      "areaServiceName": "Panduan bengkel kereta tempatan di Johor Bahru",
       "notFoundTitle": "Halaman tidak dijumpai",
       "notFoundBody": "Halaman yang anda cari tiada.",
       "homeLink": "Ke laman utama",
@@ -85,12 +91,11 @@
       "formPhoneHint": "Contoh: 012-345 6789",
       "formInvalid": "Sila semak nama, nombor telefon dan persetujuan anda.",
       "thanksBody": "Terima kasih. Permintaan anda telah dihantar.",
-      "comingSoon": "Pilihan untuk menghubungi bengkel di kawasan ini akan datang tidak lama lagi.",
       "formNoJs": "Borang ini dihantar terus kepada bengkel melalui Web3Forms.",
       "hoursLabel": "Waktu operasi (Google Maps)",
       "servicesOnlyLabel": "Perkhidmatan",
       "generalService": "Pembaikan am dan servis",
-      "orgDescription": "{{ brand }} ialah panduan bebas bengkel kereta di Johor Bahru. Kami bukan bengkel dan tidak bergabung dengan bengkel yang dicadangkan."
+      "orgDescription": "{{ brand }} ialah panduan bebas bengkel kereta di Johor Bahru. Kami bukan bengkel. Harga, masa siap dan jaminan kerja ditentukan oleh bengkel itu sendiri. Setiap halaman menyatakan sama ada bengkel yang disenaraikan membayar kami."
     },
     "en": {
       "htmlLang": "en",
@@ -98,8 +103,7 @@
       "otherLangLabel": "Bahasa Melayu",
       "skip": "Skip to content",
       "draft": "DRAFT – content pending",
-      "connectLine": "{{ brand }} helps drivers around Johor Bahru get in touch with local car workshops. We are not a workshop and do not carry out repairs ourselves.",
-      "footerLine": "{{ brand }} is a service that connects drivers with local car workshops in Johor Bahru. We are not a workshop.",
+      "connectLine": "An independent guide to local car workshops in Johor Bahru.",
       "servicesHeading": "Services",
       "areasHeading": "Areas",
       "nearbyHeading": "Nearby areas",
@@ -119,7 +123,7 @@
       "formSubmit": "Send",
       "formSending": "Sending…",
       "formError": "Sorry, your request could not be sent. Please try again or contact us on WhatsApp.",
-      "areaServiceName": "Connecting drivers with local car workshops",
+      "areaServiceName": "Guide to local car workshops in Johor Bahru",
       "notFoundTitle": "Page not found",
       "notFoundBody": "The page you are looking for does not exist.",
       "homeLink": "Go to the home page",
@@ -127,12 +131,11 @@
       "formPhoneHint": "Example: 012-345 6789",
       "formInvalid": "Please check your name, phone number and consent.",
       "thanksBody": "Thank you. Your request has been sent.",
-      "comingSoon": "Ways to contact a workshop in this area are coming soon.",
       "formNoJs": "This form is sent directly to the workshop through Web3Forms.",
       "hoursLabel": "Opening hours (Google Maps)",
       "servicesOnlyLabel": "Services",
       "generalService": "General repair and servicing",
-      "orgDescription": "{{ brand }} is an independent guide to car workshops in Johor Bahru. We're not a workshop and aren't affiliated with the workshops we suggest."
+      "orgDescription": "{{ brand }} is an independent guide to car workshops in Johor Bahru. We're not a workshop. Prices, timing and any warranty come from the workshop itself. Each page says whether a listed workshop pays us."
     }
   }
 }

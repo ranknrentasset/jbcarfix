@@ -1,10 +1,13 @@
 {%- set s = site.strings[entry.lang] -%}
 {%- set list = entry.workshops | resolveWorkshops(routing) -%}
+{#- No workshop listed: no contact box at all (no buttons, no "coming soon" hints). #}
+{%- if list.length %}
+{%- set hasTenant = list | byStatus("tenant") | length %}
 <section class="contact" id="contact">
   <h2>{{ s.contactHeading }}</h2>
-{%- if not list.length %}
-  <p class="soon">{{ s.comingSoon }}</p>
-{%- else %}
+  {#- Shared intro, once per page. All-trial pages get the full plural intro; a page with any
+      tenant card gets only the first two sentences, and each card carries its own line. #}
+  <p class="ws-intro">{{ disclosures.trialIntro.lead[entry.lang] | fill }}{% if not hasTenant %} {{ disclosures.trialIntro.trialClaims[entry.lang] | fill }}{% endif %}</p>
 {#- Workshop names and numbers appear only in these visible cards, never in JSON-LD or meta tags.
     Each card carries its own analytics parameters (data-ev-*), read by site.js. #}
   <div class="ws-list">
@@ -35,6 +38,9 @@
       <a class="btn btn-wa" href="{{ w | waLink(i18n.whatsappText[entry.lang], entry.key, entry.lang, routing) }}" rel="noopener" data-ev="click_whatsapp">{{ w.whatsapp_label or s.whatsappLabel }}</a>
       {%- endif %}
     </p>
+    {%- if hasTenant %}
+    <p class="ws-disclosure">{{ (disclosures.tenantCard if w.tenant_status == "tenant" else disclosures.trialIntro.trialClaims)[entry.lang] | fill({ workshop: w.workshop }) }}</p>
+    {%- endif %}
     {%- if w.tenant_status == "tenant" and w.web3forms_key %}
     {% include "partials/lead-form.njk" %}
     {%- endif %}
@@ -44,16 +50,5 @@
   {%- if list | withWhatsapp | length %}
   <p class="note">{{ i18n | underButtonNote(entry.lang) }}</p>
   {%- endif %}
-  {#- Disclosure lines: once per page. #}
-  <ul class="disclosures">
-  {%- if list | byStatus("trial") | length %}
-    <li>{{ disclosures.independence[entry.lang] | fill }}</li>
-    <li>{{ disclosures.selectionMethod[entry.lang] | fill }}</li>
-    <li>{{ disclosures.paidBy.trial[entry.lang] | fill }}</li>
-  {%- endif %}
-  {%- for w in list | byStatus("tenant") %}
-    <li>{{ disclosures.paidBy.tenant[entry.lang] | fill({ workshop: w.workshop }) }}</li>
-  {%- endfor %}
-  </ul>
-{%- endif %}
 </section>
+{%- endif %}

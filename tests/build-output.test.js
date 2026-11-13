@@ -55,8 +55,17 @@ test("no {{ ... }} left unfilled and brand appears", () => {
     assert.ok(!/\{\{/.test(html), `${f} has an unfilled variable`);
   }
   const brand = JSON.parse(fs.readFileSync(path.join(ROOT, "src/_data/site.json"), "utf8")).brand;
-  assert.ok(read("index.html").includes(`<p class="connect">${brand} membantu`), "brand filled into Malay hero line");
+  assert.ok(read("index.html").includes(`<p class="connect">${brand} ialah panduan bebas`), "brand filled into Malay footer line");
 });
+
+// A page with no workshop must not show buttons, a contact box, or wording that suggests a
+// workshop is recommended or coming ("call us", "we'll find you a workshop", "coming soon"...).
+const NO_WORKSHOP_HINTS = /coming soon|akan datang|tidak lama lagi|call us|call now|hubungi kami|we'll find|we will find|find you a (workshop|mechanic)|carikan (anda )?bengkel|will be listed|akan disenaraikan|recommended workshop|bengkel (yang )?disyorkan|contact a workshop|menghubungi bengkel|well-reviewed|ulasan baik|Call or WhatsApp|Hubungi atau WhatsApp/i;
+function assertNoWorkshopHints(html, label) {
+  assert.doesNotMatch(html, /tel:|wa\.me|<form|class="contact"|class="soon"|class="ws-|class="btn/, label);
+  const visible = dec(html.replace(/<script[\s\S]*?<\/script>/g, "").replace(/<[^>]+>/g, " "));
+  assert.doesNotMatch(visible, NO_WORKSHOP_HINTS, label);
+}
 
 test("no GA4 tag when ga4_measurement_id is empty", () => {
   const site = JSON.parse(fs.readFileSync(path.join(ROOT, "src/_data/site.json"), "utf8"));
@@ -79,9 +88,20 @@ test("each page shows exactly the workshops routing.json lists, one card each", 
   for (const rel of ["index.html", "en/index.html", "servis/index.html", "bateri/index.html", "mekanik-24-jam/index.html", "pakar-gearbox/index.html", "cat-kereta/index.html", "towing-kereta/index.html", "en/near-ksl/index.html"]) {
     const html = read(rel);
     assert.equal(cards(html).length, 0, rel);
-    assert.match(html, /class="soon"/, rel);
-    assert.doesNotMatch(html, /tel:|wa\.me|<form/, rel);
+    assertNoWorkshopHints(html, rel);
   }
+});
+
+test("pages with no workshop carry no buttons and no wording that hints at a workshop", () => {
+  const site = path.join(ROOT, "_site");
+  let checked = 0;
+  for (const f of htmlFiles(site)) {
+    const html = fs.readFileSync(f, "utf8");
+    if (cards(html).length || !/class="hero"/.test(html) || /privasi|privacy|terima-kasih|thank-you/.test(f)) continue;
+    assertNoWorkshopHints(html, f);
+    checked++;
+  }
+  assert.ok(checked >= 10, `only ${checked} no-workshop pages checked`);
 });
 
 test("trial cards: name, coverage, hours, call always, WhatsApp only when set, no form", () => {
@@ -105,15 +125,39 @@ test("trial cards: name, coverage, hours, call always, WhatsApp only when set, n
   assert.doesNotMatch(read("en/larkin/index.html"), /company line|phone-label/);
 });
 
-test("disclosure lines show once per page, trial wording only", () => {
-  const en = dec(read("en/kulai/index.html"));
-  const ms = read("kulai/index.html");
-  assert.equal(en.split("JBCarFix is an independent guide and isn't affiliated with them.").length - 1, 1);
-  assert.equal(en.split("Chosen from public Google reviews and, where known, years in business.").length - 1, 1);
-  assert.equal(en.split("We aren't paid by the workshops we suggest.").length - 1, 1);
-  assert.equal(ms.split("JBCarFix ialah panduan bebas dan tidak bergabung dengan bengkel ini.").length - 1, 1);
-  assert.equal(ms.split("Kami tidak dibayar oleh bengkel yang kami cadangkan.").length - 1, 1);
+const INTRO = {
+  en: "Here are well-reviewed local workshops for this area. Call or WhatsApp them directly. JBCarFix is an independent guide and isn't affiliated with them. Chosen from public Google reviews and, where known, years in business. We aren't paid by the workshops we suggest.",
+  ms: "Berikut ialah bengkel tempatan yang mendapat ulasan baik di kawasan ini. Hubungi atau WhatsApp mereka terus. JBCarFix ialah panduan bebas dan tidak bergabung dengan bengkel-bengkel ini. Dipilih berdasarkan ulasan Google awam dan, jika diketahui, tempoh beroperasi. Kami tidak dibayar oleh bengkel yang kami cadangkan.",
+};
+const LEAD = { en: INTRO.en.split(" JBCarFix")[0], ms: INTRO.ms.split(" JBCarFix")[0] };
+const introOf = (html) => dec((html.match(/<p class="ws-intro">([^<]*)<\/p>/) || [])[1] || "");
+
+test("trial pages show the plural intro once, before the cards, and no per-card lines", () => {
+  for (const [rel, lang] of [["en/kulai/index.html", "en"], ["kulai/index.html", "ms"], ["tayar/index.html", "ms"], ["en/car-aircon/index.html", "en"]]) {
+    const html = read(rel);
+    assert.equal(introOf(html), INTRO[lang], rel);
+    assert.equal(html.split('class="ws-intro"').length - 1, 1, rel);
+    assert.ok(html.indexOf('class="ws-intro"') < html.indexOf('class="ws-card"'), rel);
+    assert.doesNotMatch(html, /class="ws-disclosure"/, rel);
+    assert.equal(dec(html).split("We aren't paid by").length + dec(html).split("Kami tidak dibayar").length - 2, 1, rel);
+  }
   for (const f of htmlFiles(path.join(ROOT, "_site"))) assert.doesNotMatch(fs.readFileSync(f, "utf8"), /flat fee|yuran tetap/, f);
+});
+
+test("site-wide lines and structured data use the approved guide wording", () => {
+  const en = dec(read("en/index.html")), ms = dec(read("index.html"));
+  const ORG = {
+    en: "JBCarFix is an independent guide to car workshops in Johor Bahru. We're not a workshop. Prices, timing and any warranty come from the workshop itself. Each page says whether a listed workshop pays us.",
+    ms: "JBCarFix ialah panduan bebas bengkel kereta di Johor Bahru. Kami bukan bengkel. Harga, masa siap dan jaminan kerja ditentukan oleh bengkel itu sendiri. Setiap halaman menyatakan sama ada bengkel yang disenaraikan membayar kami.",
+  };
+  for (const [html, l, top] of [[en, "en", "An independent guide to local car workshops in Johor Bahru."], [ms, "ms", "Panduan bebas bengkel kereta tempatan di Johor Bahru."]]) {
+    assert.ok(html.includes(`<p class="connect">${top}</p>`), `${l} top line`);
+    assert.ok(html.includes(`<p class="connect">${ORG[l]}</p>`), `${l} footer`);
+    assert.ok(html.includes(`"description":"${ORG[l]}"`), `${l} Organization description`);
+  }
+  assert.ok(read("en/kulai/index.html").includes('"name":"Guide to local car workshops in Johor Bahru"'));
+  assert.ok(read("kulai/index.html").includes('"name":"Panduan bengkel kereta tempatan di Johor Bahru"'));
+  for (const f of htmlFiles(path.join(ROOT, "_site"))) assert.doesNotMatch(fs.readFileSync(f, "utf8"), /connects drivers|menghubungkan pemandu|Connecting drivers/i, f);
 });
 
 test("WhatsApp links are encoded correctly and the note quotes the pre-fill", () => {
@@ -176,7 +220,8 @@ test("tenant workshop and GA4 ID (throwaway build): form, logo, tenant line, gta
   const hours = r.workshops[r.areas.kulai[0]].hours;
   r.workshops["ws-test-tenant"] = { workshop_id: "ws-test-tenant", workshop: { name: "Test Tenant Workshop", area: "Skudai", coverage: { en: "Workshop in Testville", ms: "Bengkel di Testville" }, logo: "/assets/test-logo.png" },
     phone: "+60123456782", phone_display: "012-345 6782", whatsapp: "60123456782", web3forms_key: "test-key-2", tenant_status: "tenant", hours };
-  r.areas.skudai = ["ws-test-tenant"];
+  r.areas.skudai = ["ws-test-tenant", "ws-acs-skudai"]; // mixed: one tenant card, one trial card
+  r.areas.larkin = ["ws-test-tenant"];                   // tenant only
   fs.writeFileSync(rp, JSON.stringify(r));
   const sp = path.join(tmp, "src/_data/site.json");
   const tmpSite = JSON.parse(fs.readFileSync(sp, "utf8"));
@@ -188,9 +233,24 @@ test("tenant workshop and GA4 ID (throwaway build): form, logo, tenant line, gta
   assertNoRoutingInData(out, r);
 
   const skudaiEn = dec(read("en/skudai/index.html", out));
-  assert.ok(skudaiEn.includes("Test Tenant Workshop pays JBCarFix a flat fee to be featured here. It doesn't change the price they quote you."));
-  assert.ok(read("skudai/index.html", out).includes("Test Tenant Workshop membayar yuran tetap kepada JBCarFix untuk dipaparkan di sini. Ia tidak mengubah harga yang mereka sebut kepada anda."));
-  assert.doesNotMatch(skudaiEn, /<li>[^<]*(independent guide|public Google reviews)/);
+  const TENANT = { en: "JBCarFix is a car workshop guide. Test Tenant Workshop pays JBCarFix a flat fee to be featured here. It doesn't change the price they quote you.",
+    ms: "JBCarFix ialah panduan bengkel kereta. Test Tenant Workshop membayar yuran tetap kepada JBCarFix untuk dipaparkan di sini. Ia tidak mengubah harga yang mereka sebut kepada anda." };
+  const CLAIMS = { en: INTRO.en.slice(LEAD.en.length + 1), ms: INTRO.ms.slice(LEAD.ms.length + 1) };
+  for (const [rel, lang] of [["en/skudai/index.html", "en"], ["skudai/index.html", "ms"]]) {
+    const html = read(rel, out);
+    assert.equal(introOf(html), LEAD[lang], `${rel}: mixed page shares only the first two sentences`);
+    const cs = cards(html);
+    const tenantCard = dec(cs.find((c) => c.id === "ws-test-tenant").body), trialCard = dec(cs.find((c) => c.id === "ws-acs-skudai").body);
+    assert.ok(tenantCard.includes(`<p class="ws-disclosure">${TENANT[lang]}</p>`), `${rel} tenant card line`);
+    assert.ok(!tenantCard.includes(CLAIMS[lang].split(".")[0]), `${rel}: tenant card has no independence or not-paid claim`);
+    assert.ok(trialCard.includes(`<p class="ws-disclosure">${CLAIMS[lang]}</p>`), `${rel} trial card line`);
+    assert.ok(!trialCard.includes("flat fee") && !trialCard.includes("yuran tetap"), rel);
+    assert.equal(dec(html).split(CLAIMS[lang]).length - 1, 1, `${rel}: trial claims appear once, on the trial card`);
+  }
+  const larkinEn = read("en/larkin/index.html", out);
+  assert.equal(introOf(larkinEn), LEAD.en, "tenant-only page: first two sentences only");
+  assert.ok(dec(larkinEn).includes(TENANT.en));
+  assert.doesNotMatch(dec(larkinEn), /aren't paid|independent guide and isn't affiliated/);
   assert.match(skudaiEn, /<img[^>]+test-logo\.png/);
   assert.match(skudaiEn, /name="access_key" value="test-key-2"/);
   assert.match(skudaiEn, /name="workshop_id" value="ws-test-tenant"/);
@@ -206,7 +266,8 @@ test("tenant workshop and GA4 ID (throwaway build): form, logo, tenant line, gta
   vm.runInNewContext(read("assets/ga4.js", out), { window: gaWin });
   assert.deepEqual(Array.from(gaWin.dataLayer[1]), ["config", "G-TEST12345"]);
   const calls = clickAll(read("en/skudai/index.html", out), read("assets/site.js", out));
-  assert.deepEqual(calls.map((c) => [c[1], c[2].workshop_id, c[2].tenant_status]), [["click_call", "ws-test-tenant", "tenant"], ["click_whatsapp", "ws-test-tenant", "tenant"]]);
+  assert.deepEqual(calls.filter((c) => c[2].workshop_id === "ws-test-tenant").map((c) => [c[1], c[2].tenant_status]), [["click_call", "tenant"], ["click_whatsapp", "tenant"]]);
+  assert.ok(calls.some((c) => c[2].workshop_id === "ws-acs-skudai" && c[2].tenant_status === "trial"));
 
   fs.rmSync(tmp, { recursive: true, force: true });
 });
@@ -220,7 +281,7 @@ test("every listed workshop has a phone_display matching its tel: number", () =>
 
 const sitemapUrls = (xml) => [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 
-test("thin-page guard: placeholder or coming-soon pages are noindex,follow, out of the sitemap, no hreflang", () => {
+test("thin-page guard: placeholder pages are noindex,follow, out of the sitemap, no hreflang", () => {
   const site = path.join(ROOT, "_site");
   assert.deepEqual(sitemapUrls(read("sitemap.xml")), [], "every page is still placeholder copy, so the sitemap is empty");
   for (const f of htmlFiles(site)) {
@@ -230,7 +291,7 @@ test("thin-page guard: placeholder or coming-soon pages are noindex,follow, out 
   }
 });
 
-test("thin-page guard lifts once copy is real and workshops are listed (throwaway build)", () => {
+test("thin-page guard lifts once copy is real, with or without workshops; held pages stay hidden (throwaway build)", () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "jbcf-"));
   for (const item of ["src", "lib", "public", "eleventy.config.js", "package.json"]) {
     fs.cpSync(path.join(ROOT, item), path.join(tmp, item), { recursive: true });
@@ -250,8 +311,11 @@ test("thin-page guard lifts once copy is real and workshops are listed (throwawa
   };
   setCopy("areas/kulai.json", "Kulai", ["ms", "en"]);   // real copy + workshops -> indexable pair
   setCopy("areas/skudai.json", "Skudai", ["en"]);       // Malay still DRAFT -> only English indexable, no hreflang pair
-  setCopy("areas/larkin.json", "Larkin", ["ms", "en"]); // real copy but no workshops -> stays noindex
+  setCopy("areas/larkin.json", "Larkin", ["ms", "en"]); // real copy, no workshops -> indexable, no contact box
+  setCopy("home.json", "Home", ["ms", "en"]);           // real copy, no workshops -> indexable
   setCopy("services/tayar.json", "Tyres", ["ms", "en"]);
+  setCopy("services/cat-kereta.json", "Paint", ["ms", "en"]);    // on the hold list -> stays hidden
+  setCopy("services/towing-kereta.json", "Towing", ["ms", "en"]); // on the hold list -> stays hidden
   const rp = path.join(tmp, "src/_data/routing.json");
   const r = JSON.parse(fs.readFileSync(rp, "utf8"));
   r.areas.larkin = [];
@@ -261,7 +325,7 @@ test("thin-page guard lifts once copy is real and workshops are listed (throwawa
   const out = path.join(tmp, "_site");
   const B = "https://jbcarfix.com";
   const xml = read("sitemap.xml", out);
-  assert.deepEqual(sitemapUrls(xml).sort(), [`${B}/en/kulai/`, `${B}/en/skudai/`, `${B}/en/tyres/`, `${B}/kulai/`, `${B}/tayar/`].sort());
+  assert.deepEqual(sitemapUrls(xml).sort(), [`${B}/`, `${B}/en/`, `${B}/en/kulai/`, `${B}/en/larkin/`, `${B}/en/skudai/`, `${B}/en/tyres/`, `${B}/kulai/`, `${B}/larkin/`, `${B}/tayar/`].sort());
 
   const entry = (u) => xml.split("<url>").find((x) => x.includes(`<loc>${B}${u}</loc>`));
   assert.match(entry("/kulai/"), /hreflang="ms" href="https:\/\/jbcarfix\.com\/kulai\/"/);
@@ -276,8 +340,18 @@ test("thin-page guard lifts once copy is real and workshops are listed (throwawa
   assert.doesNotMatch(skudaiEn, /name="robots"/);
   assert.doesNotMatch(skudaiEn, /<link rel="alternate" hreflang=/);
   assert.match(read("skudai/index.html", out), /<meta name="robots" content="noindex,follow">/);
-  assert.match(read("larkin/index.html", out), /<meta name="robots" content="noindex,follow">/);
-  assert.match(read("index.html", out), /<meta name="robots" content="noindex,follow">/, "home: no workshops yet");
+  for (const rel of ["index.html", "en/index.html", "larkin/index.html", "en/larkin/index.html"]) {
+    const html = read(rel, out);
+    assert.doesNotMatch(html, /name="robots"/, `${rel}: real copy, no workshop -> indexable`);
+    assert.match(html, /<link rel="alternate" hreflang="x-default"/, rel);
+    assertNoWorkshopHints(html, rel);
+  }
+  for (const rel of ["cat-kereta/index.html", "en/car-body-paint/index.html", "towing-kereta/index.html", "en/car-towing/index.html"]) {
+    const html = read(rel, out);
+    assert.match(html, /<meta name="robots" content="noindex,follow">/, `${rel} is on the hold list`);
+    assert.doesNotMatch(html, /<link rel="alternate" hreflang=/, rel);
+    assertNoWorkshopHints(html, rel);
+  }
 
   fs.rmSync(tmp, { recursive: true, force: true });
 });
