@@ -132,7 +132,7 @@
       "hoursLabel": "Opening hours (Google Maps)",
       "servicesOnlyLabel": "Services",
       "generalService": "General repair and servicing",
-      "orgDescription": "{{ brand }} is an independent guide to car workshops in Johor Bahru. We are not a workshop and are not affiliated with the workshops we suggest."
+      "orgDescription": "{{ brand }} is an independent guide to car workshops in Johor Bahru. We're not a workshop and aren't affiliated with the workshops we suggest."
     }
   }
 }
