@@ -1,0 +1,34 @@
+{%- set s = site.strings[entry.lang] -%}
+{%- set pre = "" if entry.lang == "ms" else "/en" -%}
+{%- set a = entry.record -%}
+{% include "partials/blocks.njk" %}
+{%- if a.landmarks.length %}
+<section class="block">
+  <h2>{{ s.landmarksHeading }}</h2>
+  <ul>
+  {%- for l in a.landmarks %}
+    <li>{{ l[entry.lang] or l }}</li>
+  {%- endfor %}
+  </ul>
+</section>
+{%- endif %}
+<section class="grid-sec">
+  <h2>{{ s.servicesHeading }}</h2>
+  <ul class="grid">
+  {%- for k in a.services %}
+    <li><a href="{{ pre }}/{{ services[k].slug[entry.lang] }}/">{{ services[k].name[entry.lang] }}</a></li>
+  {%- endfor %}
+  </ul>
+</section>
+{%- if a.nearby.length %}
+<section class="grid-sec">
+  <h2>{{ s.nearbyHeading }}</h2>
+  <ul class="grid">
+  {%- for k in a.nearby %}
+    <li><a href="{{ pre }}/{{ k }}/">{{ areas[k].name[entry.lang] }}</a></li>
+  {%- endfor %}
+  </ul>
+</section>
+{%- endif %}
+{% include "partials/faqs.njk" %}
+{% include "partials/contact.njk" %}

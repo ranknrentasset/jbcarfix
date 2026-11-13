@@ -1,0 +1,50 @@
+{%- set s = site.strings[entry.lang] -%}
+{%- set r = routing.entries[entry.routingKey] -%}
+<section class="contact" id="contact">
+  <h2>{{ s.contactHeading }}</h2>
+  <p class="cta">
+    <a class="btn" href="tel:{{ r.phone }}">{{ s.callLabel }} {{ r.phoneDisplay }}</a>
+    <a class="btn btn-wa" href="{{ r | waLink(entry.content.whatsappText + ' [ref: ' + entry.key + '-' + entry.lang + ']', entry.key, entry.lang, routing) }}" rel="noopener">{{ s.whatsappLabel }}</a>
+  </p>
+  <form class="lead" action="/api/lead" method="post" data-lead-form data-ok="{{ s.formOk }}" data-error="{{ s.formError }}" data-sending="{{ s.formSending }}">
+    <h3>{{ s.formHeading }}</h3>
+    <input type="hidden" name="lang" value="{{ entry.lang }}">
+    <input type="hidden" name="page" value="{{ entry.url }}">
+    <input type="hidden" name="utm_source" value="">
+    <input type="hidden" name="utm_medium" value="">
+    <input type="hidden" name="utm_campaign" value="">
+    <input type="hidden" name="utm_term" value="">
+    <input type="hidden" name="utm_content" value="">
+    <div class="hp" aria-hidden="true">
+      <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+    </div>
+    <label>{{ s.formName }}
+      <input type="text" name="name" required minlength="2" maxlength="80" autocomplete="name">
+    </label>
+    <label>{{ s.formPhone }}
+      <input type="tel" name="phone" required maxlength="20" autocomplete="tel" inputmode="tel">
+    </label>
+    <label>{{ s.formArea }}
+      <select name="area" required>
+        {%- for k in site.areaOrder %}
+        <option value="{{ k }}"{% if entry.type == "area" and entry.key == k %} selected{% endif %}>{{ areas[k].name[entry.lang] }}</option>
+        {%- endfor %}
+        <option value="other"{% if entry.type != "area" %} selected{% endif %}>{{ s.formOther }}</option>
+      </select>
+    </label>
+    <label>{{ s.formService }}
+      <select name="service" required>
+        {%- for k in site.serviceOrder %}
+        <option value="{{ k }}"{% if entry.type == "service" and entry.key == k %} selected{% endif %}>{{ services[k].name[entry.lang] }}</option>
+        {%- endfor %}
+        <option value="other"{% if entry.type != "service" %} selected{% endif %}>{{ s.formOther }}</option>
+      </select>
+    </label>
+    <label>{{ s.formMessage }}
+      <textarea name="message" rows="3" maxlength="1000"></textarea>
+    </label>
+    <label class="check"><input type="checkbox" name="consent" value="yes" required> {{ s.formConsent }}</label>
+    <button type="submit" class="btn">{{ s.formSubmit }}</button>
+    <p class="status" role="status" aria-live="polite"></p>
+  </form>
+</section>

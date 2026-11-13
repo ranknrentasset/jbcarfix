@@ -1,0 +1,11 @@
+node_modules/
+_site/
+.env
+.env.*
+.dev.vars
+private/
+**/private/
+.wrangler/
+.DS_Store
+*.log
+lighthouse-*.json

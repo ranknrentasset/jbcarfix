@@ -1,0 +1,93 @@
+{%- set s = site.strings[entry.lang] -%}
+{%- set pre = "" if entry.lang == "ms" else "/" + entry.lang -%}
+{%- set other = "en" if entry.lang == "ms" else "ms" -%}
+{%- set c = entry.content -%}
+<!doctype html>
+<html lang="{{ s.htmlLang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ c.title }}</title>
+{%- if c.description %}
+<meta name="description" content="{{ c.description }}">
+{%- endif %}
+{%- if entry.noindex %}
+<meta name="robots" content="noindex">
+{%- endif %}
+{%- if entry.type != "notfound" %}
+<link rel="canonical" href="{{ entry.url | absUrl(site) }}">
+{%- if entry.alternates.ms %}
+<link rel="alternate" hreflang="ms" href="{{ entry.alternates.ms | absUrl(site) }}">
+{%- endif %}
+{%- if entry.alternates.en %}
+<link rel="alternate" hreflang="en" href="{{ entry.alternates.en | absUrl(site) }}">
+{%- endif %}
+<link rel="alternate" hreflang="x-default" href="{{ (entry.alternates.ms or entry.alternates.en) | absUrl(site) }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ site.name }}">
+<meta property="og:title" content="{{ c.title }}">
+{%- if c.description %}
+<meta property="og:description" content="{{ c.description }}">
+{%- endif %}
+<meta property="og:url" content="{{ entry.url | absUrl(site) }}">
+<meta property="og:locale" content="{{ 'ms_MY' if entry.lang == 'ms' else 'en_MY' }}">
+{%- endif %}
+<meta name="theme-color" content="#0b5cad">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="{{ '/assets/site.css' | assetHash }}">
+{%- if entry.type in ["home", "service", "area", "landing"] %}
+<script type="application/ld+json">{{ entry | jsonLd({ site: site, areas: areas, services: services }) | safe }}</script>
+<script src="{{ '/assets/site.js' | assetHash }}" defer></script>
+{%- endif %}
+</head>
+<body>
+<a class="skip" href="#main">{{ s.skip }}</a>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="{{ pre }}/">{{ site.name }}</a>
+    {%- if entry.type != "notfound" %}
+    <a class="lang" hreflang="{{ other }}" lang="{{ other }}" href="{{ entry.alternates[other] or ('/' if other == 'ms' else '/en/') }}">{{ s.otherLangLabel }}</a>
+    {%- endif %}
+  </div>
+</header>
+<main id="main" class="wrap">
+{%- if entry.type != "notfound" %}
+  <section class="hero">
+    <h1>{{ c.h1 }}</h1>
+    <p class="connect">{{ s.connectLine }}</p>
+    <p>{{ c.intro }}</p>
+  </section>
+{%- endif %}
+{{ content | safe }}
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <p class="connect">{{ s.footerLine }}</p>
+    {%- if entry.type != "notfound" %}
+    <nav class="foot-nav" aria-label="{{ s.servicesHeading }}">
+      <h2>{{ s.servicesHeading }}</h2>
+      <ul>
+      {%- for k in site.serviceOrder %}
+        <li><a href="{{ pre }}/{{ services[k].slug[entry.lang] }}/">{{ services[k].name[entry.lang] }}</a></li>
+      {%- endfor %}
+      </ul>
+    </nav>
+    <nav class="foot-nav" aria-label="{{ s.areasHeading }}">
+      <h2>{{ s.areasHeading }}</h2>
+      <ul>
+      {%- for k in site.areaOrder %}
+        <li><a href="{{ pre }}/{{ k }}/">{{ areas[k].name[entry.lang] }}</a></li>
+      {%- endfor %}
+      {%- if entry.lang == "en" %}
+      {%- for k in site.landingOrder %}
+        <li><a href="/en/{{ landings[k].slug.en }}/">{{ landings[k].name.en }}</a></li>
+      {%- endfor %}
+      {%- endif %}
+      </ul>
+    </nav>
+    {%- endif %}
+    <p class="draft">{{ s.draft }}</p>
+  </div>
+</footer>
+</body>
+</html>

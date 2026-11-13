@@ -1,0 +1,13 @@
+{%- set s = site.strings[entry.lang] -%}
+{%- set pre = "" if entry.lang == "ms" else "/en" -%}
+{% include "partials/blocks.njk" %}
+<section class="grid-sec">
+  <h2>{{ s.servicesHeading }}</h2>
+  <ul class="grid">
+  {%- for k in site.serviceOrder %}
+    <li><a href="{{ pre }}/{{ services[k].slug[entry.lang] }}/">{{ services[k].name[entry.lang] }}</a></li>
+  {%- endfor %}
+  </ul>
+</section>
+{% include "partials/faqs.njk" %}
+{% include "partials/contact.njk" %}

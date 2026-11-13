@@ -1,0 +1,26 @@
+{
+  "_comment": "Who receives calls and WhatsApp messages for each area. Every area points to an entry in 'entries'. To hand an area to a workshop later, add an entry for it and change that area's value below. Any change here goes through a pull request that Muhammad merges.",
+  "default": "owner",
+  "areas": {
+    "kulai": "owner",
+    "gelang-patah": "owner",
+    "bukit-indah": "owner",
+    "skudai": "owner",
+    "larkin": "owner",
+    "near-ksl": "owner"
+  },
+  "entries": {
+    "owner": {
+      "label": "JBCarFix (owner)",
+      "status": "placeholder",
+      "phone": "+60000000000",
+      "phoneDisplay": "+60 00-000 0000",
+      "whatsapp": "60000000000",
+      "_todo": "TODO: fake placeholder numbers. Replace with the real launch number before going live."
+    }
+  },
+  "utm": {
+    "source": "jbcarfix",
+    "medium": "whatsapp"
+  }
+}

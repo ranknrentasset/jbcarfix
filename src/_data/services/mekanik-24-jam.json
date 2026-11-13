@@ -1,0 +1,63 @@
+{
+  "_comment": "One file per JB-wide service page. Write this service's own text in every field.",
+  "key": "mekanik-24-jam",
+  "status": "placeholder",
+  "slug": {
+    "ms": "mekanik-24-jam",
+    "en": "24-hour-mechanic"
+  },
+  "name": {
+    "ms": "Mekanik 24 jam",
+    "en": "24-hour mechanic"
+  },
+  "ms": {
+    "title": "Mekanik 24 jam (DRAFT) | JBCarFix",
+    "description": "DRAFT – content pending: penerangan meta untuk Mekanik 24 jam.",
+    "h1": "Mekanik 24 jam – DRAFT",
+    "intro": "DRAFT – content pending: perenggan pembuka untuk Mekanik 24 jam.",
+    "blocks": [
+      {
+        "id": "what-it-covers",
+        "heading": "DRAFT – Apa yang termasuk",
+        "body": "DRAFT – content pending."
+      },
+      {
+        "id": "when-to-get-help",
+        "heading": "DRAFT – Bila perlu dapatkan bantuan",
+        "body": "DRAFT – content pending."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "DRAFT – soalan lazim 1 (Mekanik 24 jam)",
+        "a": "DRAFT – content pending."
+      }
+    ],
+    "whatsappText": "Hai, saya perlukan bantuan kereta (Mekanik 24 jam)"
+  },
+  "en": {
+    "title": "24-hour mechanic (DRAFT) | JBCarFix",
+    "description": "DRAFT – content pending: meta description for 24-hour mechanic.",
+    "h1": "24-hour mechanic – DRAFT",
+    "intro": "DRAFT – content pending: opening paragraph for 24-hour mechanic.",
+    "blocks": [
+      {
+        "id": "what-it-covers",
+        "heading": "DRAFT – What it covers",
+        "body": "DRAFT – content pending."
+      },
+      {
+        "id": "when-to-get-help",
+        "heading": "DRAFT – When to get help",
+        "body": "DRAFT – content pending."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "DRAFT – question 1 (24-hour mechanic)",
+        "a": "DRAFT – content pending."
+      }
+    ],
+    "whatsappText": "Hi, I need help with my car (24-hour mechanic)"
+  }
+}

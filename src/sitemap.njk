@@ -1,0 +1,19 @@
+---
+permalink: /sitemap.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+{%- for p in pages %}{% if p.sitemap and not p.noindex %}
+  <url>
+    <loc>{{ p.url | absUrl(site) }}</loc>
+    {%- if p.alternates.ms %}
+    <xhtml:link rel="alternate" hreflang="ms" href="{{ p.alternates.ms | absUrl(site) }}"/>
+    {%- endif %}
+    {%- if p.alternates.en %}
+    <xhtml:link rel="alternate" hreflang="en" href="{{ p.alternates.en | absUrl(site) }}"/>
+    {%- endif %}
+    <xhtml:link rel="alternate" hreflang="x-default" href="{{ (p.alternates.ms or p.alternates.en) | absUrl(site) }}"/>
+  </url>
+{%- endif %}{% endfor %}
+</urlset>

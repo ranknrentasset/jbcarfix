@@ -1,0 +1,63 @@
+{
+  "_comment": "One file per JB-wide service page. Write this service's own text in every field.",
+  "key": "tayar",
+  "status": "placeholder",
+  "slug": {
+    "ms": "tayar",
+    "en": "tyres"
+  },
+  "name": {
+    "ms": "Tayar",
+    "en": "Tyres"
+  },
+  "ms": {
+    "title": "Tayar (DRAFT) | JBCarFix",
+    "description": "DRAFT – content pending: penerangan meta untuk Tayar.",
+    "h1": "Tayar – DRAFT",
+    "intro": "DRAFT – content pending: perenggan pembuka untuk Tayar.",
+    "blocks": [
+      {
+        "id": "what-it-covers",
+        "heading": "DRAFT – Apa yang termasuk",
+        "body": "DRAFT – content pending."
+      },
+      {
+        "id": "when-to-get-help",
+        "heading": "DRAFT – Bila perlu dapatkan bantuan",
+        "body": "DRAFT – content pending."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "DRAFT – soalan lazim 1 (Tayar)",
+        "a": "DRAFT – content pending."
+      }
+    ],
+    "whatsappText": "Hai, saya perlukan bantuan kereta (Tayar)"
+  },
+  "en": {
+    "title": "Tyres (DRAFT) | JBCarFix",
+    "description": "DRAFT – content pending: meta description for Tyres.",
+    "h1": "Tyres – DRAFT",
+    "intro": "DRAFT – content pending: opening paragraph for Tyres.",
+    "blocks": [
+      {
+        "id": "what-it-covers",
+        "heading": "DRAFT – What it covers",
+        "body": "DRAFT – content pending."
+      },
+      {
+        "id": "when-to-get-help",
+        "heading": "DRAFT – When to get help",
+        "body": "DRAFT – content pending."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "DRAFT – question 1 (Tyres)",
+        "a": "DRAFT – content pending."
+      }
+    ],
+    "whatsappText": "Hi, I need help with my car (Tyres)"
+  }
+}

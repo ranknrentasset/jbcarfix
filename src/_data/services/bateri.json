@@ -1,0 +1,63 @@
+{
+  "_comment": "One file per JB-wide service page. Write this service's own text in every field.",
+  "key": "bateri",
+  "status": "placeholder",
+  "slug": {
+    "ms": "bateri",
+    "en": "car-battery"
+  },
+  "name": {
+    "ms": "Bateri kereta",
+    "en": "Car battery"
+  },
+  "ms": {
+    "title": "Bateri kereta (DRAFT) | JBCarFix",
+    "description": "DRAFT – content pending: penerangan meta untuk Bateri kereta.",
+    "h1": "Bateri kereta – DRAFT",
+    "intro": "DRAFT – content pending: perenggan pembuka untuk Bateri kereta.",
+    "blocks": [
+      {
+        "id": "what-it-covers",
+        "heading": "DRAFT – Apa yang termasuk",
+        "body": "DRAFT – content pending."
+      },
+      {
+        "id": "when-to-get-help",
+        "heading": "DRAFT – Bila perlu dapatkan bantuan",
+        "body": "DRAFT – content pending."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "DRAFT – soalan lazim 1 (Bateri kereta)",
+        "a": "DRAFT – content pending."
+      }
+    ],
+    "whatsappText": "Hai, saya perlukan bantuan kereta (Bateri kereta)"
+  },
+  "en": {
+    "title": "Car battery (DRAFT) | JBCarFix",
+    "description": "DRAFT – content pending: meta description for Car battery.",
+    "h1": "Car battery – DRAFT",
+    "intro": "DRAFT – content pending: opening paragraph for Car battery.",
+    "blocks": [
+      {
+        "id": "what-it-covers",
+        "heading": "DRAFT – What it covers",
+        "body": "DRAFT – content pending."
+      },
+      {
+        "id": "when-to-get-help",
+        "heading": "DRAFT – When to get help",
+        "body": "DRAFT – content pending."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "DRAFT – question 1 (Car battery)",
+        "a": "DRAFT – content pending."
+      }
+    ],
+    "whatsappText": "Hi, I need help with my car (Car battery)"
+  }
+}
