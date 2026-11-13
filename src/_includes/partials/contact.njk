@@ -19,7 +19,7 @@
     <a class="btn" href="tel:{{ r.phone }}" data-ev="click_call">{{ s.callLabel }} {{ r.phone }}</a>
     <a class="btn btn-wa" href="{{ r | waLink(i18n.whatsappText[entry.lang], entry.key, entry.lang, routing) }}" rel="noopener" data-ev="click_whatsapp">{{ s.whatsappLabel }}</a>
   </p>
-  <p class="note">{{ disclosures.underButtonNote[entry.lang] | fill({ workshop: r.workshop }) }}</p>
+  <p class="note">{{ i18n | underButtonNote(entry.lang) }}</p>
   <ul class="disclosures">
 {%- if r.tenant_status == "trial" %}
     <li>{{ disclosures.independence[entry.lang] | fill({ workshop: r.workshop }) }}</li>

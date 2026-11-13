@@ -1,7 +1,11 @@
 {
-  "_comment": "Short interface strings shared by every page. {{ brand }} is filled in from site.json at build time.",
+  "_comment": "Short interface strings shared by every page. {{ brand }} is filled in from site.json at build time. underButtonNote quotes the WhatsApp pre-fill through {{ whatsappText }}, so the two can never drift apart.",
   "whatsappText": {
-    "ms": "Hai, saya jumpa anda di {{ brand }}",
-    "en": "Hi, I found you on {{ brand }}"
+    "ms": "Hai, saya jumpa anda di {{ brand }}.",
+    "en": "Hi, I found you on {{ brand }}."
+  },
+  "underButtonNote": {
+    "ms": "WhatsApp akan dibuka dengan mesej \"{{ whatsappText }}\" yang sudah ditaip. Anda boleh mengubahnya sebelum menghantar.",
+    "en": "WhatsApp opens with \"{{ whatsappText }}\" already typed. You can edit it before you send."
   }
 }

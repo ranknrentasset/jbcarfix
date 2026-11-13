@@ -12,6 +12,12 @@ export function fillVars(text, vars) {
   });
 }
 
+// The note under the WhatsApp button, quoting the exact pre-fill text from i18n.json.
+export function underButtonNote(i18n, lang, brand) {
+  const prefill = fillVars(i18n.whatsappText[lang], { brand });
+  return fillVars(i18n.underButtonNote[lang], { brand, whatsappText: prefill });
+}
+
 // wa.me link: https://wa.me/<number>?text=<urlencoded>, then the area's UTM tags.
 export function waLink(number, text, utm) {
   let url = `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
@@ -22,6 +28,7 @@ export function waLink(number, text, utm) {
 export default function (eleventyConfig) {
   // {{ brand }} in templates, from site.json.
   eleventyConfig.addGlobalData("brand", site.brand);
+  eleventyConfig.addFilter("underButtonNote", (i18n, lang) => underButtonNote(i18n, lang, site.brand));
   eleventyConfig.addFilter("fill", (text, vars) => fillVars(text, { brand: site.brand, ...(vars || {}) }));
 
   // Files Cloudflare Pages reads from the output folder.

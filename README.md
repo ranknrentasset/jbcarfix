@@ -101,13 +101,13 @@ The area page then shows "Your enquiry goes to {{ workshop.name }}, a local work
   - "Chosen from public Google reviews and, where known, years in business."
   - "We aren't paid by the workshops we suggest."
 - **tenant:** "{{ workshop.name }} pays {{ brand }} a flat fee to be featured here. It doesn't change the price they quote you."
-- **both:** a short note under the buttons. Its wording is still TODO.
+- **both:** a note under the buttons, from `i18n.json`: 'WhatsApp opens with "Hi, I found you on {{ brand }}." already typed. You can edit it before you send.' The note quotes the WhatsApp pre-fill through the same value, so the two always match, and a test checks it.
 
 Malay versions sit alongside them in the same file. `{{ workshop.name }}` is filled from that area's `routing.json` entry.
 
 The build refuses to publish a `trial` or `tenant` page while any of these are still true:
 - the entry still has TODO or all-zero values;
-- a line it needs still says TODO, which today means the under-button note;
+- a disclosure line it needs still says TODO;
 - a trial workshop has a logo or photo. A logo can only appear for a `tenant`.
 
 The workshop's name and numbers appear **only in visible text and buttons**, never in the page's structured data or meta tags. A test checks this on every build.
@@ -117,8 +117,8 @@ The workshop's name and numbers appear **only in visible text and buttons**, nev
 Write `{{ brand }}` anywhere in the data files, and the build fills in `brand` from `site.json`. The build stops if any `{{ ... }}` is left unfilled.
 
 The WhatsApp button opens `wa.me/<number>?text=<message>` with the area's UTM tags after it. The message comes from `i18n.json`:
-- Malay: "Hai, saya jumpa anda di {{ brand }}"
-- English: "Hi, I found you on {{ brand }}"
+- Malay: "Hai, saya jumpa anda di {{ brand }}."
+- English: "Hi, I found you on {{ brand }}."
 
 ## The contact form
 
@@ -174,7 +174,6 @@ Do this on the Cloudflare preview link of the pull request, with GA4 installed a
 - [ ] Real page text, once it has been checked and cleared
 - [ ] Real phone and WhatsApp numbers for each workshop
 - [ ] The privacy notice text. Then remove its noindex rules in `public/_headers` and set `status` in `privacy.json`
-- [ ] The under-button note wording (`underButtonNote` in `disclosures.json`)
 - [ ] GA4, if you approve adding it, then the tracking check above
 
 ## Structured data (schema)

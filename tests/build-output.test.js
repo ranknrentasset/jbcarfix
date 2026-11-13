@@ -69,12 +69,6 @@ test("trial and tenant workshops: visible text only, disclosures, no trial logo"
   Object.assign(routing.entries.kulai, { workshop_id: "ws-test-trial", workshop: { name: "Test Trial Workshop", area: "Kulai", coverage: [] }, phone: "+60123456781", whatsapp: "60123456781", web3forms_key: "test-key-1", tenant_status: "trial" });
   Object.assign(routing.entries.skudai, { workshop_id: "ws-test-tenant", workshop: { name: "Test Tenant Workshop", area: "Skudai", coverage: [], logo: "/assets/test-logo.png" }, phone: "+60123456782", whatsapp: "60123456782", web3forms_key: "test-key-2", tenant_status: "tenant" });
   fs.writeFileSync(rp, JSON.stringify(routing));
-  // Real approved disclosure wording; only the under-button note (wording still to come) is faked.
-  const dp = path.join(tmp, "src/_data/disclosures.json");
-  const disc = JSON.parse(fs.readFileSync(dp, "utf8"));
-  disc.underButtonNote = { ms: "TEST-note", en: "TEST-note" };
-  fs.writeFileSync(dp, JSON.stringify(disc));
-
   execFileSync(process.execPath, [path.join(ROOT, "node_modules/@11ty/eleventy/cmd.cjs"), "--quiet"], { cwd: tmp, stdio: "pipe" });
   const out = path.join(tmp, "_site");
 
@@ -86,16 +80,22 @@ test("trial and tenant workshops: visible text only, disclosures, no trial logo"
   assert.ok(dec(kulai).includes("JBCarFix is an independent guide and isn't affiliated with them."));
   assert.ok(kulai.includes("Chosen from public Google reviews and, where known, years in business."));
   assert.ok(dec(kulai).includes("We aren't paid by the workshops we suggest."));
-  assert.ok(kulai.includes("TEST-note"));
+  // The note under the buttons quotes exactly what the WhatsApp link pre-fills.
+  for (const [html, lang] of [[kulai, "en"], [fs.readFileSync(path.join(out, "kulai/index.html"), "utf8"), "ms"]]) {
+    const note = dec(html.match(/<p class="note">([^<]*)<\/p>/)[1]);
+    const quoted = note.match(/"([^"]*)"/)[1];
+    const wa = dec(html.match(/href="(https:\/\/wa\.me\/[^"]+)"/)[1]);
+    assert.equal(quoted, new URL(wa).searchParams.get("text"), lang);
+  }
   assert.doesNotMatch(kulai, /flat fee/);
   assert.doesNotMatch(kulai, /<img\b/);
   assert.match(kulai, /data-ev-workshop-id="ws-test-trial"/);
   assert.match(kulai, /data-ev-service="area"/);
   assert.match(kulai, /name="access_key" value="test-key-1"/);
   assert.match(kulai, /data-ev-tenant-status="trial"/);
-  assert.ok(kulai.includes('href="https://wa.me/60123456781?text=Hi%2C%20I%20found%20you%20on%20JBCarFix&amp;utm_source='), "English wa.me link");
+  assert.ok(kulai.includes('href="https://wa.me/60123456781?text=Hi%2C%20I%20found%20you%20on%20JBCarFix.&amp;utm_source='), "English wa.me link");
   const kulaiMs = fs.readFileSync(path.join(out, "kulai/index.html"), "utf8");
-  assert.ok(kulaiMs.includes('href="https://wa.me/60123456781?text=Hai%2C%20saya%20jumpa%20anda%20di%20JBCarFix&amp;utm_source='), "Malay wa.me link");
+  assert.ok(kulaiMs.includes('href="https://wa.me/60123456781?text=Hai%2C%20saya%20jumpa%20anda%20di%20JBCarFix.&amp;utm_source='), "Malay wa.me link");
   assert.ok(kulaiMs.includes("JBCarFix ialah panduan bebas dan tidak bergabung dengan bengkel ini."));
   assert.ok(kulaiMs.includes("Kami tidak dibayar oleh bengkel yang kami cadangkan."));
   assert.match(kulaiMs, /Pertanyaan anda dihantar kepada Test Trial Workshop, sebuah bengkel tempatan di Kulai\./);
