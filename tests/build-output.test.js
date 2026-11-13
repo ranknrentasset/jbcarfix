@@ -155,30 +155,40 @@ const PAINT_INTRO = {
   ms: "Berikut ialah bengkel cat dan badan kereta tempatan di Johor Bahru yang mendapat ulasan baik. Hubungi mereka terus. JBCarFix ialah panduan bebas dan tidak bergabung dengan bengkel-bengkel ini. Dipilih berdasarkan penilaian dan ulasan Google awam. Kami tidak dibayar oleh bengkel yang kami cadangkan.",
 };
 const TYRE_INTRO = {
-  en: "Here are well-reviewed local tyre shops in Johor Bahru. Contact them directly. JBCarFix is an independent guide and isn't affiliated with them. Chosen from public Google ratings and reviews. We aren't paid by the shops we suggest.",
-  ms: "Berikut ialah kedai tayar tempatan di Johor Bahru yang mendapat ulasan baik. Hubungi mereka terus. JBCarFix ialah panduan bebas dan tidak bergabung dengan kedai-kedai ini. Dipilih berdasarkan penilaian dan ulasan Google awam. Kami tidak dibayar oleh kedai yang kami cadangkan.",
+  en: "Here are well-reviewed local tyre shops in Johor Bahru. Contact them directly. JBCarFix is an independent guide and isn't affiliated with them. Chosen from public Google ratings and reviews and, where known, years in business. We aren't paid by the shops we suggest.",
+  ms: "Berikut ialah kedai tayar tempatan di Johor Bahru yang mendapat ulasan baik. Hubungi mereka terus. JBCarFix ialah panduan bebas dan tidak bergabung dengan kedai-kedai ini. Dipilih berdasarkan penilaian dan ulasan Google awam dan, jika diketahui, tempoh beroperasi. Kami tidak dibayar oleh kedai yang kami cadangkan.",
 };
 const AIRCOND_INTRO = {
-  en: "Here are well-reviewed local car aircon workshops in Johor Bahru. Contact them directly. JBCarFix is an independent guide and isn't affiliated with them. Chosen from public Google ratings and reviews. We aren't paid by the workshops we suggest.",
-  ms: "Berikut ialah bengkel aircond kereta tempatan di Johor Bahru yang mendapat ulasan baik. Hubungi mereka terus. JBCarFix ialah panduan bebas dan tidak bergabung dengan bengkel-bengkel ini. Dipilih berdasarkan penilaian dan ulasan Google awam. Kami tidak dibayar oleh bengkel yang kami cadangkan.",
+  en: "Here are well-reviewed local car aircon workshops in Johor Bahru. Contact them directly. JBCarFix is an independent guide and isn't affiliated with them. Chosen from public Google ratings and reviews and, where known, years in business. We aren't paid by the workshops we suggest.",
+  ms: "Berikut ialah bengkel aircond kereta tempatan di Johor Bahru yang mendapat ulasan baik. Hubungi mereka terus. JBCarFix ialah panduan bebas dan tidak bergabung dengan bengkel-bengkel ini. Dipilih berdasarkan penilaian dan ulasan Google awam dan, jika diketahui, tempoh beroperasi. Kami tidak dibayar oleh bengkel yang kami cadangkan.",
 };
 
-test("towing, body-and-paint, tyres and aircond pages use their trial intro override, with no years-in-business wording", () => {
+test("towing and body-and-paint pages use their trial intro override, with no years-in-business wording", () => {
   const pages = [
     ["towing-kereta/index.html", TOW_INTRO.ms],
     ["en/car-towing/index.html", TOW_INTRO.en],
     ["cat-kereta/index.html", PAINT_INTRO.ms],
     ["en/car-body-paint/index.html", PAINT_INTRO.en],
-    ["tayar/index.html", TYRE_INTRO.ms],
-    ["en/tyres/index.html", TYRE_INTRO.en],
-    ["aircond-kereta/index.html", AIRCOND_INTRO.ms],
-    ["en/car-aircon/index.html", AIRCOND_INTRO.en],
   ];
   for (const [rel, expected] of pages) {
     const html = read(rel);
     assert.equal(introOf(html), expected, rel);
     assert.equal(html.split('class="ws-intro"').length - 1, 1, rel);
     assert.doesNotMatch(dec(html), /years in business|tempoh beroperasi/, rel);
+  }
+});
+
+test("tyres and aircond pages include the years-in-business selection sentence", () => {
+  const pages = [
+    ["tayar/index.html", TYRE_INTRO.ms, "Dipilih berdasarkan penilaian dan ulasan Google awam dan, jika diketahui, tempoh beroperasi."],
+    ["en/tyres/index.html", TYRE_INTRO.en, "Chosen from public Google ratings and reviews and, where known, years in business."],
+    ["aircond-kereta/index.html", AIRCOND_INTRO.ms, "Dipilih berdasarkan penilaian dan ulasan Google awam dan, jika diketahui, tempoh beroperasi."],
+    ["en/car-aircon/index.html", AIRCOND_INTRO.en, "Chosen from public Google ratings and reviews and, where known, years in business."],
+  ];
+  for (const [rel, expected, sentence] of pages) {
+    const html = read(rel);
+    assert.equal(introOf(html), expected, rel);
+    assert.ok(dec(html).includes(sentence), rel);
   }
 });
 
