@@ -243,9 +243,11 @@ test("tenant workshop and GA4 ID (throwaway build): form, logo, tenant line, gta
     const tenantCard = dec(cs.find((c) => c.id === "ws-test-tenant").body), trialCard = dec(cs.find((c) => c.id === "ws-acs-skudai").body);
     assert.ok(tenantCard.includes(`<p class="ws-disclosure">${TENANT[lang]}</p>`), `${rel} tenant card line`);
     assert.ok(!tenantCard.includes(CLAIMS[lang].split(".")[0]), `${rel}: tenant card has no independence or not-paid claim`);
-    assert.ok(trialCard.includes(`<p class="ws-disclosure">${CLAIMS[lang]}</p>`), `${rel} trial card line`);
+    const TRIAL = { en: "JBCarFix isn't affiliated with ACS Car Aircond Service. Chosen from public Google reviews and, where known, years in business. ACS Car Aircond Service doesn't pay us.",
+      ms: "JBCarFix tidak bergabung dengan ACS Car Aircond Service. Dipilih berdasarkan ulasan Google awam dan, jika diketahui, tempoh beroperasi. ACS Car Aircond Service tidak membayar kami." };
+    assert.ok(trialCard.includes(`<p class="ws-disclosure">${TRIAL[lang].replaceAll("ACS Car Aircond Service", r.workshops["ws-acs-skudai"].workshop.name)}</p>`), `${rel} singular trial card line`);
     assert.ok(!trialCard.includes("flat fee") && !trialCard.includes("yuran tetap"), rel);
-    assert.equal(dec(html).split(CLAIMS[lang]).length - 1, 1, `${rel}: trial claims appear once, on the trial card`);
+    assert.ok(!dec(html).includes(CLAIMS[lang]), `${rel}: the plural trial sentences are not on a mixed page`);
   }
   const larkinEn = read("en/larkin/index.html", out);
   assert.equal(introOf(larkinEn), LEAD.en, "tenant-only page: first two sentences only");
@@ -284,6 +286,11 @@ const sitemapUrls = (xml) => [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) =
 test("thin-page guard: placeholder pages are noindex,follow, out of the sitemap, no hreflang", () => {
   const site = path.join(ROOT, "_site");
   assert.deepEqual(sitemapUrls(read("sitemap.xml")), [], "every page is still placeholder copy, so the sitemap is empty");
+  // The hold list is empty, so body-and-paint and towing stay hidden only through the placeholder rule.
+  for (const rel of ["cat-kereta/index.html", "en/car-body-paint/index.html", "towing-kereta/index.html", "en/car-towing/index.html"]) {
+    assert.match(read(rel), /<meta name="robots" content="noindex,follow">/, rel);
+    assertNoWorkshopHints(read(rel), rel);
+  }
   for (const f of htmlFiles(site)) {
     const html = fs.readFileSync(f, "utf8");
     assert.match(html, /<meta name="robots" content="noindex,follow">/, f);
@@ -320,6 +327,10 @@ test("thin-page guard lifts once copy is real, with or without workshops; held p
   const r = JSON.parse(fs.readFileSync(rp, "utf8"));
   r.areas.larkin = [];
   fs.writeFileSync(rp, JSON.stringify(r));
+  const sp = path.join(tmp, "src/_data/site.json");
+  const tmpSite = JSON.parse(fs.readFileSync(sp, "utf8"));
+  tmpSite.indexHold = ["cat-kereta", "car-body-paint", "towing-kereta", "car-towing"]; // fixture hold list
+  fs.writeFileSync(sp, JSON.stringify(tmpSite));
 
   execFileSync(process.execPath, [path.join(ROOT, "node_modules/@11ty/eleventy/cmd.cjs"), "--quiet"], { cwd: tmp, stdio: "pipe" });
   const out = path.join(tmp, "_site");

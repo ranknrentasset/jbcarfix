@@ -63,7 +63,7 @@ test("trial workshops may not carry a logo or photo", () => {
 });
 
 test("TODO disclosure wording blocks trial/tenant pages", () => {
-  const d = { trialIntro: { lead: { ms: "Real" }, trialClaims: { ms: "TODO" } }, tenantCard: { ms: "Real" } };
+  const d = { trialIntro: { lead: { ms: "Real" }, trialClaims: { ms: "TODO" } }, tenantCard: { ms: "Real" }, trialCard: { ms: "Real" } };
   assert.doesNotThrow(() => checkDisclosures("unassigned", d, ["ms"]));
   assert.throws(() => checkDisclosures("trial", d, ["ms"]));
   assert.doesNotThrow(() => checkDisclosures("tenant", d, ["ms"]));
@@ -72,14 +72,14 @@ test("TODO disclosure wording blocks trial/tenant pages", () => {
 
 test("approved disclosure wording is in place", () => {
   const d = JSON.parse(fs.readFileSync(new URL("../src/_data/disclosures.json", import.meta.url), "utf8"));
-  for (const line of [d.trialIntro.lead, d.trialIntro.trialClaims, d.tenantCard]) {
+  for (const line of [d.trialIntro.lead, d.trialIntro.trialClaims, d.tenantCard, d.trialCard]) {
     for (const l of ["ms", "en"]) assert.ok(line[l] && !/TODO/.test(line[l]), JSON.stringify(line));
   }
   assert.match(d.tenantCard.en, /\{\{ workshop\.name \}\} pays \{\{ brand \}\} a flat fee/);
   assert.match(d.tenantCard.ms, /\{\{ workshop\.name \}\} membayar yuran tetap kepada \{\{ brand \}\}/);
 });
 
-test("indexHold starts with the body-and-paint and towing pages in both languages", () => {
+test("indexHold is an empty list for now (the mechanism stays; tested in a throwaway build)", () => {
   const site = JSON.parse(fs.readFileSync(new URL("../src/_data/site.json", import.meta.url), "utf8"));
-  assert.deepEqual([...site.indexHold].sort(), ["car-body-paint", "car-towing", "cat-kereta", "towing-kereta"]);
+  assert.deepEqual(site.indexHold, []);
 });

@@ -67,7 +67,7 @@ tests/               Automatic tests for the form checks, routing safety and the
 
 A page stays hidden from Google while **either** of these is true:
 - its copy is still placeholder (`status: "placeholder"`, or any text still marked DRAFT);
-- it is on the manual hold list, `indexHold` in `site.json`. That list matches the last part of the URL. It starts with the body-and-paint and towing pages in both languages: `cat-kereta`, `car-body-paint`, `towing-kereta`, `car-towing`.
+- it is on the manual hold list, `indexHold` in `site.json`. That list matches the last part of the URL (for example `cat-kereta` or `car-body-paint`). It is empty for now. The body-and-paint and towing pages are still hidden because their copy is placeholder.
 
 A hidden page gets `<meta name="robots" content="noindex,follow">` and is left out of `sitemap.xml`. If either language of a page is hidden, the hreflang pair between the two languages is dropped, both in the page head and in the sitemap. The guard lifts by itself once a page has real copy, **even if it lists no workshop**.
 
@@ -133,7 +133,7 @@ To change who shows on a page, edit `routing.json` and open a pull request. Noth
 The disclosure wording (approved wording) comes from `disclosures.json`:
 
 - **All cards trial:** one intro above the cards: "Here are well-reviewed local workshops for this area. Call or WhatsApp them directly. {{ brand }} is an independent guide and isn't affiliated with them. Chosen from public Google reviews and, where known, years in business. We aren't paid by the workshops we suggest."
-- **Any tenant card on the page:** the shared intro is only the first two sentences. Each tenant card gets "{{ brand }} is a car workshop guide. {{ workshop.name }} pays {{ brand }} a flat fee to be featured here. It doesn't change the price they quote you." Each trial card gets the last three sentences of the intro.
+- **Any tenant card on the page:** the shared intro is only the first two sentences. Each tenant card gets "{{ brand }} is a car workshop guide. {{ workshop.name }} pays {{ brand }} a flat fee to be featured here. It doesn't change the price they quote you." Each trial card gets its own line: "{{ brand }} isn't affiliated with {{ workshop.name }}. Chosen from public Google reviews and, where known, years in business. {{ workshop.name }} doesn't pay us."
 - **No workshop:** nothing.
 - **when any card has WhatsApp:** a note from `i18n.json` that quotes the WhatsApp pre-fill.
 

@@ -4,13 +4,8 @@
   "brand": "JBCarFix",
   "_brandTodo": "TODO: confirm the brand name. Text anywhere in the data files can use {{ brand }} and it is filled in at build time.",
   "tenantMode": false,
-  "_indexHold": "Pages kept out of Google (noindex, no sitemap, no hreflang) even once their copy is real. Last part of the URL, both languages.",
-  "indexHold": [
-    "cat-kereta",
-    "car-body-paint",
-    "towing-kereta",
-    "car-towing"
-  ],
+  "_indexHold": "Pages kept out of Google (noindex, no sitemap, no hreflang) even once their copy is real. Last part of the URL, both languages, e.g. \"cat-kereta\". Empty for now; placeholder copy is already kept out by the placeholder rule.",
+  "indexHold": [],
   "tenant": {
     "_comment": "Used ONLY when tenantMode is true. Real details of the signed workshop. Leave null until then; never invent an address, map pin, rating or review.",
     "name": null,

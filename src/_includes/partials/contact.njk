@@ -39,7 +39,7 @@
       {%- endif %}
     </p>
     {%- if hasTenant %}
-    <p class="ws-disclosure">{{ (disclosures.tenantCard if w.tenant_status == "tenant" else disclosures.trialIntro.trialClaims)[entry.lang] | fill({ workshop: w.workshop }) }}</p>
+    <p class="ws-disclosure">{{ (disclosures.tenantCard if w.tenant_status == "tenant" else disclosures.trialCard)[entry.lang] | fill({ workshop: w.workshop }) }}</p>
     {%- endif %}
     {%- if w.tenant_status == "tenant" and w.web3forms_key %}
     {% include "partials/lead-form.njk" %}
