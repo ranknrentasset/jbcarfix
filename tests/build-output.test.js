@@ -366,3 +366,24 @@ test("thin-page guard lifts once copy is real, with or without workshops; held p
 
   fs.rmSync(tmp, { recursive: true, force: true });
 });
+
+// Towing cards may not mention the operator's own workshop, claim services, arrival-time
+// promises or "no hidden fees". Checked on the towing pages and on any routing entry listed there.
+const TOWING_BANNED = /20\s*[-–—]\s*30\s*(min|minit)|no hidden (fees?|charges?)|tiada caj tersembunyi|\bclaims?\b|tuntutan|own workshop|our workshop|bengkel (kami|sendiri)|bengkel milik/i;
+
+test("towing cards: banned phrases are caught", () => {
+  for (const bad of ["Arrives in 20-30 min", "Tiba dalam 20–30 minit", "No hidden fees", "Tiada caj tersembunyi", "Insurance claim help", "Bantuan tuntutan insurans", "Towed to our own workshop", "Ke bengkel kami"]) {
+    assert.match(bad, TOWING_BANNED, bad);
+  }
+  assert.doesNotMatch("Workshop in Taman Mutiara Rini, Skudai. Open 24 hours.", TOWING_BANNED);
+});
+
+test("towing cards carry no banned phrases", () => {
+  for (const id of routing.services["towing-kereta"] || []) {
+    const w = routing.workshops[id];
+    assert.doesNotMatch(JSON.stringify({ name: w.workshop.name, coverage: w.workshop.coverage, labels: [w.phone_label, w.whatsapp_label] }), TOWING_BANNED, id);
+  }
+  for (const rel of ["towing-kereta/index.html", "en/car-towing/index.html"]) {
+    for (const c of cards(read(rel))) assert.doesNotMatch(dec(c.body.replace(/<[^>]+>/g, " ")), TOWING_BANNED, `${rel} ${c.id}`);
+  }
+});
