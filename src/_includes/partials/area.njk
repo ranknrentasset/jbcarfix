@@ -1,31 +1,32 @@
 {%- set s = site.strings[entry.lang] -%}
 {%- set pre = "" if entry.lang == "ms" else "/en" -%}
+{%- from "partials/icons.njk" import icon -%}
 {%- set a = entry.record -%}
 {% include "partials/blocks.njk" %}
 {%- if a.landmarks.length %}
 <section class="block">
   <h2>{{ s.landmarksHeading }}</h2>
-  <ul>
+  <ul class="ticks">
   {%- for l in a.landmarks %}
     <li>{{ l[entry.lang] or l }}</li>
   {%- endfor %}
   </ul>
 </section>
 {%- endif %}
-<section class="grid-sec">
+<section class="sec">
   <h2>{{ s.servicesHeading }}</h2>
-  <ul class="grid">
+  <ul class="svc-grid">
   {%- for k in a.services %}
-    <li><a href="{{ pre }}/{{ services[k].slug[entry.lang] }}/">{{ services[k].name[entry.lang] }}</a></li>
+    <li><a class="svc" href="{{ pre }}/{{ services[k].slug[entry.lang] }}/">{{ icon(k) }}<span>{{ services[k].name[entry.lang] }}</span>{{ icon("chev", "ico chev") }}</a></li>
   {%- endfor %}
   </ul>
 </section>
 {%- if a.nearby.length %}
-<section class="grid-sec">
+<section class="sec">
   <h2>{{ s.nearbyHeading }}</h2>
-  <ul class="grid">
+  <ul class="chips">
   {%- for k in a.nearby %}
-    <li><a href="{{ pre }}/{{ k }}/">{{ areas[k].name[entry.lang] }}</a></li>
+    <li><a class="chip" href="{{ pre }}/{{ k }}/">{{ icon("pin") }}<span>{{ areas[k].name[entry.lang] }}</span></a></li>
   {%- endfor %}
   </ul>
 </section>

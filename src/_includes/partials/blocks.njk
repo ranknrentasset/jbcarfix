@@ -1,6 +1,10 @@
+{%- if entry.content.blocks and entry.content.blocks.length %}
+<div class="blocks">
 {%- for b in entry.content.blocks %}
 <section class="block" id="{{ b.id }}">
   <h2>{{ b.heading }}</h2>
   <p>{{ b.body }}</p>
 </section>
 {%- endfor %}
+</div>
+{%- endif %}

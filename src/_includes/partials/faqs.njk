@@ -1,11 +1,13 @@
 {%- if entry.content.faqs and entry.content.faqs.length %}
-<section class="faqs">
+<section class="sec faqs">
   <h2>{{ site.strings[entry.lang].faqHeading }}</h2>
+  <div class="faq-list">
   {%- for f in entry.content.faqs %}
   <details>
     <summary>{{ f.q }}</summary>
     <p>{{ f.a }}</p>
   </details>
   {%- endfor %}
+  </div>
 </section>
 {%- endif %}

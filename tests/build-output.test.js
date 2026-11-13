@@ -60,9 +60,9 @@ test("no {{ ... }} left unfilled and brand appears", () => {
 
 // A page with no workshop must not show buttons, a contact box, or wording that suggests a
 // workshop is recommended or coming ("call us", "we'll find you a workshop", "coming soon"...).
-const NO_WORKSHOP_HINTS = /coming soon|akan datang|tidak lama lagi|call us|call now|hubungi kami|we'll find|we will find|find you a (workshop|mechanic)|carikan (anda )?bengkel|will be listed|akan disenaraikan|recommended workshop|bengkel (yang )?disyorkan|contact a workshop|menghubungi bengkel|well-reviewed|ulasan baik|Call or WhatsApp|Hubungi atau WhatsApp/i;
+const NO_WORKSHOP_HINTS = /coming soon|akan datang|tidak lama lagi|call us|call now|hubungi kami|we'll find|we will find|find you a (workshop|mechanic)|carikan (anda )?bengkel|will be listed|akan disenaraikan|recommended workshop|bengkel (yang )?disyorkan|contact a workshop|menghubungi bengkel|well-reviewed|ulasan baik|Call or WhatsApp|Hubungi atau WhatsApp|See workshops|Lihat bengkel/i;
 function assertNoWorkshopHints(html, label) {
-  assert.doesNotMatch(html, /tel:|wa\.me|<form|class="contact"|class="soon"|class="ws-|class="btn/, label);
+  assert.doesNotMatch(html, /tel:|wa\.me|<form|class="contact"|class="soon"|class="ws-|class="btn|class="actbar"|class="jump"|href="#contact"/, label);
   const visible = dec(html.replace(/<script[\s\S]*?<\/script>/g, "").replace(/<[^>]+>/g, " "));
   assert.doesNotMatch(visible, NO_WORKSHOP_HINTS, label);
 }
@@ -487,4 +487,46 @@ test("[WITH-WORKSHOPS] copy shows only on pages with workshops; markers never re
     assert.ok(html.includes(`Kept body ${l}.`), rel);
   }
   fs.rmSync(tmp, { recursive: true, force: true });
+});
+
+test("design: the mobile action bar and hero jump link only point to the cards; tracked links stay inside the cards", () => {
+  for (const rel of ["kulai/index.html", "en/car-towing/index.html", "tayar/index.html"]) {
+    const html = read(rel);
+    const bar = html.match(/<div class="actbar">([\s\S]*?)<\/div>/);
+    assert.ok(bar, `${rel} has the action bar`);
+    assert.match(bar[1], /<a href="#contact">/);
+    assert.doesNotMatch(bar[1], /tel:|wa\.me|data-ev/, `${rel}: bar adds no untracked call or WhatsApp link`);
+    assert.match(html, /<a class="jump" href="#contact">/);
+    // Every call/WhatsApp link on the page sits inside a card that carries the GA parameters.
+    const all = (html.match(/href="(tel:|https:\/\/wa\.me\/)/g) || []).length;
+    const inCards = cards(html).reduce((n, c) => n + (c.body.match(/href="(tel:|https:\/\/wa\.me\/)/g) || []).length, 0);
+    assert.equal(all, inCards, rel);
+    for (const c of cards(html)) {
+      for (const a of c.body.match(/<a [^>]*href="(?:tel:|https:\/\/wa\.me\/)[^>]*>/g) || []) assert.match(a, /data-ev="click_(call|whatsapp)"/, `${rel} ${c.id}`);
+      // The pre-fill note sits right under the WhatsApp button, only on cards that have one.
+      const hasWa = c.body.includes("wa.me/");
+      assert.equal(/<p class="note">/.test(c.body), hasWa, `${rel} ${c.id} note`);
+      if (hasWa) assert.ok(c.body.indexOf('class="note"') > c.body.indexOf("wa.me/"), `${rel} ${c.id} note under WhatsApp`);
+    }
+  }
+});
+
+test("design: self-hosted font, no third-party hosts, small CSS, no inline styles or scripts", () => {
+  const css = read("assets/site.css");
+  assert.ok(Buffer.byteLength(css) < 25 * 1024, `site.css is ${Buffer.byteLength(css)} bytes`);
+  assert.match(css, /@font-face\{[^}]*url\(\/assets\/fonts\/plus-jakarta-sans-var\.v1\.woff2\)[^}]*font-display:swap/);
+  assert.match(css, /prefers-color-scheme:dark/);
+  assert.match(css, /prefers-reduced-motion:reduce/);
+  assert.ok(fs.existsSync(path.join(ROOT, "_site/assets/fonts/plus-jakarta-sans-var.v1.woff2")));
+  assert.doesNotMatch(css, /https?:\/\//, "no external URLs in CSS");
+  for (const f of htmlFiles(path.join(ROOT, "_site"))) {
+    const html = fs.readFileSync(f, "utf8");
+    assert.match(html, /<link rel="preload" href="\/assets\/fonts\/plus-jakarta-sans-var\.v1\.woff2" as="font" type="font\/woff2" crossorigin>/, f);
+    assert.doesNotMatch(html, /\sstyle="|<style\b/, `${f}: inline style would break the CSP`);
+    for (const m of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)) {
+      if (/type="application\/ld\+json"/.test(m[1])) continue;
+      assert.match(m[1], /\ssrc="/, `${f}: inline script would break the CSP`);
+    }
+    assert.doesNotMatch(html.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/g, ""), /(src|href)="https?:\/\/(?!jbcarfix\.com|wa\.me|www\.googletagmanager\.com|api\.web3forms\.com)/, `${f}: third-party asset`);
+  }
 });

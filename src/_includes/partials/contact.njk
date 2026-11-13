@@ -1,13 +1,16 @@
 {%- set s = site.strings[entry.lang] -%}
+{%- from "partials/icons.njk" import icon -%}
 {%- set list = entry.workshops | resolveWorkshops(routing) -%}
 {#- No workshop listed: no contact box at all (no buttons, no "coming soon" hints). #}
 {%- if list.length %}
 {%- set hasTenant = list | byStatus("tenant") | length %}
 <section class="contact" id="contact">
+  <div class="contact-head">
   <h2>{{ s.contactHeading }}</h2>
   {#- Shared intro, once per page. All-trial pages get the full plural intro; a page with any
       tenant card gets only the first two sentences, and each card carries its own line. #}
   <p class="ws-intro">{{ disclosures.trialIntro.lead[entry.lang] | fill }}{% if not hasTenant %} {{ disclosures.trialIntro.trialClaims[entry.lang] | fill }}{% endif %}</p>
+  </div>
 {#- Workshop names and numbers appear only in these visible cards, never in JSON-LD or meta tags.
     Each card carries its own analytics parameters (data-ev-*), read by site.js. #}
   <div class="ws-list">
@@ -16,14 +19,19 @@
     {%- if w.tenant_status == "tenant" and w.workshop.logo %}
     <img class="ws-logo" src="{{ w.workshop.logo }}" alt="{{ w.workshop.name }}" width="120" height="60">
     {%- endif %}
-    <h3>{{ w.workshop.name }}</h3>
-    <p class="coverage">{{ w.workshop.coverage[entry.lang] }}</p>
+    <div class="ws-head">
+      <span class="ws-ico">{{ icon(entry.key if entry.type == "service" else "servis") }}</span>
+      <div>
+        <h3>{{ w.workshop.name }}</h3>
+        <p class="coverage">{{ icon("pin") }}{{ w.workshop.coverage[entry.lang] }}</p>
+      </div>
+    </div>
     {%- if w.services %}
     <p class="ws-services">{{ s.servicesOnlyLabel }}: {% for k in w.services %}{{ s.generalService if k == "general" else services[k].name[entry.lang] }}{% if not loop.last %}, {% endif %}{% endfor %}</p>
     {%- endif %}
     {%- if w.hours and w.hours[entry.lang] and w.hours[entry.lang].length %}
     <details class="hours">
-      <summary>{{ s.hoursLabel }}</summary>
+      <summary>{{ icon("clock") }}{{ s.hoursLabel }}</summary>
       <dl>
       {%- for d in w.hours[entry.lang] %}
         <dt>{{ d.day }}</dt><dd>{{ d.text }}</dd>
@@ -32,14 +40,17 @@
     </details>
     {%- endif %}
     <p class="cta">
-      <a class="btn" href="tel:{{ w.phone }}" data-ev="click_call">{{ s.callLabel }} {{ w.phone_display or w.phone }}</a>
+      <a class="btn btn-call" href="tel:{{ w.phone }}" data-ev="click_call">{{ icon("phone") }}<span>{{ s.callLabel }} {{ w.phone_display or w.phone }}</span></a>
       {%- if w.phone_label %}
       <span class="phone-label">({{ w.phone_label }})</span>
       {%- endif %}
       {%- if w.whatsapp %}
-      <a class="btn btn-wa" href="{{ w | waLink(i18n.whatsappText[entry.lang], entry.key, entry.lang, routing) }}" rel="noopener" data-ev="click_whatsapp">{{ w.whatsapp_label or s.whatsappLabel }}</a>
+      <a class="btn btn-wa" href="{{ w | waLink(i18n.whatsappText[entry.lang], entry.key, entry.lang, routing) }}" rel="noopener" data-ev="click_whatsapp">{{ icon("wa") }}<span>{{ w.whatsapp_label or s.whatsappLabel }}</span></a>
       {%- endif %}
     </p>
+    {%- if w.whatsapp %}
+    <p class="note">{{ i18n | underButtonNote(entry.lang) }}</p>
+    {%- endif %}
     {%- if entry.eventService == "towing-kereta" %}
     <p class="ws-towing">{{ s.towingCardNote }}</p>
     {%- endif %}
@@ -52,8 +63,5 @@
   </article>
   {%- endfor %}
   </div>
-  {%- if list | withWhatsapp | length %}
-  <p class="note">{{ i18n | underButtonNote(entry.lang) }}</p>
-  {%- endif %}
 </section>
 {%- endif %}

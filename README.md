@@ -156,6 +156,19 @@ The WhatsApp button opens `wa.me/<number>?text=<message>` with the area's UTM ta
 - Malay: "Hai, saya jumpa anda di {{ brand }}."
 - English: "Hi, I found you on {{ brand }}."
 
+
+## Design
+
+Mobile-first, no frameworks and no third-party hosts.
+
+- **Type:** Plus Jakarta Sans as one self-hosted variable font (`src/assets/fonts/`, Latin subset, woff2, about 21 KB, `font-display: swap`, preloaded). The licence (SIL OFL) sits next to it. If the font file changes, give it a new file name (for example `.v2.woff2`): `/assets/*` is cached for a year.
+- **Colours:** deep navy with a warm amber accent, set as CSS variables at the top of `site.css`. A dark version follows the visitor's device setting (`prefers-color-scheme`).
+- **Pictures:** inline SVG only, with no photos or logos. The hero picture is an abstract road-and-map drawing (`partials/hero-art.njk`), and the service icons are in `partials/icons.njk`.
+- **Layout:** breadcrumb, language switch, service cards with icons, area chips, FAQ accordions (`<details>`, no JavaScript) and workshop cards with large Call and WhatsApp buttons. The WhatsApp pre-fill note sits under each WhatsApp button.
+- **Mobile bar:** on pages with workshops, phones get a bar at the bottom that jumps to the cards. It holds no phone or WhatsApp link itself, so every tracked click still comes from a card with its own `workshop_id`. Pages without workshops never show it.
+- **Motion:** light CSS-only motion, switched off for visitors who ask for reduced motion.
+- **Tests:** they check that the CSS stays under 25 KB, that there are no inline styles or scripts (the CSP blocks them) and no third-party assets, and that the font is preloaded.
+
 ## The contact form
 
 **The form only appears for a `tenant` workshop that has its own `web3forms_key`. Trial pages have Call and WhatsApp buttons only.**
