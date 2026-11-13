@@ -1,5 +1,5 @@
 {
-  "_comment": "One file per JB-wide service page. Write this service's own text in every field.",
+  "_comment": "One file per JB-wide service page. Write this service's own text in every field. Optional trialIntro {en, ms} replaces the shared plural trial intro from disclosures.json when it is non-empty.",
   "key": "tayar",
   "status": "placeholder",
   "slug": {
@@ -9,6 +9,10 @@
   "name": {
     "ms": "Tayar",
     "en": "Tyres"
+  },
+  "trialIntro": {
+    "en": "Here are well-reviewed local tyre shops in Johor Bahru. Contact them directly. {{ brand }} is an independent guide and isn't affiliated with them. Chosen from public Google ratings and reviews. We aren't paid by the shops we suggest.",
+    "ms": "Berikut ialah kedai tayar tempatan di Johor Bahru yang mendapat ulasan baik. Hubungi mereka terus. {{ brand }} ialah panduan bebas dan tidak bergabung dengan kedai-kedai ini. Dipilih berdasarkan penilaian dan ulasan Google awam. Kami tidak dibayar oleh kedai yang kami cadangkan."
   },
   "ms": {
     "title": "Tayar (DRAFT) | {{ brand }}",

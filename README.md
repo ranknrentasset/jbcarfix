@@ -140,7 +140,7 @@ The disclosure wording (approved wording) comes from `disclosures.json`:
 - **Any tenant card on the page:** the shared intro is only the first two sentences. Each tenant card gets "{{ brand }} is a car workshop guide. {{ workshop.name }} pays {{ brand }} a flat fee to be featured here. It doesn't change the price they quote you." Each trial card gets its own line: "{{ brand }} isn't affiliated with {{ workshop.name }}. Chosen from public Google reviews and, where known, years in business. {{ workshop.name }} doesn't pay us."
 - **No workshop:** nothing.
 
-A service or area file may set `trialIntro` (`en` and `ms`) to replace that shared plural intro on its pages. A missing or blank value keeps the shared intro, including the first-two-sentences rule on a mixed page. Towing and body-and-paint use their own intros.
+A service or area file may set `trialIntro` (`en` and `ms`) to replace that shared plural intro on its pages. A missing or blank value keeps the shared intro, including the first-two-sentences rule on a mixed page. Towing, body-and-paint, tyres and aircond use their own intros.
 
 Each towing card shows `towingCardNote` from `site.json`: "Ask for the full price before the tow starts, and agree on which workshop your car goes to." Towing cards must not mention the operator's own workshop, claim services, "20–30 min" / "20–30 minit" or "no hidden fees" / "tiada caj tersembunyi". A test checks the towing pages and any workshop listed for towing.
 - **when any card has WhatsApp:** a note from `i18n.json` that quotes the WhatsApp pre-fill.

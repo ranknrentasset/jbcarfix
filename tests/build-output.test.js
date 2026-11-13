@@ -135,7 +135,7 @@ const LEAD = { en: INTRO.en.split(" JBCarFix")[0], ms: INTRO.ms.split(" JBCarFix
 const introOf = (html) => dec((html.match(/<p class="ws-intro">([^<]*)<\/p>/) || [])[1] || "");
 
 test("trial pages show the plural intro once, before the cards, and no per-card lines", () => {
-  for (const [rel, lang] of [["en/kulai/index.html", "en"], ["kulai/index.html", "ms"], ["tayar/index.html", "ms"], ["en/car-aircon/index.html", "en"]]) {
+  for (const [rel, lang] of [["en/kulai/index.html", "en"], ["kulai/index.html", "ms"], ["en/skudai/index.html", "en"], ["gelang-patah/index.html", "ms"]]) {
     const html = read(rel);
     assert.equal(introOf(html), INTRO[lang], rel);
     assert.equal(html.split('class="ws-intro"').length - 1, 1, rel);
@@ -154,13 +154,25 @@ const PAINT_INTRO = {
   en: "Here are well-reviewed local body and paint workshops in Johor Bahru. Call them directly. JBCarFix is an independent guide and isn't affiliated with them. Chosen from public Google ratings and reviews. We aren't paid by the workshops we suggest.",
   ms: "Berikut ialah bengkel cat dan badan kereta tempatan di Johor Bahru yang mendapat ulasan baik. Hubungi mereka terus. JBCarFix ialah panduan bebas dan tidak bergabung dengan bengkel-bengkel ini. Dipilih berdasarkan penilaian dan ulasan Google awam. Kami tidak dibayar oleh bengkel yang kami cadangkan.",
 };
+const TYRE_INTRO = {
+  en: "Here are well-reviewed local tyre shops in Johor Bahru. Contact them directly. JBCarFix is an independent guide and isn't affiliated with them. Chosen from public Google ratings and reviews. We aren't paid by the shops we suggest.",
+  ms: "Berikut ialah kedai tayar tempatan di Johor Bahru yang mendapat ulasan baik. Hubungi mereka terus. JBCarFix ialah panduan bebas dan tidak bergabung dengan kedai-kedai ini. Dipilih berdasarkan penilaian dan ulasan Google awam. Kami tidak dibayar oleh kedai yang kami cadangkan.",
+};
+const AIRCOND_INTRO = {
+  en: "Here are well-reviewed local car aircon workshops in Johor Bahru. Contact them directly. JBCarFix is an independent guide and isn't affiliated with them. Chosen from public Google ratings and reviews. We aren't paid by the workshops we suggest.",
+  ms: "Berikut ialah bengkel aircond kereta tempatan di Johor Bahru yang mendapat ulasan baik. Hubungi mereka terus. JBCarFix ialah panduan bebas dan tidak bergabung dengan bengkel-bengkel ini. Dipilih berdasarkan penilaian dan ulasan Google awam. Kami tidak dibayar oleh bengkel yang kami cadangkan.",
+};
 
-test("towing and body-and-paint pages use their trial intro override, with no years-in-business wording", () => {
+test("towing, body-and-paint, tyres and aircond pages use their trial intro override, with no years-in-business wording", () => {
   const pages = [
     ["towing-kereta/index.html", TOW_INTRO.ms],
     ["en/car-towing/index.html", TOW_INTRO.en],
     ["cat-kereta/index.html", PAINT_INTRO.ms],
     ["en/car-body-paint/index.html", PAINT_INTRO.en],
+    ["tayar/index.html", TYRE_INTRO.ms],
+    ["en/tyres/index.html", TYRE_INTRO.en],
+    ["aircond-kereta/index.html", AIRCOND_INTRO.ms],
+    ["en/car-aircon/index.html", AIRCOND_INTRO.en],
   ];
   for (const [rel, expected] of pages) {
     const html = read(rel);
@@ -193,7 +205,7 @@ test("a trial intro override replaces the shared intro; a blank override keeps i
   assert.equal(introOf(read("tayar/index.html", out)), "JBCarFix menyenaraikan bengkel tayar dalam ujian ini.");
   assert.equal(introOf(read("en/kulai/index.html", out)), INTRO.en, "empty override falls back to the shared intro");
   assert.equal(introOf(read("kulai/index.html", out)), INTRO.ms, "whitespace override falls back to the shared intro");
-  assert.equal(introOf(read("en/car-aircon/index.html", out)), INTRO.en, "missing override keeps the shared intro");
+  assert.equal(introOf(read("en/skudai/index.html", out)), INTRO.en, "missing override keeps the shared intro");
   fs.rmSync(tmp, { recursive: true, force: true });
 });
 
