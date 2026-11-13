@@ -7,9 +7,9 @@
 <section class="contact" id="contact">
   <div class="contact-head">
   <h2>{{ s.contactHeading }}</h2>
-  {#- Shared intro, once per page. All-trial pages get the full plural intro; a page with any
-      tenant card gets only the first two sentences, and each card carries its own line. #}
-  <p class="ws-intro">{{ disclosures.trialIntro.lead[entry.lang] | fill }}{% if not hasTenant %} {{ disclosures.trialIntro.trialClaims[entry.lang] | fill }}{% endif %}</p>
+  {#- Shared intro, once per page. entry.trialIntro is the resolved line: a non-empty
+      per-page override, or the shared plural intro (lead only when a tenant card is present). #}
+  <p class="ws-intro">{{ entry.trialIntro | fill }}</p>
   </div>
 {#- Workshop names and numbers appear only in these visible cards, never in JSON-LD or meta tags.
     Each card carries its own analytics parameters (data-ev-*), read by site.js. #}

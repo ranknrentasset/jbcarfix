@@ -146,6 +146,57 @@ test("trial pages show the plural intro once, before the cards, and no per-card 
   for (const f of htmlFiles(path.join(ROOT, "_site"))) assert.doesNotMatch(fs.readFileSync(f, "utf8"), /flat fee|yuran tetap/, f);
 });
 
+const TOW_INTRO = {
+  en: "Here are well-reviewed local towing operators in Johor Bahru. Call or WhatsApp them directly. JBCarFix is an independent guide and isn't affiliated with them. Chosen from public Google ratings and reviews. We aren't paid by the operators we suggest.",
+  ms: "Berikut ialah pengendali tunda tempatan di Johor Bahru yang mendapat ulasan baik. Hubungi atau WhatsApp mereka terus. JBCarFix ialah panduan bebas dan tidak bergabung dengan pengendali-pengendali tunda ini. Dipilih berdasarkan penilaian dan ulasan Google awam. Kami tidak dibayar oleh pengendali tunda yang kami cadangkan.",
+};
+const PAINT_INTRO = {
+  en: "Here are well-reviewed local body and paint workshops in Johor Bahru. Call them directly. JBCarFix is an independent guide and isn't affiliated with them. Chosen from public Google ratings and reviews. We aren't paid by the workshops we suggest.",
+  ms: "Berikut ialah bengkel cat dan badan kereta tempatan di Johor Bahru yang mendapat ulasan baik. Hubungi mereka terus. JBCarFix ialah panduan bebas dan tidak bergabung dengan bengkel-bengkel ini. Dipilih berdasarkan penilaian dan ulasan Google awam. Kami tidak dibayar oleh bengkel yang kami cadangkan.",
+};
+
+test("towing and body-and-paint pages use their trial intro override, with no years-in-business wording", () => {
+  const pages = [
+    ["towing-kereta/index.html", TOW_INTRO.ms],
+    ["en/car-towing/index.html", TOW_INTRO.en],
+    ["cat-kereta/index.html", PAINT_INTRO.ms],
+    ["en/car-body-paint/index.html", PAINT_INTRO.en],
+  ];
+  for (const [rel, expected] of pages) {
+    const html = read(rel);
+    assert.equal(introOf(html), expected, rel);
+    assert.equal(html.split('class="ws-intro"').length - 1, 1, rel);
+    assert.doesNotMatch(dec(html), /years in business|tempoh beroperasi/, rel);
+  }
+});
+
+test("a trial intro override replaces the shared intro; a blank override keeps it (throwaway build)", () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "jbcf-"));
+  for (const item of ["src", "lib", "public", "eleventy.config.js", "package.json"]) {
+    fs.cpSync(path.join(ROOT, item), path.join(tmp, item), { recursive: true });
+  }
+  fs.symlinkSync(path.join(ROOT, "node_modules"), path.join(tmp, "node_modules"));
+  const setIntro = (rel, value) => {
+    const p = path.join(tmp, "src/_data", rel);
+    const d = JSON.parse(fs.readFileSync(p, "utf8"));
+    d.trialIntro = value;
+    fs.writeFileSync(p, JSON.stringify(d));
+  };
+  setIntro("services/tayar.json", {
+    en: "{{ brand }} lists tyre workshops in this test.",
+    ms: "{{ brand }} menyenaraikan bengkel tayar dalam ujian ini.",
+  });
+  setIntro("areas/kulai.json", { en: "", ms: "   " });
+  execFileSync(process.execPath, [path.join(ROOT, "node_modules/@11ty/eleventy/cmd.cjs"), "--quiet"], { cwd: tmp, stdio: "pipe" });
+  const out = path.join(tmp, "_site");
+  assert.equal(introOf(read("en/tyres/index.html", out)), "JBCarFix lists tyre workshops in this test.");
+  assert.equal(introOf(read("tayar/index.html", out)), "JBCarFix menyenaraikan bengkel tayar dalam ujian ini.");
+  assert.equal(introOf(read("en/kulai/index.html", out)), INTRO.en, "empty override falls back to the shared intro");
+  assert.equal(introOf(read("kulai/index.html", out)), INTRO.ms, "whitespace override falls back to the shared intro");
+  assert.equal(introOf(read("en/car-aircon/index.html", out)), INTRO.en, "missing override keeps the shared intro");
+  fs.rmSync(tmp, { recursive: true, force: true });
+});
+
 test("site-wide lines and structured data use the approved guide wording", () => {
   const en = dec(read("en/index.html")), ms = dec(read("index.html"));
   const ORG = {

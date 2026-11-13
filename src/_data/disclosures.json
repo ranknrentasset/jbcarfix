@@ -1,5 +1,5 @@
 {
-  "_comment": "Approved wording shown with workshop cards. 'trialIntro.lead' + 'trialIntro.trialClaims' together form the plural intro, shown once on a page whose cards are all trial. On a page with any tenant card, only 'lead' is shown as the shared intro; each tenant card gets 'tenantCard' and each trial card gets 'trialCard'. Pages with no workshop show none of this. {{ brand }} comes from site.json and {{ workshop.name }} from routing.json. The build refuses TODO wording on a page that needs it.",
+  "_comment": "Approved wording shown with workshop cards. 'trialIntro.lead' + 'trialIntro.trialClaims' together form the plural intro, shown once on a page whose cards are all trial. On a page with any tenant card, only 'lead' is shown as the shared intro; each tenant card gets 'tenantCard' and each trial card gets 'trialCard'. A page may replace the plural intro with its own trialIntro {en, ms} in its data file; a missing or blank value keeps this shared intro, including the mixed-page lead-only rule. Pages with no workshop show none of this. {{ brand }} comes from site.json and {{ workshop.name }} from routing.json. The build refuses TODO wording on a page that needs it.",
   "trialIntro": {
     "lead": {
       "en": "Here are well-reviewed local workshops for this area. Call or WhatsApp them directly.",

@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import vm from "node:vm";
-import { checkWorkshop, checkDisclosures, workshopsFor } from "../lib/content.js";
+import { checkWorkshop, checkDisclosures, workshopsFor, trialIntroText } from "../lib/content.js";
 
 const ctx = {};
 vm.runInNewContext(fs.readFileSync(new URL("../src/assets/site.js", import.meta.url), "utf8"), { globalThis: ctx });
@@ -89,3 +89,21 @@ test("hours: seven daily lines or empty lists (hidden); anything else is refused
   assert.throws(() => checkWorkshop("ws-real", { ...real, hours: { en: real.hours.en.slice(0, 3), ms: real.hours.ms } }), /hours\.en/);
   assert.throws(() => checkWorkshop("ws-real", { ...real, hours: undefined }), /hours/);
 });
+
+test("trial intro override replaces the shared intro; blank or missing values fall back", () => {
+  const d = {
+    trialIntro: {
+      lead: { en: "Shared lead.", ms: "Pengenalan dikongsi." },
+      trialClaims: { en: "Shared claims.", ms: "Tuntutan dikongsi." },
+    },
+  };
+  const shared = { en: "Shared lead. Shared claims.", ms: "Pengenalan dikongsi. Tuntutan dikongsi." };
+  assert.equal(trialIntroText({}, "en", d, false), shared.en);
+  assert.equal(trialIntroText({ trialIntro: { en: "", ms: "   " } }, "en", d, false), shared.en);
+  assert.equal(trialIntroText({ trialIntro: { en: "", ms: "   " } }, "ms", d, false), shared.ms);
+  assert.equal(trialIntroText({ trialIntro: { en: "  {{ brand }} lists operators.  " } }, "en", d, false), "{{ brand }} lists operators.");
+  assert.equal(trialIntroText({ trialIntro: { en: "{{ brand }} lists operators." } }, "ms", d, false), shared.ms);
+  assert.equal(trialIntroText({}, "en", d, true), "Shared lead.");
+  assert.equal(trialIntroText({ trialIntro: { en: "{{ brand }} lists operators." } }, "en", d, true), "{{ brand }} lists operators.");
+});
+
