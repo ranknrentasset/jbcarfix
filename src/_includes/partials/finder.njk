@@ -1,0 +1,35 @@
+{#- Home hero search. finder.js filters the links below as the visitor types (services and
+    areas, matched on both languages' names). The chips are plain links to the same pages. #}
+{%- set s = site.strings[entry.lang] -%}
+{%- set pre = "" if entry.lang == "ms" else "/en" -%}
+{%- from "partials/icons.njk" import icon -%}
+<div class="finder" role="search" data-finder>
+  <label class="finder-label" for="finder-q">{{ s.searchLabel }}</label>
+  <div class="finder-box">
+    {{ icon("search") }}
+    <input id="finder-q" type="search" autocomplete="off" spellcheck="false" placeholder="{{ s.searchHint }}" aria-controls="finder-list">
+  </div>
+  <ul class="finder-list" id="finder-list" hidden>
+  {%- for k in site.serviceOrder %}
+    <li data-k="{{ services[k].name.ms }} {{ services[k].name.en }} {{ services[k].slug.ms }} {{ services[k].slug.en }}"><a href="{{ pre }}/{{ services[k].slug[entry.lang] }}/">{{ icon(k) }}<span>{{ services[k].name[entry.lang] }}</span></a></li>
+  {%- endfor %}
+  {%- for k in site.areaOrder %}
+    <li data-k="{{ areas[k].name.ms }} {{ areas[k].name.en }} {{ k }}"><a href="{{ pre }}/{{ k }}/">{{ icon("pin") }}<span>{{ areas[k].name[entry.lang] }}</span></a></li>
+  {%- endfor %}
+    <li class="finder-none" hidden><span>{{ s.searchNone }}</span></li>
+  </ul>
+</div>
+<nav class="quick" aria-label="{{ s.servicesHeading }}">
+  <ul class="qchips">
+  {%- for k in site.serviceOrder %}
+    <li><a class="qchip" href="{{ pre }}/{{ services[k].slug[entry.lang] }}/">{{ icon(k) }}<span>{{ services[k].name[entry.lang] }}</span></a></li>
+  {%- endfor %}
+  </ul>
+</nav>
+<nav class="quick" aria-label="{{ s.areasHeading }}">
+  <ul class="qchips">
+  {%- for k in site.areaOrder %}
+    <li><a class="qchip" href="{{ pre }}/{{ k }}/">{{ icon("pin") }}<span>{{ areas[k].name[entry.lang] }}</span></a></li>
+  {%- endfor %}
+  </ul>
+</nav>

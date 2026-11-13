@@ -48,6 +48,12 @@
 {%- if entry.type in ["home", "service", "area", "landing"] %}
 <script type="application/ld+json">{{ entry | jsonLd({ site: site, areas: areas, services: services }) | safe }}</script>
 <script src="{{ '/assets/site.js' | assetHash }}" defer></script>
+{%- if entry.type == "home" %}
+<script src="{{ '/assets/finder.js' | assetHash }}" defer></script>
+{%- endif %}
+{%- if entry.hasPins %}
+<script src="{{ '/assets/map.js' | assetHash }}" defer></script>
+{%- endif %}
 {%- endif %}
 </head>
 <body>
@@ -78,6 +84,9 @@
         <p class="connect">{{ s.connectLine }}</p>
         <h1>{{ c.h1 }}</h1>
         <p class="lede">{{ c.intro }}</p>
+        {%- if entry.type == "home" %}
+        {% include "partials/finder.njk" %}
+        {%- endif %}
         {%- if hasWs %}
         <a class="jump" href="#contact">{{ s.jumpToWorkshops }}{{ icon("arrow") }}</a>
         {%- endif %}

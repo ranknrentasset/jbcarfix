@@ -95,7 +95,19 @@
       "homeCrumb": "Utama",
       "jumpToWorkshops": "Lihat bengkel",
       "breadcrumbLabel": "Laluan halaman",
-      "langSwitchLabel": "Tukar bahasa"
+      "langSwitchLabel": "Tukar bahasa",
+      "searchLabel": "Cari servis atau kawasan",
+      "searchHint": "Contoh: tayar, Kulai",
+      "searchNone": "Tiada padanan",
+      "dirHeading": "Senarai bengkel",
+      "filterLabel": "Tapis senarai",
+      "filterAll": "Semua",
+      "dirEmpty": "Tiada bengkel untuk pilihan ini.",
+      "moreInfo": "Maklumat lanjut",
+      "directionsLabel": "Arah",
+      "mapShow": "Tunjuk peta",
+      "mapHide": "Sorok peta",
+      "mapLabel": "Peta bengkel"
     },
     "en": {
       "htmlLang": "en",
@@ -140,7 +152,19 @@
       "homeCrumb": "Home",
       "jumpToWorkshops": "See workshops",
       "breadcrumbLabel": "Breadcrumb",
-      "langSwitchLabel": "Change language"
+      "langSwitchLabel": "Change language",
+      "searchLabel": "Search a service or area",
+      "searchHint": "e.g. tyres, Kulai",
+      "searchNone": "No match",
+      "dirHeading": "Browse workshops",
+      "filterLabel": "Filter the list",
+      "filterAll": "All",
+      "dirEmpty": "No workshops for this choice.",
+      "moreInfo": "More info",
+      "directionsLabel": "Directions",
+      "mapShow": "Show map",
+      "mapHide": "Hide map",
+      "mapLabel": "Workshop map"
     }
   }
 }

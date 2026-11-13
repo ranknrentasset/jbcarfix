@@ -277,7 +277,9 @@ test("each card's buttons send GA events with that card's workshop_id", () => {
   assert.deepEqual(calls, [
     ["event", "click_call", { ...base, workshop_id: "ws-tyreplus-kulai" }],
     ["event", "click_whatsapp", { ...base, workshop_id: "ws-tyreplus-kulai" }],
+    ["event", "click_directions", { ...base, workshop_id: "ws-tyreplus-kulai" }],
     ["event", "click_call", { ...base, workshop_id: "ws-hankook-kulai" }],
+    ["event", "click_directions", { ...base, workshop_id: "ws-hankook-kulai" }],
   ]);
   const svc = clickAll(read("tayar/index.html"), read("assets/site.js"));
   assert.ok(svc.length && svc.every((c) => c[2].service === "tayar" && c[2].area === "all"));
@@ -600,6 +602,8 @@ test("design: self-hosted font, no third-party hosts, small CSS, no inline style
       if (/type="application\/ld\+json"/.test(m[1])) continue;
       assert.match(m[1], /\ssrc="/, `${f}: inline script would break the CSP`);
     }
-    assert.doesNotMatch(html.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/g, ""), /(src|href)="https?:\/\/(?!jbcarfix\.com|wa\.me|www\.googletagmanager\.com|api\.web3forms\.com)/, `${f}: third-party asset`);
+    // Directions buttons are plain links to Google Maps directions (not assets), so only those hrefs are set aside.
+    const pageOnly = html.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/g, "").replace(/ href="https:\/\/www\.google\.com\/maps\/dir\/\?api=1&amp;destination=[^"]*"/g, "");
+    assert.doesNotMatch(pageOnly, /(src|href)="https?:\/\/(?!jbcarfix\.com|wa\.me|www\.googletagmanager\.com|api\.web3forms\.com)/, `${f}: third-party asset`);
   }
 });

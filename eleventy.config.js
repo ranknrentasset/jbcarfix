@@ -1,6 +1,7 @@
 import crypto from "node:crypto";
 import fs from "node:fs";
 import { buildJsonLd } from "./lib/schema.js";
+import { hasPin } from "./lib/content.js";
 
 const site = JSON.parse(fs.readFileSync("src/_data/site.json", "utf8"));
 
@@ -23,6 +24,45 @@ export function waLink(number, text, utm) {
   let url = `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
   if (utm) url += "&" + new URLSearchParams(utm).toString();
   return url;
+}
+
+export function directionsUrl(w) {
+  if (!hasPin(w)) return "";
+  return "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(`${w.workshop.name}, ${w.location.address}`);
+}
+
+// Workshops for the home list, in page order (areas first, then services). Only
+// workshops that an area or service page lists; a stored backup is never included.
+// Each entry carries the same analytics area/service its own page sends, the page
+// to link to, and the area/service keys used by the filter chips.
+export function directoryEntries(routing, areas, services, siteData = site) {
+  const byId = new Map();
+  const get = (id) => {
+    if (!byId.has(id)) byId.set(id, { id, w: routing.workshops[id], area: null, services: [] });
+    return byId.get(id);
+  };
+  for (const a of siteData.areaOrder) for (const id of (routing.areas || {})[a] || []) { const e = get(id); if (!e.area) e.area = a; }
+  for (const k of siteData.serviceOrder) {
+    for (const id of (routing.services || {})[k] || []) {
+      const w = routing.workshops[id];
+      if (w && w.services && !w.services.includes(k)) continue;
+      get(id).services.push(k);
+    }
+  }
+  const out = [];
+  for (const e of byId.values()) {
+    if (!e.w) continue;
+    // Area chip: the area page that lists it, else the area the workshop is in (by name).
+    const located = e.area || siteData.areaOrder.find((a) => areas[a] && [areas[a].name.en, areas[a].name.ms].includes(e.w.workshop.area)) || null;
+    out.push({
+      ...e,
+      filterArea: located,
+      evArea: e.area || "all",
+      evService: e.area ? "area" : e.services[0],
+      page: e.area ? { type: "area", key: e.area } : { type: "service", key: e.services[0] },
+    });
+  }
+  return out;
 }
 
 export default function (eleventyConfig) {
@@ -57,6 +97,15 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("withWhatsapp", (list) => (list || []).filter((w) => !!w.whatsapp));
 
   eleventyConfig.addFilter("jsonLd", (page, data) => buildJsonLd(page, data));
+
+  // Directions button: Google Maps directions to the name and address shown on the
+  // workshop's public Google Maps listing (routing.json "location"). No location, no button.
+  eleventyConfig.addFilter("directionsUrl", (w) => directionsUrl(w));
+  eleventyConfig.addFilter("hasPin", (w) => hasPin(w));
+
+  // Home page workshop list: every workshop that some area or service page lists.
+  eleventyConfig.addFilter("directory", (routing, areas, services) => directoryEntries(routing, areas, services, site));
+  eleventyConfig.addFilter("dirHas", (list, kind, key) => (list || []).some((e) => (kind === "svc" ? e.services.includes(key) : e.filterArea === key)));
 
   // WhatsApp link: pre-filled text from i18n.json (brand filled in) plus the area's UTM tags.
   eleventyConfig.addFilter("waLink", (entry, text, campaign, lang, routing) =>

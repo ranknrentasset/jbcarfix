@@ -39,7 +39,7 @@
     } catch (e) {}
   }
 
-  root.JBCF = { normalisePhone: normalisePhone, validateLead: validateLead, eventParams: eventParams };
+  root.JBCF = { normalisePhone: normalisePhone, validateLead: validateLead, eventParams: eventParams, track: track };
   if (typeof document === "undefined") return; // loaded by tests
 
   var STORE = "jbcf_utm", MAX_AGE = 90 * 24 * 3600 * 1000, utm = null;
@@ -57,10 +57,11 @@
     try { localStorage.setItem(STORE, JSON.stringify({ t: Date.now(), v: utm })); } catch (e) {}
   }
 
-  // Each workshop card carries its own parameters, so events report that card's workshop_id.
-  Array.prototype.forEach.call(document.querySelectorAll(".ws-card a[data-ev]"), function (a) {
+  // Each workshop card (and each entry in the home list) carries its own parameters,
+  // so events report that card's workshop_id.
+  Array.prototype.forEach.call(document.querySelectorAll(".ws-card a[data-ev], .dir-card a[data-ev]"), function (a) {
     a.addEventListener("click", function () {
-      track(a.getAttribute("data-ev"), eventParams(a.closest(".ws-card").dataset));
+      track(a.getAttribute("data-ev"), eventParams(a.closest(".ws-card, .dir-card").dataset));
     });
   });
 

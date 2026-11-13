@@ -161,7 +161,7 @@ The WhatsApp button opens `wa.me/<number>?text=<message>` with the area's UTM ta
 
 ## Design
 
-Mobile-first, no frameworks and no third-party hosts.
+Mobile-first, no frameworks. Nothing loads from another host on page load (the map's tiles load only after a tap, see below).
 
 - **Type:** Plus Jakarta Sans as one self-hosted variable font (`src/assets/fonts/`, Latin subset, woff2, about 21 KB, `font-display: swap`, preloaded). The licence (SIL OFL) sits next to it. If the font file changes, give it a new file name (for example `.v2.woff2`): `/assets/*` is cached for a year.
 - **Colours:** deep navy with a warm amber accent, set as CSS variables at the top of `site.css`. A dark version follows the visitor's device setting (`prefers-color-scheme`).
@@ -169,6 +169,9 @@ Mobile-first, no frameworks and no third-party hosts.
 - **Layout:** breadcrumb, language switch, service cards with icons, area chips, FAQ accordions (`<details>`, no JavaScript) and workshop cards with large Call and WhatsApp buttons. The WhatsApp pre-fill note sits under each WhatsApp button.
 - **Mobile bar:** on pages with workshops, phones get a bar at the bottom that jumps to the cards. It holds no phone or WhatsApp link itself, so every tracked click still comes from a card with its own `workshop_id`. Pages without workshops never show it.
 - **Motion:** light CSS-only motion, switched off for visitors who ask for reduced motion.
+- **Home search and list:** the home hero has a search box (`partials/finder.njk`, `src/assets/finder.js`) that shows the matching service and area pages, with chips linking to every service and area page underneath. Below that, "Browse workshops" (`partials/directory.njk`) lists every workshop that some area or service page lists, once each (a stored backup never appears), with filter buttons by service and area. Each entry has Directions and "More info", which goes to the page that lists it. Call and WhatsApp stay on that page, under its own intro.
+- **Directions:** every card whose workshop has a `location` in `routing.json` gets a Directions button to Google Maps directions for the name and address on its public Google Maps listing. A workshop with no confirmed location gets no button and no pin.
+- **Map (opt-in):** pages with located workshops (and the home list) show a "Show map" button. Nothing map-related loads until it is tapped. Then `src/assets/map.js` adds the self-hosted Leaflet 1.9.4 (`src/assets/leaflet/`, BSD-2-Clause licence in `LICENSE.txt` there) and OpenStreetMap tiles. The CSP allows `https://tile.openstreetmap.org` for images only. Pins sit only at each workshop's `location.lat`/`lng`, copied from its public Google Maps listing; never estimate one. Where each pin came from is recorded in a private note outside the repo, which a test checks when it is present.
 - **Tests:** they check that the CSS stays under 25 KB, that there are no inline styles or scripts (the CSP blocks them) and no third-party assets, and that the font is preloaded.
 
 ## The contact form
@@ -191,11 +194,12 @@ When someone taps a contact button or sends the form, `src/assets/site.js` fires
 
 - `click_call`
 - `click_whatsapp`
+- `click_directions` (Directions on a card, in the home list, or in a map pin's popup)
 - `generate_lead`
 
 Each event carries:
 - `area`
-- `service`: the service slug on service pages, otherwise `area` or `home`
+- `service`: the service slug on service pages, otherwise `area` (on the home list: the area or service of the page that lists that workshop)
 - `workshop_id`
 - `tenant_status`
 - `lang`

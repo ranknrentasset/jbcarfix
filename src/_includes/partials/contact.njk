@@ -15,7 +15,7 @@
     Each card carries its own analytics parameters (data-ev-*), read by site.js. #}
   <div class="ws-list">
   {%- for w in list %}
-  <article class="ws-card" data-ev-area="{{ entry.eventArea }}" data-ev-lang="{{ entry.lang }}" data-ev-workshop-id="{{ w.workshop_id }}" data-ev-tenant-status="{{ w.tenant_status }}" data-ev-service="{{ entry.eventService }}" data-ev-page-path="{{ entry.url }}">
+  <article class="ws-card" data-ev-area="{{ entry.eventArea }}" data-ev-lang="{{ entry.lang }}" data-ev-workshop-id="{{ w.workshop_id }}" data-ev-tenant-status="{{ w.tenant_status }}" data-ev-service="{{ entry.eventService }}" data-ev-page-path="{{ entry.url }}"{% if w | hasPin %} data-lat="{{ w.location.lat }}" data-lng="{{ w.location.lng }}"{% endif %}>
     {%- if w.tenant_status == "tenant" and w.workshop.logo %}
     <img class="ws-logo" src="{{ w.workshop.logo }}" alt="{{ w.workshop.name }}" width="120" height="60">
     {%- endif %}
@@ -47,6 +47,9 @@
       {%- if w.whatsapp %}
       <a class="btn btn-wa" href="{{ w | waLink(i18n.whatsappText[entry.lang], entry.key, entry.lang, routing) }}" rel="noopener" data-ev="click_whatsapp">{{ icon("wa") }}<span>{{ w.whatsapp_label or s.whatsappLabel }}</span></a>
       {%- endif %}
+      {%- if w | hasPin %}
+      <a class="btn btn-dir" href="{{ w | directionsUrl }}" rel="noopener" data-ev="click_directions">{{ icon("route") }}<span>{{ s.directionsLabel }}</span></a>
+      {%- endif %}
     </p>
     {%- if w.whatsapp %}
     <p class="note">{{ i18n | underButtonNote(entry.lang) }}</p>
@@ -63,5 +66,11 @@
   </article>
   {%- endfor %}
   </div>
+  {%- if entry.hasPins %}
+  <div class="map-box">
+    {% include "partials/map.njk" %}
+    <div class="map" id="ws-map" role="region" aria-label="{{ s.mapLabel }}" hidden></div>
+  </div>
+  {%- endif %}
 </section>
 {%- endif %}

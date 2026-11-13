@@ -1,6 +1,6 @@
 {
   "_comment": "Who receives calls and WhatsApp messages. Leads never go to the site owner. 'workshops' holds each workshop once; 'areas' and 'services' list which workshops (up to 2) appear on each area page and JB-wide service page. A page with an empty or missing list shows a neutral 'coming soon' note (the 'unassigned' default). Trial workshops get call/WhatsApp buttons only; the form appears only for a tenant with its own web3forms_key. Every change here goes through a pull request that Muhammad merges. A workshop in 'workshops' that no area or service lists (e.g. a backup) is stored but shown nowhere.",
-  "_fields": "workshop_id: stable short slug, sent with analytics events; never change it once live. workshop.name, workshop.area (area or town), workshop.coverage {en, ms}: the line under the name. phone: E.164 (+60...) for the tel: link; phone_display: the number exactly as shown on the page. phone_label (optional): short text shown next to the number. whatsapp (optional, digits only, or null for call-only); whatsapp_label (optional button text). hours {en, ms}: one line per day, from the workshop's Google Maps listing, or empty lists [] to hide the hours box. tenant_status: trial | tenant. services (optional): restricts the workshop to these services ('general' = general repair and servicing); a restricted workshop is skipped on other service pages. web3forms_key: only for a tenant (enables the form). Never add a logo or photo for a trial workshop.",
+  "_fields": "workshop_id: stable short slug, sent with analytics events; never change it once live. workshop.name, workshop.area (area or town), workshop.coverage {en, ms}: the line under the name. phone: E.164 (+60...) for the tel: link; phone_display: the number exactly as shown on the page. phone_label (optional): short text shown next to the number. whatsapp (optional, digits only, or null for call-only); whatsapp_label (optional button text). hours {en, ms}: one line per day, from the workshop's Google Maps listing, or empty lists [] to hide the hours box. tenant_status: trial | tenant. services (optional): restricts the workshop to these services ('general' = general repair and servicing); a restricted workshop is skipped on other service pages. web3forms_key: only for a tenant (enables the form). Never add a logo or photo for a trial workshop. location (optional): {address, lat, lng} copied from the workshop's public Google Maps listing (address as shown there; lat/lng from that listing's own coordinates). It drives the Directions button and the map pin. Leave it out when the listing can't be confirmed: that workshop then gets no Directions button and no pin. Never estimate a position.",
   "default": "unassigned",
   "workshops": {
     "ws-fresh-air-jb": {
@@ -78,7 +78,12 @@
           }
         ]
       },
-      "whatsapp": null
+      "whatsapp": null,
+      "location": {
+        "address": "13, Jalan Yahya Awal, Bandar Johor Bahru, 80100 Johor Bahru, Johor Darul Ta'zim",
+        "lat": 1.4661259,
+        "lng": 103.7527464
+      }
     },
     "ws-acs-skudai": {
       "workshop_id": "ws-acs-skudai",
@@ -155,7 +160,12 @@
           }
         ]
       },
-      "whatsapp": null
+      "whatsapp": null,
+      "location": {
+        "address": "61, Jalan Perdagangan 3, Taman Universiti, 81300 Skudai, Johor Darul Ta'zim",
+        "lat": 1.5433503,
+        "lng": 103.625413
+      }
     },
     "ws-continental-pelangi": {
       "workshop_id": "ws-continental-pelangi",
@@ -232,6 +242,11 @@
             "text": "Tutup"
           }
         ]
+      },
+      "location": {
+        "address": "2 & 4, Jalan Pingai, Taman Pelangi, 80400 Johor Bahru, Johor Darul Ta'zim",
+        "lat": 1.482021,
+        "lng": 103.7726079
       }
     },
     "ws-hawk-tebrau": {
@@ -313,7 +328,12 @@
       "whatsapp_label": "Hawk company WhatsApp",
       "services": [
         "tayar"
-      ]
+      ],
+      "location": {
+        "address": "1, Jalan Perisai, Taman Sri Tebrau, 80050 Johor Bahru, Johor Darul Ta'zim",
+        "lat": 1.484259,
+        "lng": 103.7657656
+      }
     },
     "ws-tyreplus-kulai": {
       "workshop_id": "ws-tyreplus-kulai",
@@ -391,7 +411,12 @@
           }
         ]
       },
-      "whatsapp_label": "TYREPLUS WhatsApp"
+      "whatsapp_label": "TYREPLUS WhatsApp",
+      "location": {
+        "address": "5334 Jalan Kenari 19, Bandar Putra Kulai, 81000 Johor Bahru, Johor",
+        "lat": 1.65648,
+        "lng": 103.62938
+      }
     },
     "ws-hankook-kulai": {
       "workshop_id": "ws-hankook-kulai",
@@ -468,7 +493,12 @@
           }
         ]
       },
-      "whatsapp": null
+      "whatsapp": null,
+      "location": {
+        "address": "47, Jalan Susur Kulai 4, Taman Sri Kulai Baru 2, 81000 Kulai, Johor Darul Ta'zim",
+        "lat": 1.6670689,
+        "lng": 103.5897531
+      }
     },
     "ws-kuga-gelang-patah": {
       "workshop_id": "ws-kuga-gelang-patah",
@@ -545,7 +575,12 @@
           }
         ]
       },
-      "whatsapp": null
+      "whatsapp": null,
+      "location": {
+        "address": "Gelang Patah, 35, Jalan Nip 2/6, Taman Perindustrian, 79200 Iskandar Puteri, Johor",
+        "lat": 1.4454433,
+        "lng": 103.6009562
+      }
     },
     "ws-fateh-gelang-patah": {
       "workshop_id": "ws-fateh-gelang-patah",
@@ -622,6 +657,11 @@
             "text": "9:00 AM–6:00 PM"
           }
         ]
+      },
+      "location": {
+        "address": "36 Jalan Nusaria 1J/1 Taman Nusantara Gelang Patah, 81550 Johor, Johor Darul Ta'zim",
+        "lat": 1.4715342,
+        "lng": 103.5842723
       }
     },
     "ws-jagtech-bukit-indah": {
@@ -702,7 +742,12 @@
       "services": [
         "general"
       ],
-      "whatsapp": null
+      "whatsapp": null,
+      "location": {
+        "address": "37 & 39, Jalan Indah 16/11, Taman Bukit Indah, 81200 Johor Bahru, Johor Darul Ta'zim",
+        "lat": 1.4796258,
+        "lng": 103.6643706
+      }
     },
     "ws-overseas-bukit-indah": {
       "workshop_id": "ws-overseas-bukit-indah",
@@ -779,7 +824,12 @@
           }
         ]
       },
-      "whatsapp": null
+      "whatsapp": null,
+      "location": {
+        "address": "2, Jalan Indah 16/11, Taman Bukit Indah, 81200 Johor Bahru, Johor Darul Ta'zim",
+        "lat": 1.480535,
+        "lng": 103.6639989
+      }
     },
     "ws-kar-skudai": {
       "workshop_id": "ws-kar-skudai",
@@ -856,7 +906,12 @@
           }
         ]
       },
-      "whatsapp": null
+      "whatsapp": null,
+      "location": {
+        "address": "10, Jalan Bestari 87, Mutiara Rini, 81300 Skudai, Johor Darul Ta'zim",
+        "lat": 1.4952593,
+        "lng": 103.6171195
+      }
     },
     "ws-tiptop-larkin": {
       "workshop_id": "ws-tiptop-larkin",
@@ -933,7 +988,12 @@
           }
         ]
       },
-      "whatsapp": null
+      "whatsapp": null,
+      "location": {
+        "address": "No55 jalan dataran larkin 1, Taman, Dataran Larkin 2, 80350 Johor Bahru, Johor Darul Ta'zim",
+        "lat": 1.4985083,
+        "lng": 103.742421
+      }
     },
     "ws-petronas-larkin": {
       "workshop_id": "ws-petronas-larkin",
@@ -1010,7 +1070,12 @@
           }
         ]
       },
-      "whatsapp": null
+      "whatsapp": null,
+      "location": {
+        "address": "1-01, Jalan Dataran Larkin 5, Taman Larkin, 80350 Johor Bahru, Johor Darul Ta'zim",
+        "lat": 1.4987306,
+        "lng": 103.7416193
+      }
     },
     "ws-ahbao": {
       "workshop_id": "ws-ahbao",
@@ -1029,6 +1094,11 @@
       "hours": {
         "en": [],
         "ms": []
+      },
+      "location": {
+        "address": "11, Jalan Indah 16/11, Taman Bukit Indah, 81200 Johor Bahru, Johor Darul Ta'zim",
+        "lat": 1.480405,
+        "lng": 103.664323
       }
     },
     "ws-gc-auto": {
@@ -1048,6 +1118,11 @@
       "hours": {
         "en": [],
         "ms": []
+      },
+      "location": {
+        "address": "22, Jalan Mutiara Emas 5/8, Taman Mount Austin, 81100 Johor Bahru, Johor Darul Ta'zim",
+        "lat": 1.5460631,
+        "lng": 103.7729163
       }
     },
     "ws-mega-car-paint": {
@@ -1086,6 +1161,11 @@
       "hours": {
         "en": [],
         "ms": []
+      },
+      "location": {
+        "address": "19, JALAN EMAS 1, TAMAN SRI SKUDAI Skudai, 81300 Johor Bahru, Johor Darul Ta'zim",
+        "lat": 1.5450244,
+        "lng": 103.6530418
       }
     },
     "ws-kone-towing": {
@@ -1105,6 +1185,11 @@
       "hours": {
         "en": [],
         "ms": []
+      },
+      "location": {
+        "address": "17, Jalan Indah 1/5, Taman Bukit Indah, 79100 Iskandar Puteri, Johor Darul Ta'zim",
+        "lat": 1.4865585,
+        "lng": 103.6610106
       }
     }
   },
