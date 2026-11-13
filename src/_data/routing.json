@@ -1,22 +1,57 @@
 {
-  "_comment": "Who receives calls and WhatsApp messages for each area. Every area points to an entry in 'entries'. To hand an area to a workshop later, add an entry for it and change that area's value below. Any change here goes through a pull request that Muhammad merges.",
-  "default": "owner",
+  "_comment": "Who receives calls, WhatsApp messages and form leads. Leads never go to the site owner: each area points to its own workshop entry, and pages without an area use 'default'. While an entry's status is 'unassigned', its page hides the call, WhatsApp and form buttons and shows a 'coming soon' note. Set status to 'trial' or 'rented' only once a real workshop has agreed; the build refuses to show an entry that still has TODO or all-zero values. Every change here goes through a pull request that Muhammad merges.",
+  "_fields": "workshop_name: shown on the page. phone: E.164, e.g. +60123456789. whatsapp: digits only, for wa.me. web3forms_key: that workshop's own Web3Forms access key (public by design; it only says which inbox gets the email). status: unassigned | trial | rented.",
+  "default": "unassigned",
   "areas": {
-    "kulai": "owner",
-    "gelang-patah": "owner",
-    "bukit-indah": "owner",
-    "skudai": "owner",
-    "larkin": "owner",
-    "near-ksl": "owner"
+    "kulai": "kulai",
+    "gelang-patah": "gelang-patah",
+    "bukit-indah": "bukit-indah",
+    "skudai": "skudai",
+    "larkin": "larkin",
+    "near-ksl": "unassigned"
   },
   "entries": {
-    "owner": {
-      "label": "JBCarFix (owner)",
-      "status": "placeholder",
+    "unassigned": {
+      "workshop_name": "TODO-workshop-name",
       "phone": "+60000000000",
-      "phoneDisplay": "+60 00-000 0000",
       "whatsapp": "60000000000",
-      "_todo": "TODO: fake placeholder numbers. Replace with the real launch number before going live."
+      "web3forms_key": "TODO-public-access-key",
+      "status": "unassigned"
+    },
+    "kulai": {
+      "workshop_name": "TODO-workshop-name",
+      "phone": "+60000000000",
+      "whatsapp": "60000000000",
+      "web3forms_key": "TODO-public-access-key",
+      "status": "unassigned"
+    },
+    "gelang-patah": {
+      "workshop_name": "TODO-workshop-name",
+      "phone": "+60000000000",
+      "whatsapp": "60000000000",
+      "web3forms_key": "TODO-public-access-key",
+      "status": "unassigned"
+    },
+    "bukit-indah": {
+      "workshop_name": "TODO-workshop-name",
+      "phone": "+60000000000",
+      "whatsapp": "60000000000",
+      "web3forms_key": "TODO-public-access-key",
+      "status": "unassigned"
+    },
+    "skudai": {
+      "workshop_name": "TODO-workshop-name",
+      "phone": "+60000000000",
+      "whatsapp": "60000000000",
+      "web3forms_key": "TODO-public-access-key",
+      "status": "unassigned"
+    },
+    "larkin": {
+      "workshop_name": "TODO-workshop-name",
+      "phone": "+60000000000",
+      "whatsapp": "60000000000",
+      "web3forms_key": "TODO-public-access-key",
+      "status": "unassigned"
     }
   },
   "utm": {

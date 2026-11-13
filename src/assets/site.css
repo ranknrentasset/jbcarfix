@@ -35,3 +35,4 @@ summary{cursor:pointer;font-weight:600}
 .foot-nav li a{display:inline-block;padding:.35rem 0}
 .foot h2{font-size:1rem;margin:1rem 0 .25rem}
 .draft{color:var(--muted);font-style:italic}
+.routed,.soon{font-weight:600}
