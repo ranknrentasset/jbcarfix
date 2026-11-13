@@ -6,6 +6,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
+import vm from "node:vm";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -52,6 +53,15 @@ test("no {{ ... }} left unfilled and brand appears", () => {
   assert.ok(home.includes(`<p class="connect">${brand} membantu`), "brand filled into Malay hero line");
 });
 
+test("no GA4 tag when ga4_measurement_id is empty", () => {
+  const site = JSON.parse(fs.readFileSync(path.join(ROOT, "src/_data/site.json"), "utf8"));
+  assert.equal(site.ga4_measurement_id, "");
+  for (const f of htmlFiles(path.join(ROOT, "_site"))) {
+    const html = fs.readFileSync(f, "utf8");
+    assert.ok(!/googletagmanager|ga4\.js|gtag\(/.test(html), `${f} has a GA tag`);
+  }
+});
+
 test("built JSON-LD and meta tags contain no routing phone, WhatsApp or workshop name", () => {
   const routing = JSON.parse(fs.readFileSync(path.join(ROOT, "src/_data/routing.json"), "utf8"));
   assertNoRoutingInData(path.join(ROOT, "_site"), routing);
@@ -69,6 +79,11 @@ test("trial and tenant workshops: visible text only, disclosures, no trial logo"
   Object.assign(routing.entries.kulai, { workshop_id: "ws-test-trial", workshop: { name: "Test Trial Workshop", area: "Kulai", coverage: [] }, phone: "+60123456781", whatsapp: "60123456781", web3forms_key: "test-key-1", tenant_status: "trial" });
   Object.assign(routing.entries.skudai, { workshop_id: "ws-test-tenant", workshop: { name: "Test Tenant Workshop", area: "Skudai", coverage: [], logo: "/assets/test-logo.png" }, phone: "+60123456782", whatsapp: "60123456782", web3forms_key: "test-key-2", tenant_status: "tenant" });
   fs.writeFileSync(rp, JSON.stringify(routing));
+  const sp = path.join(tmp, "src/_data/site.json");
+  const tmpSite = JSON.parse(fs.readFileSync(sp, "utf8"));
+  tmpSite.ga4_measurement_id = "G-TEST12345";
+  fs.writeFileSync(sp, JSON.stringify(tmpSite));
+
   execFileSync(process.execPath, [path.join(ROOT, "node_modules/@11ty/eleventy/cmd.cjs"), "--quiet"], { cwd: tmp, stdio: "pipe" });
   const out = path.join(tmp, "_site");
 
@@ -107,6 +122,37 @@ test("trial and tenant workshops: visible text only, disclosures, no trial logo"
   assert.ok(dec(skudaiEn).includes("Test Tenant Workshop pays JBCarFix a flat fee to be featured here. It doesn't change the price they quote you."));
   assert.doesNotMatch(skudai, /panduan bebas|ulasan Google awam/);
   assert.match(skudai, /<img[^>]+test-logo\.png/);
+
+  // GA4: with an ID set, gtag.js loads async on every page and config runs with that ID.
+  for (const f of htmlFiles(out)) {
+    const html = fs.readFileSync(f, "utf8");
+    assert.ok(html.includes('<script async src="https://www.googletagmanager.com/gtag/js?id=G-TEST12345"></script>'), `${f} lacks gtag.js`);
+    assert.match(html, /<script src="\/assets\/ga4\.js\?v=[0-9a-f]+" data-ga4-id="G-TEST12345" defer><\/script>/);
+  }
+  const gaWin = { document: { currentScript: { getAttribute: (n) => (n === "data-ga4-id" ? "G-TEST12345" : null) } } };
+  vm.runInNewContext(fs.readFileSync(path.join(out, "assets/ga4.js"), "utf8"), { window: gaWin });
+  const queued = gaWin.dataLayer.map((a) => Array.from(a));
+  assert.deepEqual(queued[1], ["config", "G-TEST12345"]);
+
+  // Events: click the built call/WhatsApp buttons in a mocked page and check what reaches gtag.
+  const attrs = Object.fromEntries([...kulai.matchAll(/data-ev-([a-z-]+)="([^"]*)"/g)].map((m) => ["ev" + m[1].replace(/(^|-)([a-z])/g, (x, d, c) => c.toUpperCase()), m[2]]));
+  const calls = [];
+  const handlers = {};
+  const box = { dataset: attrs };
+  const link = (ev) => ({ getAttribute: () => ev, closest: () => box, addEventListener: (t, fn) => { handlers[ev] = fn; } });
+  const win = {
+    gtag: (...a) => calls.push(a),
+    location: { search: "", origin: "https://example.pages.dev" },
+    localStorage: { getItem: () => null, setItem: () => {} },
+    URLSearchParams,
+    document: { querySelectorAll: (sel) => (sel.includes("a[data-ev]") ? [link("click_call"), link("click_whatsapp")] : []) },
+  };
+  win.window = win;
+  vm.runInNewContext(fs.readFileSync(path.join(out, "assets/site.js"), "utf8"), { ...win, window: win });
+  handlers.click_call();
+  handlers.click_whatsapp();
+  const expected = { area: "kulai", lang: "en", workshop_id: "ws-test-trial", tenant_status: "trial", service: "area", page_path: "/en/kulai/" };
+  assert.deepEqual(calls.map((c) => [c[0], c[1], { ...c[2] }]), [["event", "click_call", expected], ["event", "click_whatsapp", expected]]);
 
   // Unassigned areas still show no buttons or form.
   const larkin = fs.readFileSync(path.join(out, "larkin/index.html"), "utf8");

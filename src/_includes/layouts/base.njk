@@ -35,6 +35,10 @@
 <meta name="theme-color" content="#0b5cad">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="{{ '/assets/site.css' | assetHash }}">
+{%- if site.ga4_measurement_id %}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ site.ga4_measurement_id }}"></script>
+<script src="{{ '/assets/ga4.js' | assetHash }}" data-ga4-id="{{ site.ga4_measurement_id }}" defer></script>
+{%- endif %}
 {%- if entry.type in ["home", "service", "area", "landing"] %}
 <script type="application/ld+json">{{ entry | jsonLd({ site: site, areas: areas, services: services }) | safe }}</script>
 <script src="{{ '/assets/site.js' | assetHash }}" defer></script>

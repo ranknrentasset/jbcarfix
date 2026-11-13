@@ -20,7 +20,9 @@
     "servis",
     "mekanik-24-jam",
     "aircond-kereta",
-    "pakar-gearbox"
+    "pakar-gearbox",
+    "cat-kereta",
+    "towing-kereta"
   ],
   "ms": {
     "title": "Bukit Indah (DRAFT) | {{ brand }}",

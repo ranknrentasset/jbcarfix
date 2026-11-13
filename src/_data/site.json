@@ -13,6 +13,8 @@
     "postalCode": null,
     "addressLocality": null
   },
+  "_ga4Comment": "Google Analytics 4 measurement ID (looks like G-XXXXXXX). Leave empty for no analytics script at all. When set, gtag.js loads on every page and the contact events go to GA4.",
+  "ga4_measurement_id": "",
   "defaultLanguage": "ms",
   "languages": [
     "ms",
@@ -32,7 +34,9 @@
     "servis",
     "mekanik-24-jam",
     "aircond-kereta",
-    "pakar-gearbox"
+    "pakar-gearbox",
+    "cat-kereta",
+    "towing-kereta"
   ],
   "landingOrder": [
     "near-ksl"

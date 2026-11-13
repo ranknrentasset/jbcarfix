@@ -51,6 +51,8 @@ tests/               Automatic tests for the form checks, routing safety and the
 | `/mekanik-24-jam/` | `/en/24-hour-mechanic/` |
 | `/aircond-kereta/` | `/en/car-aircon/` |
 | `/pakar-gearbox/` | `/en/gearbox-repair/` |
+| `/cat-kereta/` | `/en/car-body-paint/` |
+| `/towing-kereta/` | `/en/car-towing/` |
 | `/kulai/` | `/en/kulai/` |
 | `/gelang-patah/` | `/en/gelang-patah/` |
 | `/bukit-indah/` | `/en/bukit-indah/` |
@@ -148,19 +150,18 @@ Each event carries:
 - `lang`
 - `page_path`
 
-**This repo does not load GA4 or any other analytics script.** The events are only passed on if a `gtag()` or `dataLayer` is present on the page. Adding GA4 is a separate decision for you to approve; it also needs its addresses added to the CSP in `public/_headers`.
+**GA4 is built in and switched off until an ID is set.** Put the measurement ID in `site.json` as `ga4_measurement_id`, for example `G-XXXXXXX`.
+- **Empty (today):** no Google script loads at all.
+- **Set:** every page loads `gtag.js` (async) from googletagmanager.com, `src/assets/ga4.js` runs `gtag('config', ID)`, and the events above go to GA4.
+
+The CSP in `public/_headers` already allows Google's addresses. Tests confirm both cases: no GA tag when the ID is empty, and with a test ID the tag is present and the events reach `gtag`.
 
 ## Tracking must be verified on the PR preview before merge
 
-Do this on the Cloudflare preview link of the pull request, with GA4 installed and a test area set to `trial`:
+Only two things remain:
 
-- [ ] Open GA4 **Admin → DebugView** and turn on debug mode for your browser, for example with the GA Debugger extension.
-- [ ] Tap the **call** button on an area page. DebugView shows `click_call` with `area`, `service`, `workshop_id`, `tenant_status` and `lang`.
-- [ ] Tap the **WhatsApp** button. DebugView shows `click_whatsapp` with the same five parameters.
-- [ ] Repeat on the English page. `lang` reads `en`.
-- [ ] Repeat on a service page. `service` shows the service slug, such as `tayar`.
-- [ ] The values match `routing.json` for that area: the right `workshop_id` and `tenant_status`.
-- [ ] WhatsApp opens with "Hai, saya jumpa anda di …" on Malay pages and "Hi, I found you on …" on English pages.
+- [ ] Add Muhammad's GA4 measurement ID to `ga4_measurement_id` in `src/_data/site.json`, through a pull request.
+- [ ] On that pull request's preview link, with a test area set to `trial`, open GA4 **Admin → DebugView**. Tapping the call and WhatsApp buttons should show `click_call` and `click_whatsapp`, each with `area`, `service`, `workshop_id`, `tenant_status` and `lang`.
 
 ## Decisions made
 
@@ -174,7 +175,7 @@ Do this on the Cloudflare preview link of the pull request, with GA4 installed a
 - [ ] Real page text, once it has been checked and cleared
 - [ ] Real phone and WhatsApp numbers for each workshop
 - [ ] The privacy notice text. Then remove its noindex rules in `public/_headers` and set `status` in `privacy.json`
-- [ ] GA4, if you approve adding it, then the tracking check above
+- [ ] Muhammad's GA4 measurement ID, then the DebugView check above
 
 ## Structured data (schema)
 

@@ -1,6 +1,7 @@
-# Cloudflare Pages headers. Based on the Nook & Root production file, trimmed:
-# no third-party scripts here, so the CSP only allows this site itself
-# (plus Web3Forms, which receives the lead form). Remove the two privacy noindex rules once real copy is in.
+# Cloudflare Pages headers. Based on the Nook & Root production file, trimmed.
+# The CSP allows this site itself, Web3Forms (lead form) and Google Analytics 4
+# (gtag.js is only loaded when site.json ga4_measurement_id is set).
+# Remove the two privacy noindex rules once real copy is in.
 /*
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
@@ -8,7 +9,7 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
   Cross-Origin-Opener-Policy: same-origin
   Strict-Transport-Security: max-age=31536000
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com; form-action 'self' https://api.web3forms.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'
 
 # CSS/JS are linked with a content hash (?v=...), so they can be cached for a year
 /assets/*

@@ -1,0 +1,61 @@
+{
+  "_comment": "One file per JB-wide service page. Write this service's own text in every field.",
+  "key": "cat-kereta",
+  "status": "placeholder",
+  "slug": {
+    "ms": "cat-kereta",
+    "en": "car-body-paint"
+  },
+  "name": {
+    "ms": "Cat kereta",
+    "en": "Car body paint"
+  },
+  "ms": {
+    "title": "Cat kereta (DRAFT) | {{ brand }}",
+    "description": "DRAFT – content pending: penerangan meta untuk Cat kereta.",
+    "h1": "Cat kereta – DRAFT",
+    "intro": "DRAFT – content pending: perenggan pembuka untuk Cat kereta.",
+    "blocks": [
+      {
+        "id": "what-it-covers",
+        "heading": "DRAFT – Apa yang termasuk",
+        "body": "DRAFT – content pending."
+      },
+      {
+        "id": "when-to-get-help",
+        "heading": "DRAFT – Bila perlu dapatkan bantuan",
+        "body": "DRAFT – content pending."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "DRAFT – soalan lazim 1 (Cat kereta)",
+        "a": "DRAFT – content pending."
+      }
+    ]
+  },
+  "en": {
+    "title": "Car body paint (DRAFT) | {{ brand }}",
+    "description": "DRAFT – content pending: meta description for Car body paint.",
+    "h1": "Car body paint – DRAFT",
+    "intro": "DRAFT – content pending: opening paragraph for Car body paint.",
+    "blocks": [
+      {
+        "id": "what-it-covers",
+        "heading": "DRAFT – What it covers",
+        "body": "DRAFT – content pending."
+      },
+      {
+        "id": "when-to-get-help",
+        "heading": "DRAFT – When to get help",
+        "body": "DRAFT – content pending."
+      }
+    ],
+    "faqs": [
+      {
+        "q": "DRAFT – question 1 (Car body paint)",
+        "a": "DRAFT – content pending."
+      }
+    ]
+  }
+}
