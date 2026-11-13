@@ -213,7 +213,7 @@ test("home list: every workshop that a page lists, once, never the backup; no ca
         assert.ok(read(href.replace(/^\//, "") + "index.html").includes(`data-ev-workshop-id="${c.id}"`), `${rel} ${c.id}: ${href} lists it`);
         assert.doesNotMatch(read(href.replace(/^\//, "") + "index.html"), /name="robots"/, `${rel} ${c.id}: More info links only to an indexable page`);
       } else {
-        assert.ok(c.body.includes(`<span>${more}</span>`), `${rel} ${c.id}: More info stays as words when its page is held back`);
+        assert.doesNotMatch(c.body, /Maklumat lanjut|More info/, `${rel} ${c.id}: held-back More info is omitted, not shown as text`);
       }
       assert.ok(dec(c.body).includes(`<h3>${routing.workshops[c.id].workshop.name}</h3>`));
       assert.ok(c.body.includes(routing.workshops[c.id].workshop.coverage[lang]));

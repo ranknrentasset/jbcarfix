@@ -1,7 +1,7 @@
 {
   "_comment": "One file per area. Write this area's own text in every field; never copy another area's text and swap the name. Set status to 'draft' once real text is in, then 'ready' after review. npm run check:unique skips 'placeholder' files.",
   "slug": "kulai",
-  "status": "placeholder",
+  "status": "draft",
   "name": {
     "ms": "Kulai",
     "en": "Kulai"
@@ -24,60 +24,84 @@
     "towing-kereta"
   ],
   "ms": {
-    "title": "Kulai (DRAFT) | {{ brand }}",
-    "description": "DRAFT – content pending: penerangan meta untuk Kulai.",
-    "h1": "Kulai – DRAFT",
-    "intro": "DRAFT – content pending: perenggan pembuka untuk Kulai.",
+    "title": "Bengkel Kereta Kulai, Bandar Putra & Indahpura | {{ brand }}",
+    "description": "Bengkel kereta di Kulai, Bandar Putra atau Indahpura untuk tayar, bateri, aircond dan servis. Lihat bengkel tempatan yang kami cadangkan.",
+    "h1": "Bengkel Kereta Kulai: Untuk Pemandu di Bandar Putra, Indahpura dan Sekitarnya",
+    "intro": "**Jawapan ringkas:** Jika anda perlukan bengkel kereta di Kulai, halaman ini mencadangkan bengkel tempatan yang mendapat ulasan baik untuk anda hubungi terus, sama ada anda di Bandar Kulai, Bandar Putra atau Indahpura. {{ brand }} bukan bengkel. Bengkel itu sendiri yang memberi sebut harga kepada anda.",
     "blocks": [
       {
         "id": "local-driving",
-        "heading": "DRAFT – Pemanduan di kawasan ini",
-        "body": "DRAFT – content pending."
+        "heading": "Memandu di Kulai: apa yang memberi kesan kepada kereta anda",
+        "body": "Kulai ialah daerah yang luas, merangkumi Bandar Kulai, Bandar Putra, Indahpura dan Saleng. Ramai penduduknya berulang-alik setiap hari ke JB, ke kawasan perindustrian sekitar Kulai dan Sedenak, atau ke Singapura.\n\n- **Lebuhraya Utara–Selatan (E2) dan Jalan Kulai (FT001).** Perjalanan jauh dan laju di lebuhraya memberi tekanan kepada tayar, alignment dan aircond. Jika stereng terasa menarik ke satu sisi atau tayar haus tidak sekata, periksa alignment.\n- **Banjir kilat di Jalan Kulai.** Pada Januari 2026, seorang exco kerajaan negeri Johor menyatakan bahawa hujan serendah 20 mm dalam sejam boleh menyebabkan banjir di FT001 Jalan Kulai, dan pembentung lama sedang dinaik taraf. Jika anda terpaksa melalui air, perhatikan tanda-tanda selepas itu: brek terasa lain, lampu amaran menyala, bunyi luar biasa, atau kereta sukar dihidupkan.\n- **Trafik sekitar Bandar Putra dan IOI Mall Kulai.** Pemanduan perlahan dan berhenti-mula dalam cuaca panas menguji aircond dan bateri."
       },
       {
         "id": "common-issues",
-        "heading": "DRAFT – Masalah kereta yang biasa",
-        "body": "DRAFT – content pending."
+        "heading": "Masalah yang kerap dicari di Kulai",
+        "body": "- **Tayar:** tukar tayar, tayar bocor dan alignment, termasuk di Bandar Putra dan Indahpura. Lihat [kedai tayar di JB](/tayar/).\n- **Bateri kereta:** masalah bateri kereta kerap dicari di Kulai, contohnya kereta tak boleh hidup selepas lama diparkir atau selepas hujan. Lihat [bateri kereta](/bateri/).\n- **Aircond kereta:** aircond tak sejuk semasa trafik atau perjalanan jauh. Lihat [aircond kereta](/aircond-kereta/).\n- **Servis berkala:** tukar minyak hitam dan pemeriksaan sebelum perjalanan jauh. Lihat [servis kereta](/servis/).\n- **Cat kereta:** calar dan kemik selepas kemalangan kecil atau di tempat letak kereta. Lihat [cat dan ketuk kereta](/cat-kereta/).\n- **Towing:** kereta tak boleh bergerak selepas rosak atau kemalangan. Minta harga tunda sebelum kereta ditunda. Lihat [towing kereta](/towing-kereta/)."
       },
       {
-        "id": "getting-help",
-        "heading": "DRAFT – Cara mendapatkan bantuan",
-        "body": "DRAFT – content pending."
+        "id": "workshop-location",
+        "heading": "Lokasi bengkel",
+        "body": "{{ workshop.coverage }}"
       }
     ],
     "faqs": [
       {
-        "q": "DRAFT – soalan lazim 1 (Kulai)",
-        "a": "DRAFT – content pending."
+        "q": "Adakah {{ brand }} mempunyai bengkel di Kulai?",
+        "a": "Tidak. Kami tidak mempunyai bengkel. Halaman ini mencadangkan bengkel tempatan, dan nama bengkel itu dipaparkan di sebelah butang supaya anda tahu siapa yang anda hubungi."
+      },
+      {
+        "q": "Kereta saya melalui air banjir di Jalan Kulai. Apa yang perlu saya periksa?",
+        "a": "Jika enjin mati dalam air, jangan cuba menghidupkannya semula berulang kali kerana ia boleh merosakkan enjin. Dapatkan bengkel untuk memeriksa enjin, minyak hitam, brek, bateri dan pendawaian. Jika kereta masih boleh bergerak, uji brek perlahan-lahan di tempat yang selamat dan perhatikan lampu amaran di dashboard."
+      },
+      {
+        "q": "Stereng saya menarik ke satu sisi selepas memandu di lebuhraya. Kenapa?",
+        "a": "Puncanya biasanya alignment roda yang lari, tekanan angin tayar yang tidak sama, atau tayar yang haus tidak sekata. Bengkel tayar boleh memeriksa alignment dan keadaan tayar anda."
+      },
+      {
+        "q": "Bolehkah saya dapatkan bantuan bateri di lokasi di Kulai?",
+        "a": "Sesetengah bengkel dan kedai bateri datang ke lokasi anda. Tanya bengkel-bengkel di halaman ini sama ada mereka menawarkannya. Kami tidak boleh menjanjikan masa ketibaan."
       }
     ]
   },
   "en": {
-    "title": "Kulai (DRAFT) | {{ brand }}",
-    "description": "DRAFT – content pending: meta description for Kulai.",
-    "h1": "Kulai – DRAFT",
-    "intro": "DRAFT – content pending: opening paragraph for Kulai.",
+    "title": "Car Workshop Kulai, Bandar Putra & Indahpura | {{ brand }}",
+    "description": "Car workshop in Kulai, Bandar Putra or Indahpura for tyres, batteries, aircon and car servicing. See well-reviewed local workshops and contact them.",
+    "h1": "Car Workshop Kulai: For Drivers in Bandar Putra, Indahpura and Nearby",
+    "intro": "**Short answer:** If you need a car workshop in Kulai, this page suggests a well-reviewed local workshop you can contact directly, whether you're in Bandar Kulai, Bandar Putra or Indahpura. {{ brand }} isn't a workshop. The workshop quotes you itself.",
     "blocks": [
       {
         "id": "local-driving",
-        "heading": "DRAFT – Driving in this area",
-        "body": "DRAFT – content pending."
+        "heading": "Driving in Kulai: what wears your car",
+        "body": "Kulai is a spread-out district that takes in Bandar Kulai, Bandar Putra, Indahpura and Saleng. Many people here commute daily to JB, to the industrial areas around Kulai and Sedenak, or across to Singapore.\n\n- **The North–South Expressway (E2) and Jalan Kulai (FT001).** Long, fast highway runs are hard on tyres, wheel alignment and aircon. If the steering pulls to one side or your tyres wear unevenly, get the alignment checked.\n- **Flash floods on Jalan Kulai.** In January 2026, a Johor state executive councillor said even 20 mm of rain in an hour can flood FT001 Jalan Kulai, and old culverts are being upgraded. If you've driven through water, watch for brakes that feel different, warning lights, new noises or a car that's hard to start.\n- **Stop-start traffic around Bandar Putra and IOI Mall Kulai.** Crawling in hot weather tests your aircon and battery."
       },
       {
         "id": "common-issues",
-        "heading": "DRAFT – Common car problems",
-        "body": "DRAFT – content pending."
+        "heading": "What Kulai drivers often search for",
+        "body": "- **Tyres:** replacements, punctures and alignment, including in Bandar Putra and Indahpura. See [tyre shops in JB](/en/tyres/).\n- **Car batteries:** battery problems come up often in Kulai searches, like a car that won't start after sitting parked or after heavy rain. See [car battery help](/en/car-battery/).\n- **Car aircon:** aircon that stops blowing cold in traffic or on long drives. See [car aircon repair](/en/car-aircon/).\n- **Routine car servicing:** oil changes and checks before a long trip. See [car servicing](/en/car-servicing/).\n- **Body and paint:** scratches and dents from minor knocks or car parks. See [car body and paint](/en/car-body-paint/).\n- **Towing:** when the car can't be driven after a breakdown or accident. Ask for the towing price before the tow starts. See [car towing](/en/car-towing/)."
       },
       {
-        "id": "getting-help",
-        "heading": "DRAFT – How to get help",
-        "body": "DRAFT – content pending."
+        "id": "workshop-location",
+        "heading": "Where the workshop is",
+        "body": "{{ workshop.coverage }}"
       }
     ],
     "faqs": [
       {
-        "q": "DRAFT – question 1 (Kulai)",
-        "a": "DRAFT – content pending."
+        "q": "Does {{ brand }} have a workshop in Kulai?",
+        "a": "No. We don't run a workshop. This page suggests a local one, and its name is shown next to the buttons so you know who you're contacting."
+      },
+      {
+        "q": "I drove through floodwater on Jalan Kulai. What should I check?",
+        "a": "If the engine cut out in the water, don't keep trying to restart it, because that can damage the engine. Have a workshop check the engine, oil, brakes, battery and wiring. If the car still drives, test the brakes gently somewhere safe and watch for warning lights."
+      },
+      {
+        "q": "My steering pulls to one side after highway driving. Why?",
+        "a": "It's usually wheel alignment that's out, uneven tyre pressures, or tyres that have worn unevenly. A tyre shop can check your alignment and tyre condition."
+      },
+      {
+        "q": "Can I get on-site battery help in Kulai?",
+        "a": "Some workshops and battery shops come out to you. Ask the workshops on this page whether they do. We can't promise an arrival time."
       }
     ]
   }

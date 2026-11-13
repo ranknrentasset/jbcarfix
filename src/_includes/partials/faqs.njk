@@ -4,8 +4,8 @@
   <div class="faq-list">
   {%- for f in entry.content.faqs %}
   <details>
-    <summary>{{ f.q }}</summary>
-    <p>{{ f.a | linkify | safe }}</p>
+    <summary>{{ f.q | markupInline | safe }}</summary>
+    <div class="faq-a">{{ f.a | markup | safe }}</div>
   </details>
   {%- endfor %}
   </div>

@@ -1,41 +1,93 @@
 {
   "_comment": "Home page text in both languages.",
-  "status": "placeholder",
+  "status": "draft",
   "ms": {
-    "title": "Laman utama (DRAFT) | {{ brand }}",
-    "description": "DRAFT – content pending: penerangan meta untuk Laman utama.",
-    "h1": "Laman utama – DRAFT",
-    "intro": "DRAFT – content pending: perenggan pembuka untuk Laman utama.",
+    "title": "Bengkel Kereta JB, Cari Bengkel Tempatan | {{ brand }}",
+    "description": "Cari bengkel kereta di JB untuk tayar, bateri, servis, aircond atau gearbox. Kami cadangkan bengkel tempatan yang diulas baik, anda hubungi terus.",
+    "h1": "Bengkel Kereta JB: Cari Bengkel Tempatan di Johor Bahru",
+    "intro": "**Jawapan ringkas:** {{ brand }} bukan bengkel. Kami ialah panduan bebas yang mencadangkan bengkel kereta tempatan yang mendapat ulasan baik bagi setiap kawasan di Johor Bahru. Anda hubungi bengkel itu terus melalui panggilan atau WhatsApp. Harga, masa siap dan jaminan kerja ditentukan oleh bengkel itu sendiri.",
     "blocks": [
       {
         "id": "how-it-works",
-        "heading": "DRAFT – Cara ia berfungsi",
-        "body": "DRAFT – content pending."
+        "heading": "Bagaimana {{ brand }} berfungsi",
+        "body": "1. **Pilih kawasan atau perkhidmatan** yang anda perlukan di laman ini.\n2. **Lihat bengkel yang kami cadangkan** untuk kawasan itu. Nama bengkel sentiasa dipaparkan di sebelah butang hubungi.\n3. **Hubungi bengkel itu terus** melalui panggilan atau WhatsApp, dan terangkan masalah kereta anda.\n4. **Bengkel memberi sebut harga** terus kepada anda. Anda bebas menerima atau menolak.\n\nKami tidak mengenakan apa-apa bayaran untuk menggunakan panduan ini. [IF-TENANT]Bengkel yang dipaparkan di {{ brand }} membayar yuran tetap kepada kami. Ia tidak mengubah harga yang bengkel sebut kepada anda.[/IF-TENANT][ELSE]Kami tidak dibayar oleh bengkel yang kami cadangkan.[/ELSE]"
+      },
+      {
+        "id": "services",
+        "heading": "Perkhidmatan",
+        "body": "- **[Tayar dan wheel alignment](/tayar/):** tukar tayar, tampal tayar bocor, alignment dan balancing.\n- **[Bateri kereta](/bateri/):** kereta tak boleh hidup, tukar bateri, bantuan bateri di lokasi.\n- **[Servis kereta](/servis/):** tukar minyak hitam, pad brek, radiator dan servis berkala.\n- **[Aircond kereta](/aircond-kereta/):** aircond tak sejuk, bau, bunyi kompresor, servis dan repair.\n- **[Pakar gearbox](/pakar-gearbox/):** gear lambat masuk, gearbox auto dan CVT, servis minyak gearbox.\n- **[Cat dan ketuk kereta](/cat-kereta/):** calar, kemik dan kerja cat badan kereta.\n- **[Towing kereta](/towing-kereta/):** kereta tak boleh bergerak dan perlu ditunda.\n- **[Mekanik 24 jam](/mekanik-24-jam/):** kereta rosak waktu malam atau hujung minggu."
+      },
+      {
+        "id": "areas",
+        "heading": "Kawasan di Johor Bahru",
+        "body": "Kami bermula dengan kawasan ini. Setiap halaman kawasan menerangkan jalan, keadaan trafik dan masalah kereta yang biasa di situ.\n\n- [Kulai](/kulai/) (termasuk Bandar Putra dan Indahpura)\n- [Gelang Patah](/gelang-patah/)\n- [Bukit Indah](/bukit-indah/)\n- [Skudai](/skudai/) (termasuk Taman Universiti, Tun Aminah dan Sutera)\n- [Larkin](/larkin/)"
       }
     ],
     "faqs": [
       {
-        "q": "DRAFT – soalan lazim 1 (Laman utama)",
-        "a": "DRAFT – content pending."
+        "q": "Adakah {{ brand }} sebuah bengkel?",
+        "a": "Tidak. Kami tidak membaiki kereta. Kami ialah panduan bebas yang mencadangkan bengkel tempatan di Johor Bahru, dan anda menghubungi bengkel itu terus. Bengkel itulah yang membuat kerja dan memberi sebut harga."
+      },
+      {
+        "q": "Bagaimana bengkel dipilih?",
+        "a": "Bengkel dipilih berdasarkan ulasan Google awam dan, jika diketahui, tempoh beroperasi. Kami tidak memaparkan bintang penarafan kerana ia berubah dari semasa ke semasa. Anda tetap digalakkan menyemak bengkel itu sendiri sebelum menghantar kereta."
+      },
+      {
+        "q": "Berapa harga servis atau baiki kereta di JB?",
+        "a": "Harga bergantung kepada model kereta, bahagian yang perlu ditukar dan bengkel itu sendiri, jadi kami tidak menyenaraikan harga. Minta sebut harga bertulis daripada bengkel sebelum kerja bermula, dan tanya sama ada ia termasuk alat ganti dan upah."
+      },
+      {
+        "q": "Apa yang patut saya sediakan sebelum menghubungi bengkel?",
+        "a": "Sediakan model dan tahun kereta, apa yang anda perasan (bunyi, bau, lampu amaran di dashboard, bila ia berlaku) dan lokasi anda. Lebih jelas penerangan anda, lebih mudah bengkel menilai masalahnya."
+      },
+      {
+        "q": "Kereta saya rosak di tepi jalan. Apa yang patut saya buat dahulu?",
+        "a": "Utamakan keselamatan: berhenti di tempat yang selamat, pasang lampu kecemasan dan letak segi tiga amaran jika ada. Kemudian lihat halaman [mekanik 24 jam](/mekanik-24-jam/) atau [towing kereta](/towing-kereta/)."
       }
     ]
   },
   "en": {
-    "title": "Home (DRAFT) | {{ brand }}",
-    "description": "DRAFT – content pending: meta description for Home.",
-    "h1": "Home – DRAFT",
-    "intro": "DRAFT – content pending: opening paragraph for Home.",
+    "title": "Car Workshop JB, Find a Local Workshop | {{ brand }}",
+    "description": "Find a car workshop in JB for tyres, batteries, car servicing, aircon or gearbox repair. We suggest well-reviewed local workshops you contact directly.",
+    "h1": "Car Workshop JB: Find a Local Workshop in Johor Bahru",
+    "intro": "**Short answer:** {{ brand }} is not a workshop. We're an independent guide that points drivers in Johor Bahru to a well-reviewed local car workshop for each area. You contact that workshop directly by phone or WhatsApp. Prices, timing and any warranty come from the workshop itself.",
     "blocks": [
       {
         "id": "how-it-works",
-        "heading": "DRAFT – How it works",
-        "body": "DRAFT – content pending."
+        "heading": "How {{ brand }} works",
+        "body": "1. **Pick your area or the service** you need on this site.\n2. **See which workshop we suggest** for that area. Its name is always shown next to the contact buttons.\n3. **Contact the workshop directly** by phone or WhatsApp and tell them what's wrong.\n4. **The workshop quotes you directly.** You're free to accept or walk away.\n\nWe don't charge you anything to use this guide. [IF-TENANT]Workshops featured on {{ brand }} pay us a flat fee. It doesn't change the price the workshop quotes you.[/IF-TENANT][ELSE]We aren't paid by the workshops we suggest.[/ELSE]"
+      },
+      {
+        "id": "services",
+        "heading": "Services",
+        "body": "- **[Tyres and wheel alignment](/en/tyres/):** new tyres, puncture repair, alignment and balancing.\n- **[Car battery](/en/car-battery/):** car won't start, battery replacement, on-site battery help.\n- **[Car servicing](/en/car-servicing/):** oil changes, brake pads, radiator checks and routine servicing.\n- **[Car aircon](/en/car-aircon/):** aircon not cold, bad smells, compressor noise, servicing and repair.\n- **[Gearbox repair](/en/gearbox-repair/):** slipping or delayed gears, auto and CVT gearboxes, gearbox oil service.\n- **[Car body and paint](/en/car-body-paint/):** scratches, dents and bodywork.\n- **[Car towing](/en/car-towing/):** when your car can't be driven.\n- **[24-hour mechanic](/en/24-hour-mechanic/):** breakdowns late at night or at the weekend."
+      },
+      {
+        "id": "areas",
+        "heading": "Areas we cover in Johor Bahru",
+        "body": "We're starting with these areas. Each area page covers its own roads, traffic and the car problems drivers there tend to run into.\n\n- [Kulai](/en/kulai/) (including Bandar Putra and Indahpura)\n- [Gelang Patah](/en/gelang-patah/)\n- [Bukit Indah](/en/bukit-indah/)\n- [Skudai](/en/skudai/) (including Taman Universiti, Tun Aminah and Sutera)\n- [Larkin](/en/larkin/)\n- Driving in from Singapore? See [car workshops near KSL](/en/near-ksl/)."
       }
     ],
     "faqs": [
       {
-        "q": "DRAFT – question 1 (Home)",
-        "a": "DRAFT – content pending."
+        "q": "Is {{ brand }} a car workshop?",
+        "a": "No. We don't repair cars. We're an independent guide that suggests local workshops in Johor Bahru, and you contact the workshop directly. The workshop does the work and gives you the quote."
+      },
+      {
+        "q": "How are workshops chosen?",
+        "a": "They're chosen from public Google reviews and, where known, years in business. We don't quote star ratings here because they change over time. You're still encouraged to check the workshop yourself before you hand over your car."
+      },
+      {
+        "q": "How much does car servicing or repair cost in JB?",
+        "a": "It depends on your car, the parts needed and the workshop, so we don't list prices. Ask the workshop for a written quote before any work starts, and check whether it includes both parts and labour."
+      },
+      {
+        "q": "What should I have ready before I call?",
+        "a": "Your car's make, model and year, what you've noticed (noises, smells, warning lights and when they happen) and where you are. The clearer the description, the easier it is for the workshop to judge the problem."
+      },
+      {
+        "q": "My car broke down on the road. What should I do first?",
+        "a": "Get safe first: pull over somewhere safe, switch on your hazard lights and put out a warning triangle if you have one. Then see our [24-hour mechanic](/en/24-hour-mechanic/) or [car towing](/en/car-towing/) page."
       }
     ]
   }

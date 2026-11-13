@@ -54,23 +54,73 @@ export function directoryEntries(routing, areas, services, siteData = site) {
     if (!e.w) continue;
     // Area chip: the area page that lists it, else the area the workshop is in (by name).
     const located = e.area || siteData.areaOrder.find((a) => areas[a] && [areas[a].name.en, areas[a].name.ms].includes(e.w.workshop.area)) || null;
+    const page = e.area ? { type: "area", key: e.area } : { type: "service", key: e.services[0] };
+    const moreInfo = {};
+    for (const lang of siteData.languages || ["ms", "en"]) {
+      const pre = lang === "ms" ? "" : "/" + lang;
+      moreInfo[lang] = page.type === "area" ? `${pre}/${page.key}/` : `${pre}/${services[page.key].slug[lang]}/`;
+    }
     out.push({
       ...e,
       filterArea: located,
       evArea: e.area || "all",
       evService: e.area ? "area" : e.services[0],
-      page: e.area ? { type: "area", key: e.area } : { type: "service", key: e.services[0] },
+      page,
+      moreInfo,
     });
   }
   return out;
 }
 
-// Body copy (intro, block text, FAQ answers) is escaped like any other text; the only markup
-// allowed is an internal link written [words](/path/). External links are left as plain text.
+// Body copy is escaped like any other text. Allowed markup in copy: an internal link
+// written [words](/path/), **bold**, and bullet or numbered lists. External links stay as text.
 const ESC = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
 export function linkify(text) {
   const esc = String(text ?? "").replace(/[&<>"']/g, (c) => ESC[c]);
   return esc.replace(/\[([^\]\n]+)\]\((\/(?!\/)[^\s)]*)\)/g, (m, words, href) => `<a href="${href}">${words}</a>`);
+}
+
+export function markupInline(text) {
+  return linkify(text).replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+}
+
+export function markup(text) {
+  const lines = String(text ?? "").replace(/\r\n/g, "\n").split("\n");
+  const out = [];
+  let para = [];
+  let list = null;
+  const flushPara = () => {
+    if (!para.length) return;
+    out.push(`<p>${markupInline(para.join(" "))}</p>`);
+    para = [];
+  };
+  const flushList = () => {
+    if (!list) return;
+    out.push(`<${list.type}>` + list.items.map((i) => `<li>${markupInline(i)}</li>`).join("") + `</${list.type}>`);
+    list = null;
+  };
+  for (const line of lines) {
+    const bullet = line.match(/^\s*[-*]\s+(.*)$/);
+    const num = line.match(/^\s*\d+\.\s+(.*)$/);
+    if (bullet) {
+      flushPara();
+      if (!list || list.type !== "ul") { flushList(); list = { type: "ul", items: [] }; }
+      list.items.push(bullet[1]);
+    } else if (num) {
+      flushPara();
+      if (!list || list.type !== "ol") { flushList(); list = { type: "ol", items: [] }; }
+      list.items.push(num[1]);
+    } else if (/^\s*$/.test(line)) {
+      flushPara();
+      flushList();
+    } else {
+      flushList();
+      para.push(line);
+    }
+  }
+  flushPara();
+  flushList();
+  return out.join("");
 }
 
 // Link guard. A link to one of our own pages that is kept out of Google by the thin-page
@@ -128,7 +178,11 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("directory", (routing, areas, services) => directoryEntries(routing, areas, services, site));
   eleventyConfig.addFilter("dirTenant", (list) => (list || []).some((e) => e.w.tenant_status === "tenant"));
   eleventyConfig.addFilter("linkify", (text) => linkify(text));
+  eleventyConfig.addFilter("markupInline", (text) => markupInline(text));
+  eleventyConfig.addFilter("markup", (text) => markup(text));
   eleventyConfig.addFilter("dirHas", (list, kind, key) => (list || []).some((e) => (kind === "svc" ? e.services.includes(key) : e.filterArea === key)));
+  eleventyConfig.addGlobalData("thinUrls", () => buildPages().filter((p) => p.thin).map((p) => p.url));
+  eleventyConfig.addFilter("dirHasMoreInfo", (list, lang, thin) => (list || []).some((e) => e.moreInfo && !thin.includes(e.moreInfo[lang])));
 
   // WhatsApp link: pre-filled text from i18n.json (brand filled in) plus the area's UTM tags.
   eleventyConfig.addFilter("waLink", (entry, text, campaign, lang, routing) =>

@@ -1,7 +1,7 @@
 {
   "_comment": "One file per JB-wide service page. Write this service's own text in every field. Optional trialIntro {en, ms} replaces the shared plural trial intro from disclosures.json when it is non-empty.",
   "key": "cat-kereta",
-  "status": "placeholder",
+  "status": "draft",
   "slug": {
     "ms": "cat-kereta",
     "en": "car-body-paint"
@@ -15,50 +15,84 @@
     "ms": "Berikut ialah bengkel cat dan badan kereta tempatan di Johor Bahru yang mendapat ulasan baik. Hubungi mereka terus. {{ brand }} ialah panduan bebas dan tidak bergabung dengan bengkel-bengkel ini. Dipilih berdasarkan penilaian dan ulasan Google awam. Kami tidak dibayar oleh bengkel yang kami cadangkan."
   },
   "ms": {
-    "title": "Cat kereta (DRAFT) | {{ brand }}",
-    "description": "DRAFT – content pending: penerangan meta untuk Cat kereta.",
-    "h1": "Cat kereta – DRAFT",
-    "intro": "DRAFT – content pending: perenggan pembuka untuk Cat kereta.",
+    "title": "Bengkel Cat Kereta JB: Calar, Kemik & Spray | {{ brand }}",
+    "description": "Bengkel cat kereta di JB untuk calar, kemik, ketuk dan spray semula. Fahami setiap jenis kerja, apa yang perlu ditanya dan cara memeriksa hasilnya.",
+    "h1": "Bengkel Cat Kereta JB: Baiki Calar, Kemik, Ketuk dan Spray Kereta di Johor Bahru",
+    "intro": "**Jawapan ringkas:** Bengkel cat kereta di JB boleh membaiki calar, kemik dan panel yang rosak, atau spray semula sebahagian atau seluruh kereta anda. Kerja yang sesuai bergantung pada sedalam mana kerosakannya. Halaman ini menerangkan pilihan yang ada dan apa yang perlu ditanya semasa meminta sebut harga. {{ brand }} bukan bengkel cat, dan bengkel itu sendiri yang menentukan harga dan masa siap.",
     "blocks": [
       {
-        "id": "what-it-covers",
-        "heading": "DRAFT – Apa yang termasuk",
-        "body": "DRAFT – content pending."
+        "id": "which-repair",
+        "heading": "Kerja apa yang kereta anda perlukan?",
+        "body": "- **Calar halus pada lapisan kilat.** Jika kuku anda tidak tersangkut pada calar, ia selalunya boleh hilang dengan polish tanpa cat baru.\n- **Calar dalam dan cat tercabut.** Jika anda nampak lapisan primer atau besi, bahagian itu perlu di-touch up atau dicat semula supaya tidak berkarat.\n- **Kemik tanpa cat rosak.** Kemik kecil kadangkala boleh ditolak keluar dari belakang tanpa mengecat. Tanya bengkel sama ada kemik anda sesuai untuk cara ini.\n- **Kemik dengan cat retak, atau panel bengkok.** Ini memerlukan kerja ketuk: panel dibentuk semula, didempul, diprimer dan dicat. Panel yang teruk mungkin perlu ditukar.\n- **Spray semula penuh atau separa.** Untuk cat yang pudar pada beberapa panel atau untuk menukar warna. Pertukaran warna mungkin perlu dimaklumkan kepada JPJ, jadi tanya bengkel tentang perkara ini sebelum bermula."
       },
       {
-        "id": "when-to-get-help",
-        "heading": "DRAFT – Bila perlu dapatkan bantuan",
-        "body": "DRAFT – content pending."
+        "id": "what-to-ask-in-a-quote",
+        "heading": "Apa yang perlu ditanya semasa meminta sebut harga",
+        "body": "- Panel mana yang akan dicat, dan adakah mereka akan meratakan (blend) cat ke panel bersebelahan supaya warnanya sama?\n- Adakah mereka akan memadankan kod cat kereta anda? Kod ini biasanya pada pelekat di bingkai pintu atau di bawah bonet.\n- Adakah bahagian itu dibaiki atau ditukar, dan adakah alat ganti tulen atau bukan tulen?\n- Berapa lama kereta perlu ditinggalkan, dan apakah waranti untuk kerja cat?\n\nMinta sebut harga bertulis, dan minta bengkel hubungi anda dahulu sebelum membuat kerja yang tiada dalam sebut harga."
+      },
+      {
+        "id": "checking-the-work",
+        "heading": "Memeriksa hasil kerja semasa mengambil kereta",
+        "body": "Lihat panel yang dibaiki di bawah cahaya siang dari beberapa sudut. Pastikan warnanya sama dengan panel di sebelah, permukaannya licin tanpa kesan meleleh atau habuk, dan jarak antara panel sekata. Beritahu bengkel jika ada yang tidak memuaskan sebelum membuat bayaran."
       }
     ],
     "faqs": [
       {
-        "q": "DRAFT – soalan lazim 1 (Cat kereta)",
-        "a": "DRAFT – content pending."
+        "q": "Berapa harga cat kereta di Johor Bahru?",
+        "a": "Kami tidak memaparkan harga kerana ia bergantung pada kereta, jenis cat, bilangan panel dan persediaan permukaan yang diperlukan. Minta dua atau tiga bengkel memberi sebut harga untuk kerja yang sama."
+      },
+      {
+        "q": "Berapa lama kerja ketuk dan cat kereta?",
+        "a": "Ia bergantung pada kerosakan dan masa cat mengering. Kerja kecil mungkin sehari dua, dan kerja besar lebih lama. Tanya bengkel anggaran masa semasa mereka memberi sebut harga."
+      },
+      {
+        "q": "Saya membuat tuntutan untuk pembaikan ini. Apa perlu saya buat dahulu?",
+        "a": "Hubungi penyedia perlindungan anda sebelum kerja bermula, kerana mereka mungkin perlu memeriksa kereta atau meluluskan bengkel. Pastikan sebut harga hanya merangkumi kerosakan daripada kejadian itu."
+      },
+      {
+        "q": "Bolehkah bengkel cat membaiki karat?",
+        "a": "Karat kecil biasanya boleh digosok, dirawat dan dicat semula. Jika karat sudah tembus besi, bahagian panel itu mungkin perlu dipotong atau ditukar."
       }
     ]
   },
   "en": {
-    "title": "Car body paint (DRAFT) | {{ brand }}",
-    "description": "DRAFT – content pending: meta description for Car body paint.",
-    "h1": "Car body paint – DRAFT",
-    "intro": "DRAFT – content pending: opening paragraph for Car body paint.",
+    "title": "Car Paint Shop JB: Dents, Scratches & Respray | {{ brand }}",
+    "description": "Car paint shop in JB for scratches, dents, panel beating and resprays. What each repair involves, what to ask for in a quote, and how to check the work.",
+    "h1": "Car Paint Shop JB: Scratch Repair, Dents, Panel Beating and Resprays in Johor Bahru",
+    "intro": "**Short answer:** A car paint shop in JB can fix scratches, dents and damaged panels, or respray part or all of your car. The right repair depends on how deep the damage goes. This page explains the options and what to ask for in a quote. {{ brand }} isn't a paint shop, and the shop sets its own prices and timing.",
     "blocks": [
       {
-        "id": "what-it-covers",
-        "heading": "DRAFT – What it covers",
-        "body": "DRAFT – content pending."
+        "id": "which-repair",
+        "heading": "Which repair do you need?",
+        "body": "- **Light scratches in the clear coat.** If your fingernail doesn't catch on the scratch, polishing can often remove it without new paint.\n- **Deeper scratches and chips.** If you can see primer or bare metal, the area needs touch-up or repainting so it doesn't rust.\n- **Dents with no paint damage.** Small dents can sometimes be pushed out from behind without repainting. Ask the shop whether your dent suits this.\n- **Dents with cracked paint, or bent panels.** These need panel beating: the panel is reshaped, filled, primed and repainted. A badly damaged panel may be replaced instead.\n- **Full or partial respray.** Used for faded paint across several panels or a colour change. A colour change may need to be reported to JPJ, so ask the shop about this before you start."
       },
       {
-        "id": "when-to-get-help",
-        "heading": "DRAFT – When to get help",
-        "body": "DRAFT – content pending."
+        "id": "what-to-ask-in-a-quote",
+        "heading": "What to ask for in a quote",
+        "body": "- Which panels will be painted, and will they blend the new paint into the panels next to them so the colour matches?\n- Will they match your car's paint code? It's usually on a sticker in the door frame or under the bonnet.\n- Are parts being repaired or replaced, and are replacement parts original or aftermarket?\n- How long will they need the car, and what warranty do they give on the paint?\n\nAsk for the quote in writing, and ask the shop to contact you before doing any work that isn't on it."
+      },
+      {
+        "id": "checking-the-work",
+        "heading": "Checking the work when you collect the car",
+        "body": "Look at the repaired panel in daylight from a few angles. Check that the colour matches the panels next to it, the surface is smooth with no runs or dust spots, and the gaps between panels are even. Raise anything you're unhappy with before you pay."
       }
     ],
     "faqs": [
       {
-        "q": "DRAFT – question 1 (Car body paint)",
-        "a": "DRAFT – content pending."
+        "q": "How much does a respray cost in Johor Bahru?",
+        "a": "We don't list prices, because they depend on the car, the paint, how many panels need work and how much preparation the surface needs. Ask two or three shops to quote for the same work."
+      },
+      {
+        "q": "How long does car body and paint work take?",
+        "a": "It depends on the damage and how long the paint needs to cure. Small jobs may take a day or two, and bigger repairs longer. Ask the shop for an estimate when they quote."
+      },
+      {
+        "q": "I'm making a claim for the repair. What should I do first?",
+        "a": "Check with your cover provider before any work starts, because they may need to inspect the car or approve the workshop. Make sure the quote shows only the damage from the incident."
+      },
+      {
+        "q": "Can a paint shop fix rust?",
+        "a": "Small rust spots can usually be sanded back, treated and repainted. If rust has gone through the metal, the panel section may need cutting out or replacing."
       }
     ]
   }

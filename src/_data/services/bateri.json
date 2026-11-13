@@ -1,7 +1,7 @@
 {
   "_comment": "One file per JB-wide service page. Write this service's own text in every field.",
   "key": "bateri",
-  "status": "placeholder",
+  "status": "draft",
   "slug": {
     "ms": "bateri",
     "en": "car-battery"
@@ -11,50 +11,84 @@
     "en": "Car battery"
   },
   "ms": {
-    "title": "Bateri kereta (DRAFT) | {{ brand }}",
-    "description": "DRAFT – content pending: penerangan meta untuk Bateri kereta.",
-    "h1": "Bateri kereta – DRAFT",
-    "intro": "DRAFT – content pending: perenggan pembuka untuk Bateri kereta.",
+    "title": "Bateri Kereta JB: Tanda Rosak & Tukar Bateri | {{ brand }}",
+    "description": "Bateri kereta JB: tanda bateri lemah, jump-start atau tukar bateri, dan soalan untuk ditanya kepada bengkel sebelum kerja bermula.",
+    "h1": "Bateri Kereta JB: Adakah Bateri Rosak, dan Apa Perlu Diperiksa",
+    "intro": "**Jawapan ringkas:** Jika kereta tidak boleh dihidupkan atau enjin berpusing perlahan, bateri ialah punca yang paling biasa. Halaman ini menerangkan cara untuk mengenal pasti masalahnya.\n\n[WITH-WORKSHOPS] Ia juga mencadangkan bengkel tempatan yang mendapat ulasan baik untuk anda hubungi atau WhatsApp terus bagi menguji atau menukar bateri. [/WITH-WORKSHOPS]\n{{ brand }} tidak menjual bateri. Harga dan servis di lokasi ditentukan oleh bengkel itu sendiri.",
     "blocks": [
       {
-        "id": "what-it-covers",
-        "heading": "DRAFT – Apa yang termasuk",
-        "body": "DRAFT – content pending."
+        "id": "battery-signs",
+        "heading": "Tanda bateri kereta anda semakin lemah",
+        "body": "- **Enjin berpusing perlahan** atau berbunyi klik apabila anda memulas kunci atau menekan butang start.\n- **Lampu amaran bateri** menyala semasa memandu.\n- **Lampu dan papan pemuka menjadi malap** semasa enjin melahu atau apabila aircond dihidupkan.\n- **Kereta tidak boleh dihidupkan selepas diletak** beberapa hari.\n- **Bekas bateri menggelembung**, atau ada kerak putih atau hijau pada terminal.\n\nPanas memberi kesan buruk kepada bateri kereta, jadi bateri di tempat panas seperti Johor selalunya lebih cepat lemah daripada yang dijangka. Jika bateri anda sudah beberapa tahun dan menunjukkan tanda-tanda ini, minta ia diuji."
       },
       {
-        "id": "when-to-get-help",
-        "heading": "DRAFT – Bila perlu dapatkan bantuan",
-        "body": "DRAFT – content pending."
+        "id": "battery-or-other",
+        "heading": "Bateri atau masalah lain?",
+        "body": "Jika kereta boleh hidup selepas jump-start tetapi mati semula tidak lama kemudian, bateri mungkin tidak dapat menyimpan cas, atau alternator tidak mengecasnya. Bengkel boleh menguji kedua-duanya dalam beberapa minit. Jika lampu terang tetapi enjin langsung tidak berpusing, masalahnya mungkin pada motor starter."
+      },
+      {
+        "id": "questions-before-replacing",
+        "heading": "Soalan untuk ditanya sebelum menukar bateri",
+        "body": "- Saiz dan jenis bateri apa yang sesuai untuk kereta anda? Kereta dengan sistem idle start-stop biasanya memerlukan bateri EFB atau AGM, bukan bateri biasa.\n- Adakah harga termasuk pemasangan, ujian sistem pengecasan dan pengambilan bateri lama?\n- Berapa lama waranti bateri, dan apa yang dilindungi?\n- Bolehkah mereka datang ke lokasi anda, atau anda perlu bawa kereta ke kedai?"
       }
     ],
     "faqs": [
       {
-        "q": "DRAFT – soalan lazim 1 (Bateri kereta)",
-        "a": "DRAFT – content pending."
+        "q": "Bolehkah bateri kereta ditukar di tempat kereta saya diletak?",
+        "a": "Sesetengah bengkel dan kedai bateri boleh datang ke lokasi anda. Tanya bengkel sama ada mereka menyediakannya dan berapa lama biasanya. Kami tidak dapat menjanjikan masa ketibaan."
+      },
+      {
+        "q": "Ada servis bateri kereta 24 jam di JB?",
+        "a": "Sesetengah kedai menawarkan bantuan hingga lewat malam atau sepanjang masa, tetapi kami tidak menjanjikan waktu operasi. Semak waktu buka bengkel di Google atau tanya melalui WhatsApp."
+      },
+      {
+        "q": "Berapa lama bateri kereta boleh tahan?",
+        "a": "Ia bergantung pada bateri, kereta dan cara anda memandu. Perjalanan pendek, kereta yang lama tidak digunakan dan cuaca panas semuanya memendekkan hayat bateri. Bengkel boleh menguji baki hayat bateri anda."
+      },
+      {
+        "q": "Selamatkah saya jump-start kereta sendiri?",
+        "a": "Ia boleh selamat jika anda mengikut langkah dalam manual pemilik dan menyambung kabel mengikut turutan yang betul. Jika bateri menggelembung, bocor atau berbau seperti telur busuk, jangan jump-start. Dapatkan bantuan."
       }
     ]
   },
   "en": {
-    "title": "Car battery (DRAFT) | {{ brand }}",
-    "description": "DRAFT – content pending: meta description for Car battery.",
-    "h1": "Car battery – DRAFT",
-    "intro": "DRAFT – content pending: opening paragraph for Car battery.",
+    "title": "Car Battery Replacement JB: Signs & What to Check | {{ brand }}",
+    "description": "Car battery replacement in JB: signs your battery is failing, jump-start or replace, and what to ask the workshop before any work starts.",
+    "h1": "Car Battery Replacement JB: Is It the Battery, and What to Check",
+    "intro": "**Short answer:** If your car won't start or cranks slowly, the battery is the most common cause. This page explains how to tell.\n\n[WITH-WORKSHOPS] It also suggests well-reviewed local workshops you can call or WhatsApp directly to test or replace it. [/WITH-WORKSHOPS]\n{{ brand }} doesn't sell batteries. Prices and any on-site service come from the workshop itself.",
     "blocks": [
       {
-        "id": "what-it-covers",
-        "heading": "DRAFT – What it covers",
-        "body": "DRAFT – content pending."
+        "id": "battery-signs",
+        "heading": "Signs your car battery is failing",
+        "body": "- **The engine cranks slowly** or makes a clicking sound when you turn the key or press start.\n- **The battery warning light** comes on while you drive.\n- **Lights and the dashboard dim** when the engine is idling or when the aircon kicks in.\n- **The car won't start after sitting parked** for a few days.\n- **The battery case is swollen**, or there's white or green crust on the terminals.\n\nHeat is hard on car batteries, so batteries in a hot climate like Johor's often wear out sooner than the label suggests. If yours is a few years old and showing these signs, have it tested."
       },
       {
-        "id": "when-to-get-help",
-        "heading": "DRAFT – When to get help",
-        "body": "DRAFT – content pending."
+        "id": "battery-or-other",
+        "heading": "Is it the battery or something else?",
+        "body": "If a jump-start gets the car going but it dies again soon after, the battery may not be holding charge, or the alternator may not be charging it. A workshop can test both in a few minutes. If the lights are bright but the engine won't turn over, the starter motor may be the problem instead."
+      },
+      {
+        "id": "questions-before-replacing",
+        "heading": "Questions to ask before you replace it",
+        "body": "- Which battery size and type does your car need? Cars with idle start-stop usually need an EFB or AGM battery, not a standard one.\n- Does the price include fitting, testing the charging system, and taking away the old battery?\n- How long is the battery warranty, and what does it cover?\n- Can they come to you, or do you need to bring the car in?"
       }
     ],
     "faqs": [
       {
-        "q": "DRAFT – question 1 (Car battery)",
-        "a": "DRAFT – content pending."
+        "q": "Can someone replace my car battery where I'm parked?",
+        "a": "Some workshops and battery shops come out to you. Ask the workshop whether they do and how long it usually takes. We can't promise an arrival time."
+      },
+      {
+        "q": "Is there 24-hour car battery help in JB?",
+        "a": "Some shops offer late or round-the-clock help, but we don't promise opening hours. Check the workshop's hours on its Google listing or ask on WhatsApp."
+      },
+      {
+        "q": "How long does a car battery last?",
+        "a": "It depends on the battery, the car and how you drive. Short trips, long periods parked and heat all shorten its life. A workshop can test how much life is left."
+      },
+      {
+        "q": "Is it safe to jump-start my car myself?",
+        "a": "It can be if you follow the steps in your owner's manual and connect the cables in the right order. If the battery is swollen, leaking or smells of rotten eggs, don't jump-start it. Get help instead."
       }
     ]
   }

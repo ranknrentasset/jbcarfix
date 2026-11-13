@@ -1,7 +1,7 @@
 {
   "_comment": "One file per JB-wide service page. Write this service's own text in every field. Optional trialIntro {en, ms} replaces the shared plural trial intro from disclosures.json when it is non-empty.",
   "key": "towing-kereta",
-  "status": "placeholder",
+  "status": "draft",
   "slug": {
     "ms": "towing-kereta",
     "en": "car-towing"
@@ -15,50 +15,84 @@
     "ms": "Berikut ialah pengendali tunda tempatan di Johor Bahru yang mendapat ulasan baik. Hubungi atau WhatsApp mereka terus. {{ brand }} ialah panduan bebas dan tidak bergabung dengan pengendali-pengendali tunda ini. Dipilih berdasarkan penilaian dan ulasan Google awam. Kami tidak dibayar oleh pengendali tunda yang kami cadangkan."
   },
   "ms": {
-    "title": "Towing kereta (DRAFT) | {{ brand }}",
-    "description": "DRAFT – content pending: penerangan meta untuk Towing kereta.",
-    "h1": "Towing kereta – DRAFT",
-    "intro": "DRAFT – content pending: perenggan pembuka untuk Towing kereta.",
+    "title": "Towing Kereta JB: Apa Perlu Buat & Tanya | {{ brand }}",
+    "description": "Towing kereta di JB selepas rosak atau kemalangan: apa perlu dibuat sementara menunggu, apa ditanya sebelum ditunda, dan cara elak caj mengejut.",
+    "h1": "Towing Kereta JB: Apa Perlu Dibuat Selepas Kereta Rosak atau Kemalangan di Johor Bahru",
+    "intro": "**Jawapan ringkas:** Jika kereta anda tidak selamat untuk dipandu, anda memerlukan trak tunda untuk membawanya ke bengkel. Sebelum kereta ditunda, minta harga penuh dan tanya ke mana kereta akan dibawa, dan setuju kedua-duanya dahulu. Halaman ini menerangkan apa perlu dibuat sementara menunggu dan apa yang perlu ditanya. {{ brand }} tidak mengendalikan trak tunda, dan kami tidak dapat menjanjikan masa ketibaan.",
     "blocks": [
       {
-        "id": "what-it-covers",
-        "heading": "DRAFT – Apa yang termasuk",
-        "body": "DRAFT – content pending."
+        "id": "get-safe",
+        "heading": "Pertama, pastikan anda selamat",
+        "body": "- Hidupkan lampu kecemasan dan, jika boleh, alihkan kereta ke bahu jalan atau keluar dari jalan.\n- Di lebuh raya, keluarkan semua penumpang dan berdiri di belakang penghadang, jauh dari lalu lintas. Jangan berdiri di hadapan atau di belakang kereta.\n- Letakkan segi tiga amaran jauh di belakang kereta jika selamat untuk berbuat demikian.\n- Jika ada yang cedera, hubungi 999 dahulu."
       },
       {
-        "id": "when-to-get-help",
-        "heading": "DRAFT – Bila perlu dapatkan bantuan",
-        "body": "DRAFT – content pending."
+        "id": "ask-before-tow",
+        "heading": "Apa perlu ditanya sebelum kereta ditunda",
+        "body": "- **Harga penuh**, termasuk caj panggilan, jarak dan sebarang caj tambahan untuk waktu malam, lebuh raya atau tempat letak kereta bawah tanah. Minta harga melalui WhatsApp supaya ada rekod bertulis.\n- **Ke mana kereta akan dibawa.** Anda boleh memilih bengkel sendiri. Anda tidak wajib menggunakan bengkel yang dicadangkan oleh pemandu trak.\n- **Cara kereta akan ditunda.** Trak flatbed lebih selamat untuk kereta automatik, pacuan empat roda dan kereta rendah, kerana rodanya tidak berpusing di atas jalan.\n- **Nama syarikat dan nombor plat trak**, supaya anda tahu siapa yang membawa kereta anda.\n\nJika pemandu enggan memberi harga sebelum menunda, anda boleh menolak dan menghubungi pihak lain."
+      },
+      {
+        "id": "after-an-accident",
+        "heading": "Selepas kemalangan",
+        "body": "Ambil gambar tempat kejadian, semua kenderaan yang terlibat dan kerosakan sebelum apa-apa dialihkan. Bertukar maklumat dengan pemandu lain. Laporan polis mesti dibuat dalam tempoh 24 jam selepas kemalangan jalan raya. Jika anda membuat tuntutan, hubungi penyedia perlindungan anda sebelum memilih trak tunda, kerana sesetengahnya mempunyai perkhidmatan tunda sendiri."
       }
     ],
     "faqs": [
       {
-        "q": "DRAFT – soalan lazim 1 (Towing kereta)",
-        "a": "DRAFT – content pending."
+        "q": "Berapa harga towing kereta di JB?",
+        "a": "Kami tidak memaparkan harga kerana ia bergantung pada jarak, waktu dan lokasi kereta. Sentiasa minta harga penuh sebelum kereta ditunda dan simpan rekod bertulis."
+      },
+      {
+        "q": "Ada towing 24 jam di Johor Bahru?",
+        "a": "Sesetengah pengendali tunda bekerja hingga lewat malam atau sepanjang masa, tetapi kami tidak menjanjikan waktu operasi atau masa ketibaan. Tanya pengendali terus semasa menghubungi mereka."
+      },
+      {
+        "q": "Bolehkah saya pilih ke mana kereta ditunda?",
+        "a": "Boleh. Beritahu pemandu bengkel pilihan anda sebelum kereta ditunda, dan setuju harga ke alamat itu."
+      },
+      {
+        "q": "Ada trak tunda datang sebelum saya menghubungi sesiapa. Apa perlu saya buat?",
+        "a": "Anda tidak wajib menerima bantuan mereka. Tanya nama syarikat dan harga penuh dahulu, dan hubungi pengendali pilihan anda sendiri jika anda tidak selesa."
       }
     ]
   },
   "en": {
-    "title": "Car towing (DRAFT) | {{ brand }}",
-    "description": "DRAFT – content pending: meta description for Car towing.",
-    "h1": "Car towing – DRAFT",
-    "intro": "DRAFT – content pending: opening paragraph for Car towing.",
+    "title": "Car Towing JB: What to Do & What to Ask First | {{ brand }}",
+    "description": "Car towing in JB after a breakdown or accident: what to do while you wait, what to ask before the tow, and how to avoid surprise charges.",
+    "h1": "Car Towing JB: What to Do After a Breakdown or Accident in Johor Bahru",
+    "intro": "**Short answer:** If your car can't be driven safely, you need a tow truck to take it to a workshop. Before the tow starts, ask for the full price and where the car is going, and agree to both. This page explains what to do while you wait and what to ask. {{ brand }} doesn't run tow trucks, and we can't promise arrival times.",
     "blocks": [
       {
-        "id": "what-it-covers",
-        "heading": "DRAFT – What it covers",
-        "body": "DRAFT – content pending."
+        "id": "get-safe",
+        "heading": "First, get safe",
+        "body": "- Turn on your hazard lights and, if you can, move the car off the road or onto the shoulder.\n- On a highway, get everyone out and stand behind the barrier, away from traffic. Don't stand in front of or behind the car.\n- Place a warning triangle well behind the car if it's safe to do so.\n- If anyone is hurt, call 999 first."
       },
       {
-        "id": "when-to-get-help",
-        "heading": "DRAFT – When to get help",
-        "body": "DRAFT – content pending."
+        "id": "ask-before-tow",
+        "heading": "What to ask before the tow starts",
+        "body": "- **The full price**, including the call-out, distance and any charges for night, highway or basement recovery. Ask for it on WhatsApp so you have it in writing.\n- **Where the car is going.** You can choose the workshop. You don't have to use one the driver suggests.\n- **How the car will be towed.** A flatbed is safer for automatic, four-wheel-drive and low cars, because their wheels don't turn on the road.\n- **The company's name and the truck's number plate**, so you know who has your car.\n\nIf the driver won't give a price before towing, you can say no and call someone else."
+      },
+      {
+        "id": "after-an-accident",
+        "heading": "After an accident",
+        "body": "Take photos of the scene, all the cars involved and the damage before anything is moved. Swap details with the other driver. A police report must be made within 24 hours of a road accident. If you're claiming, check with your cover provider before choosing a tow, because some have their own towing arrangements."
       }
     ],
     "faqs": [
       {
-        "q": "DRAFT – question 1 (Car towing)",
-        "a": "DRAFT – content pending."
+        "q": "How much does car towing cost in JB?",
+        "a": "We don't list prices, because they depend on the distance, the time and where the car is stuck. Always ask for the full price before the tow starts and keep it in writing."
+      },
+      {
+        "q": "Is there 24-hour towing in Johor Bahru?",
+        "a": "Some towing operators work late or round the clock, but we don't promise hours or arrival times. Ask the operator directly when you call."
+      },
+      {
+        "q": "Can I choose where my car is towed?",
+        "a": "Yes. Tell the driver the workshop you want before the tow starts, and agree the price to that address."
+      },
+      {
+        "q": "Someone with a tow truck showed up before I called. What should I do?",
+        "a": "You don't have to accept their help. Ask for their company name and full price first, and call your own choice of operator if you're not comfortable."
       }
     ]
   }

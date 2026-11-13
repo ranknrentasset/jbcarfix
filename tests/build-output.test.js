@@ -92,7 +92,12 @@ test("each page shows exactly the workshops routing.json lists, one card each", 
   for (const rel of ["index.html", "en/index.html", "servis/index.html", "bateri/index.html", "mekanik-24-jam/index.html", "pakar-gearbox/index.html", "en/near-ksl/index.html"]) {
     const html = read(rel);
     assert.equal(cards(html).length, 0, rel);
-    assertNoWorkshopHints(html, rel);
+    // Home has imported guide copy, so only the "no contact box" markup is checked there.
+    if (/^(en\/)?index\.html$/.test(rel)) {
+      assert.doesNotMatch(html, /tel:|wa\.me|<form|class="contact"|class="soon"|class="ws-|class="btn|class="actbar"|class="jump"|href="#contact"/, rel);
+    } else {
+      assertNoWorkshopHints(html, rel);
+    }
   }
 });
 
@@ -101,8 +106,15 @@ test("pages with no workshop carry no buttons and no wording that hints at a wor
   let checked = 0;
   for (const f of htmlFiles(site)) {
     const html = fs.readFileSync(f, "utf8");
+    const rel = path.relative(site, f);
     if (cards(html).length || !/class="hero"/.test(html) || /privasi|privacy|terima-kasih|thank-you/.test(f)) continue;
-    assertNoWorkshopHints(html, f);
+    // Home has no contact box, but its imported body describes the guide; the wording
+    // check applies to the other no-card pages. The markup checks cover home as well.
+    if (/^(en\/)?index\.html$/.test(rel)) {
+      assert.doesNotMatch(html, /tel:|wa\.me|<form|class="contact"|class="soon"|class="ws-|class="btn|class="actbar"|class="jump"|href="#contact"/, rel);
+    } else {
+      assertNoWorkshopHints(html, f);
+    }
     checked++;
   }
   assert.equal(checked, 12, "no-workshop pages: home x2, battery x2, servicing x2, 24-hour x2, gearbox x2, near KSL, 404");
@@ -362,18 +374,59 @@ test("every listed workshop has a phone_display matching its tel: number", () =>
 
 const sitemapUrls = (xml) => [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 
-test("thin-page guard: placeholder pages are noindex,follow, out of the sitemap, no hreflang", () => {
-  const site = path.join(ROOT, "_site");
-  assert.deepEqual(sitemapUrls(read("sitemap.xml")), [], "every page is still placeholder copy, so the sitemap is empty");
-  // The hold list is empty, so body-and-paint and towing stay hidden only through the placeholder rule.
-  for (const rel of ["cat-kereta/index.html", "en/car-body-paint/index.html", "towing-kereta/index.html", "en/car-towing/index.html"]) {
-    assert.match(read(rel), /<meta name="robots" content="noindex,follow">/, rel);
-    assert.ok(cards(read(rel)).length === 2, `${rel} lists its workshops but stays hidden: copy is placeholder`);
+const IMPORTED_PATHS = [
+  "/", "/en/",
+  "/kulai/", "/en/kulai/",
+  "/tayar/", "/en/tyres/",
+  "/bateri/", "/en/car-battery/",
+  "/servis/", "/en/car-servicing/",
+  "/cat-kereta/", "/en/car-body-paint/",
+  "/towing-kereta/", "/en/car-towing/",
+];
+const pathToRel = (u) => (u === "/" ? "index.html" : u.slice(1) + "index.html");
+
+test("thin-page guard: imported pages are indexable and listed in the sitemap; remaining placeholders stay hidden", () => {
+  const B = "https://jbcarfix.com";
+  assert.deepEqual(sitemapUrls(read("sitemap.xml")).sort(), IMPORTED_PATHS.map((u) => B + u).sort());
+  for (const u of IMPORTED_PATHS) {
+    const rel = pathToRel(u);
+    const html = read(rel);
+    assert.doesNotMatch(html, /name="robots"/, `${rel} should be indexable`);
+    assert.match(html, /<link rel="alternate" hreflang="/, `${rel} keeps its language pair`);
   }
-  for (const f of htmlFiles(site)) {
-    const html = fs.readFileSync(f, "utf8");
-    assert.match(html, /<meta name="robots" content="noindex,follow">/, f);
-    assert.doesNotMatch(html, /<link rel="alternate" hreflang=/, f);
+  const held = ["gelang-patah/index.html", "en/gelang-patah/index.html", "bukit-indah/index.html", "en/skudai/index.html", "larkin/index.html", "aircond-kereta/index.html", "en/car-aircon/index.html", "pakar-gearbox/index.html", "en/gearbox-repair/index.html", "mekanik-24-jam/index.html", "en/24-hour-mechanic/index.html", "en/near-ksl/index.html"];
+  for (const rel of held) {
+    assert.match(read(rel), /<meta name="robots" content="noindex,follow">/, rel);
+    assert.doesNotMatch(read(rel), /<link rel="alternate" hreflang=/, rel);
+  }
+});
+
+const IMPORTED_COPY = {
+  "index.html": { title: "Bengkel Kereta JB, Cari Bengkel Tempatan | JBCarFix", h1: "Bengkel Kereta JB: Cari Bengkel Tempatan di Johor Bahru" },
+  "en/index.html": { title: "Car Workshop JB, Find a Local Workshop | JBCarFix", h1: "Car Workshop JB: Find a Local Workshop in Johor Bahru" },
+  "kulai/index.html": { title: "Bengkel Kereta Kulai, Bandar Putra &amp; Indahpura | JBCarFix", h1: "Bengkel Kereta Kulai: Untuk Pemandu di Bandar Putra, Indahpura dan Sekitarnya" },
+  "en/kulai/index.html": { title: "Car Workshop Kulai, Bandar Putra &amp; Indahpura | JBCarFix", h1: "Car Workshop Kulai: For Drivers in Bandar Putra, Indahpura and Nearby" },
+  "tayar/index.html": { title: "Kedai Tayar JB: Tukar, Tampal &amp; Alignment | JBCarFix", h1: "Kedai Tayar JB: Tukar Tayar, Tampal Tayar Bocor dan Alignment di Johor Bahru" },
+  "en/tyres/index.html": { title: "Tyre Shop JB: Tyres, Punctures &amp; Alignment | JBCarFix", h1: "Tyre Shop JB: New Tyres, Puncture Repair and Wheel Alignment in Johor Bahru" },
+  "bateri/index.html": { title: "Bateri Kereta JB: Tanda Rosak &amp; Tukar Bateri | JBCarFix", h1: "Bateri Kereta JB: Adakah Bateri Rosak, dan Apa Perlu Diperiksa" },
+  "en/car-battery/index.html": { title: "Car Battery Replacement JB: Signs &amp; What to Check | JBCarFix", h1: "Car Battery Replacement JB: Is It the Battery, and What to Check" },
+  "servis/index.html": { title: "Servis Kereta JB: Minyak Hitam, Brek &amp; Lagi | JBCarFix", h1: "Servis Kereta JB: Tukar Minyak Hitam, Brek Pad dan Pemeriksaan Rutin di Johor Bahru" },
+  "en/car-servicing/index.html": { title: "Car Servicing JB: Oil, Brakes &amp; Radiator | JBCarFix", h1: "Car Servicing JB: Oil Changes, Brake Pads and Routine Checks in Johor Bahru" },
+  "cat-kereta/index.html": { title: "Bengkel Cat Kereta JB: Calar, Kemik &amp; Spray | JBCarFix", h1: "Bengkel Cat Kereta JB: Baiki Calar, Kemik, Ketuk dan Spray Kereta di Johor Bahru" },
+  "en/car-body-paint/index.html": { title: "Car Paint Shop JB: Dents, Scratches &amp; Respray | JBCarFix", h1: "Car Paint Shop JB: Scratch Repair, Dents, Panel Beating and Resprays in Johor Bahru" },
+  "towing-kereta/index.html": { title: "Towing Kereta JB: Apa Perlu Buat &amp; Tanya | JBCarFix", h1: "Towing Kereta JB: Apa Perlu Dibuat Selepas Kereta Rosak atau Kemalangan di Johor Bahru" },
+  "en/car-towing/index.html": { title: "Car Towing JB: What to Do &amp; What to Ask First | JBCarFix", h1: "Car Towing JB: What to Do After a Breakdown or Accident in Johor Bahru" },
+};
+
+test("imported pages render the approved title and H1, with no leftover placeholder or private metadata", () => {
+  const leak = /sources_internal|WITH-WORKSHOPS|IF-TENANT|\[ELSE\]|workshop-box|belum diluluskan/;
+  for (const [rel, exp] of Object.entries(IMPORTED_COPY)) {
+    const html = read(rel);
+    assert.ok(html.includes(`<title>${exp.title}</title>`), `${rel} title`);
+    assert.ok(html.includes(`<h1>${exp.h1}</h1>`), `${rel} h1`);
+    assert.doesNotMatch(html, /\bDRAFT\b|content pending/, rel);
+    assert.doesNotMatch(html, leak, rel);
+    assert.doesNotMatch(dec(html), /\{\{|\[WORKSHOP|\[AREA\]|\[Nama bengkel\]|\[Button:|\[Butang:/, rel);
   }
 });
 
@@ -402,6 +455,12 @@ test("thin-page guard lifts once copy is real, with or without workshops; held p
   setCopy("services/tayar.json", "Tyres", ["ms", "en"]);
   setCopy("services/cat-kereta.json", "Paint", ["ms", "en"]);    // on the hold list -> stays hidden
   setCopy("services/towing-kereta.json", "Towing", ["ms", "en"]); // on the hold list -> stays hidden
+  // Other imported service pages would also be indexable; this fixture only wants the set above.
+  for (const rel of ["services/bateri.json", "services/servis.json"]) {
+    const p = path.join(tmp, "src/_data", rel), d = JSON.parse(fs.readFileSync(p, "utf8"));
+    d.status = "placeholder";
+    fs.writeFileSync(p, JSON.stringify(d));
+  }
   const rp = path.join(tmp, "src/_data/routing.json");
   const r = JSON.parse(fs.readFileSync(rp, "utf8"));
   r.areas.larkin = [];

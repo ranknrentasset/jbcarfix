@@ -8,7 +8,7 @@ import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { linkify, guardLinks } from "../eleventy.config.js";
+import { linkify, markup, markupInline, guardLinks } from "../eleventy.config.js";
 import { buildPages } from "../lib/content.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -46,6 +46,12 @@ test("linkify: only [words](/internal/path/) becomes a link; everything else sta
   assert.equal(linkify("It's fine"), "It&#39;s fine", "same escaping as the template engine");
 });
 
+test("markup: bold, lists and paragraphs, with the same escaping as linkify", () => {
+  assert.equal(markupInline("**Short answer:** see [Kulai](/kulai/) & more"), '<strong>Short answer:</strong> see <a href="/kulai/">Kulai</a> &amp; more');
+  assert.equal(markup("1. **Pick** one\n2. Go\n\nNext para"), "<ol><li><strong>Pick</strong> one</li><li>Go</li></ol><p>Next para</p>");
+  assert.equal(markup("- **[Tyres](/tayar/):** new"), '<ul><li><strong><a href="/tayar/">Tyres</a>:</strong> new</li></ul>');
+});
+
 test("guardLinks: removes only the <a> around links to held-back pages; keeps the language switch", () => {
   const blocked = new Set(["/larkin/", "/en/larkin/"]);
   const html = '<p>Go to <a href="/larkin/#map">Larkin <b>now</b></a> or <a href="/kulai/">Kulai</a>.</p><a class="lang" hreflang="en" lang="en" href="/en/larkin/">English</a><a href="https://wa.me/1">W</a><a href="#contact">J</a>';
@@ -54,7 +60,7 @@ test("guardLinks: removes only the <a> around links to held-back pages; keeps th
 
 test("built site: no link to a held-back page anywhere, words kept, language switch untouched", () => {
   const blocked = new Set(buildPages().filter((p) => p.thin).map((p) => p.url));
-  assert.ok(blocked.size > 0, "every page is still placeholder copy");
+  assert.ok(blocked.has("/larkin/") && blocked.has("/en/car-aircon/") && !blocked.has("/kulai/") && !blocked.has("/tayar/"), "imported pages are live; remaining placeholders stay held back");
   for (const f of htmlFiles(SITE)) {
     const html = fs.readFileSync(f, "utf8"), rel = path.relative(SITE, f);
     for (const a of anchors(html)) {
@@ -65,9 +71,17 @@ test("built site: no link to a held-back page anywhere, words kept, language swi
     if (/class="hero"/.test(html) && !/404/.test(rel)) assert.match(html, /<a class="lang" hreflang="(en|ms)" lang="(en|ms)" href="\/[^"]*">/, `${rel}: language switch kept`);
   }
   const home = fs.readFileSync(path.join(SITE, "index.html"), "utf8");
-  const foot = words(home.match(/<footer[\s\S]*<\/footer>/)[0]);
-  for (const w of ["Tayar", "Towing kereta", "Kulai", "Larkin", "Notis privasi"]) assert.ok(foot.includes(w), `footer keeps "${w}"`);
+  const foot = home.match(/<footer[\s\S]*<\/footer>/)[0];
+  const footWords = words(foot);
+  for (const w of ["Tayar", "Towing kereta", "Kulai", "Larkin", "Notis privasi"]) assert.ok(footWords.includes(w), `footer keeps "${w}"`);
+  assert.match(foot, /<a href="\/tayar\/">Tayar<\/a>/, "footer link to an imported service page is live");
+  assert.match(foot, /<a href="\/towing-kereta\/">Towing kereta<\/a>/, "footer link to imported towing is live");
+  assert.match(foot, /<a href="\/kulai\/">Kulai<\/a>/, "footer link to imported Kulai is live");
+  assert.ok(!foot.includes('href="/larkin/"') && footWords.includes("Larkin"), "footer Larkin stays plain words");
+  assert.ok(!foot.includes('href="/aircond-kereta/"') && footWords.includes("Aircond kereta"), "footer aircond stays plain words");
   assert.match(home, /<a href="\/privasi\/">Notis privasi<\/a>/, "privacy link is not under the content guard");
+  assert.ok(home.includes('<a href="/tayar/">Tayar dan wheel alignment</a>'), "body link to an imported page is live");
+  assert.ok(!home.includes('href="/aircond-kereta/"') && words(home).includes("Aircond kereta"), "body link to a held-back page is plain words");
 });
 
 test("link guard with some real pages (throwaway build): body copy, chips, search, nav, footer, breadcrumb", () => {
@@ -88,6 +102,12 @@ test("link guard with some real pages (throwaway build): body copy, chips, searc
     faqs: [{ q: "Battery?", a: `See [the battery page](${pre(l)}/${l === "ms" ? "bateri" : "car-battery"}/).` }],
   }])));
   setCopy("areas/kulai.json", "Kulai", { ms: { intro: "Back [to home](/)." }, en: { intro: "Back [to home](/en/)." } });
+  // Keep this fixture as "only home and Kulai are real"; put the other imported pages back on hold.
+  for (const rel of ["services/tayar.json", "services/bateri.json", "services/servis.json", "services/cat-kereta.json", "services/towing-kereta.json"]) {
+    const p = path.join(tmp, "src/_data", rel), d = JSON.parse(fs.readFileSync(p, "utf8"));
+    d.status = "placeholder";
+    fs.writeFileSync(p, JSON.stringify(d));
+  }
   execFileSync(process.execPath, [path.join(ROOT, "node_modules/@11ty/eleventy/cmd.cjs"), "--quiet"], { cwd: tmp, stdio: "pipe" });
   const out = path.join(tmp, "_site"), read = (rel) => fs.readFileSync(path.join(out, rel), "utf8");
 
@@ -124,6 +144,30 @@ test("link guard with some real pages (throwaway build): body copy, chips, searc
   fs.rmSync(tmp, { recursive: true, force: true });
 });
 
+const HOME_LIST_DIRECTIONS = {
+  en: "Here are well-reviewed local car workshops and towing operators across Johor Bahru. Tap Directions to find each one. JBCarFix is an independent guide and isn't affiliated with them. Chosen from public Google ratings and reviews and, where known, years in business. We aren't paid by the businesses we suggest.",
+  ms: "Berikut ialah bengkel kereta dan pengendali tunda tempatan di seluruh Johor Bahru yang mendapat ulasan baik. Tekan Arah untuk ke sana. JBCarFix ialah panduan bebas dan tidak bergabung dengan mereka. Dipilih berdasarkan penilaian dan ulasan Google awam dan, jika diketahui, tempoh beroperasi. Kami tidak dibayar oleh perniagaan yang kami cadangkan.",
+};
+
+test("home list intro uses the Directions-only fallback when no More info button shows (throwaway build)", () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "jbcf-"));
+  for (const item of ["src", "lib", "public", "eleventy.config.js", "package.json"]) fs.cpSync(path.join(ROOT, item), path.join(tmp, item), { recursive: true });
+  fs.symlinkSync(path.join(ROOT, "node_modules"), path.join(tmp, "node_modules"));
+  const sp = path.join(tmp, "src/_data/site.json"), site = JSON.parse(fs.readFileSync(sp, "utf8"));
+  site.indexHold = ["kulai", "gelang-patah", "bukit-indah", "skudai", "larkin", "tayar", "tyres", "cat-kereta", "car-body-paint", "towing-kereta", "car-towing", "aircond-kereta", "car-aircon"];
+  fs.writeFileSync(sp, JSON.stringify(site));
+  execFileSync(process.execPath, [path.join(ROOT, "node_modules/@11ty/eleventy/cmd.cjs"), "--quiet"], { cwd: tmp, stdio: "pipe" });
+  for (const [rel, l] of [["index.html", "ms"], ["en/index.html", "en"]]) {
+    const html = fs.readFileSync(path.join(tmp, "_site", rel), "utf8");
+    assert.equal(listIntro(html), HOME_LIST_DIRECTIONS[l], rel);
+    assert.doesNotMatch(html, /Tap More info|Tekan Maklumat lanjut/, `${rel}: fallback intro has no More info sentence`);
+    for (const card of html.matchAll(/<article class="dir-card"[^>]*>([\s\S]*?)<\/article>/g)) {
+      assert.doesNotMatch(card[1], /Maklumat lanjut|More info/, `${rel}: held-back More info is omitted, not shown as text`);
+    }
+  }
+  fs.rmSync(tmp, { recursive: true, force: true });
+});
+
 test("home list intro drops the not-paid sentence once any listed workshop is a tenant (throwaway build)", () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "jbcf-"));
   for (const item of ["src", "lib", "public", "eleventy.config.js", "package.json"]) fs.cpSync(path.join(ROOT, item), path.join(tmp, item), { recursive: true });
@@ -134,7 +178,16 @@ test("home list intro drops the not-paid sentence once any listed workshop is a 
   execFileSync(process.execPath, [path.join(ROOT, "node_modules/@11ty/eleventy/cmd.cjs"), "--quiet"], { cwd: tmp, stdio: "pipe" });
   for (const [rel, l] of [["index.html", "ms"], ["en/index.html", "en"]]) {
     const got = listIntro(fs.readFileSync(path.join(tmp, "_site", rel), "utf8"));
+    const html = fs.readFileSync(path.join(tmp, "_site", rel), "utf8");
     assert.equal(got, HOME_LIST[l].replace(l === "ms" ? " Kami tidak dibayar oleh perniagaan yang kami cadangkan." : " We aren't paid by the businesses we suggest.", ""), rel);
+    const body = dec(html);
+    if (l === "en") {
+      assert.ok(body.includes("Workshops featured on JBCarFix pay us a flat fee. It doesn't change the price the workshop quotes you."));
+      assert.ok(!body.includes("We aren't paid by the workshops we suggest."));
+    } else {
+      assert.ok(body.includes("Bengkel yang dipaparkan di JBCarFix membayar yuran tetap kepada kami. Ia tidak mengubah harga yang bengkel sebut kepada anda."));
+      assert.ok(!body.includes("Kami tidak dibayar oleh bengkel yang kami cadangkan."));
+    }
   }
   fs.rmSync(tmp, { recursive: true, force: true });
 });

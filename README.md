@@ -7,7 +7,7 @@ The site is **an independent guide to local car workshops** in Johor Bahru. It i
 
 > **Nothing goes live until you merge a pull request.** All work happens on side branches. Each pull request can get a private preview link (on `*.pages.dev`, hidden from Google). Only when you merge into `main` does Cloudflare publish it to jbcarfix.com.
 
-All page text is currently placeholder, marked **"DRAFT – content pending"**.
+These pages have real imported copy: home, Kulai, tyres, battery, servicing, body and paint, and towing, in both languages. The other area and service pages are still placeholder, marked **"DRAFT – content pending"**.
 
 ## How it works, in one paragraph
 
@@ -67,13 +67,13 @@ tests/               Automatic tests for the form checks, routing safety and the
 
 A page stays hidden from Google while **either** of these is true:
 - its copy is still placeholder (`status: "placeholder"`, or any text still marked DRAFT);
-- it is on the manual hold list, `indexHold` in `site.json`. That list matches the last part of the URL (for example `cat-kereta` or `car-body-paint`). It is empty for now. The body-and-paint and towing pages are still hidden because their copy is placeholder.
+- it is on the manual hold list, `indexHold` in `site.json`. That list matches the last part of the URL (for example `cat-kereta` or `car-body-paint`). It is empty for now.
 
 A hidden page gets `<meta name="robots" content="noindex,follow">` and is left out of `sitemap.xml`. If either language of a page is hidden, the hreflang pair between the two languages is dropped, both in the page head and in the sitemap. The guard lifts by itself once a page has real copy, **even if it lists no workshop**.
 
-A page with no workshop shows no contact box at all: no buttons, no "coming soon" note, and nothing that suggests a workshop. A test fails if wording like that appears.
+A page with no workshop shows no contact box at all: no buttons and no "coming soon" note. Battery and servicing have real copy but no workshop cards yet, because servicing has no approved routing and battery is also unassigned.
 
-**Right now every page is hidden**, because all the copy is still placeholder, so the sitemap is empty.
+**The sitemap lists the imported pages** (home, Kulai, tyres, battery, servicing, body and paint, and towing, in both languages). Remaining placeholder pages stay hidden from Google.
 
 ## How to add an area
 
@@ -148,13 +148,15 @@ Each towing card shows `towingCardNote` from `site.json`: "Ask for the full pric
 
 ### Links to pages that are still held back
 
-Any link to one of our own pages that the thin-page guard keeps out of Google (placeholder copy, or on `indexHold`) is turned into plain words at build time: the link goes, the words stay. This applies everywhere: body copy, the home chips and search results, the service and area grids, the header, breadcrumb and footer. The language switch is the one exception and works as before. hreflang tags are unchanged. While every page is still a placeholder, almost all internal links are plain words; each one comes back by itself once its page has real copy.
+Any link to one of our own pages that the thin-page guard keeps out of Google (placeholder copy, or on `indexHold`) is turned into plain words at build time: the link goes, the words stay. This applies everywhere: body copy, the home chips and search results, the service and area grids, the header, breadcrumb and footer. The language switch is the one exception and works as before. hreflang tags are unchanged. Links to imported pages are live; links to the remaining placeholder pages (other areas, aircond, gearbox, 24-hour) stay as plain words until those pages get real copy.
 
-Body copy (intro, block text, FAQ answers) can link to another page of the site by writing `[words](/path/)`. Nothing else in copy becomes markup.
+On the home workshop list, a "More info" button is omitted entirely when its target page is held back (it is not shown as plain text). The Directions button always stays. When no listing has a More info button, the list intro swaps "Tap More info for each listing's details, or Directions to find it." for "Tap Directions to find each one." (Malay: "Tekan Arah untuk ke sana."). The original sentence comes back once at least one More info button shows.
+
+Body copy (intro, block text, FAQ answers) can use `[words](/path/)` for an internal link, `**bold**`, and bullet or numbered lists.
 
 ### Home workshop list intro
 
-The approved intro above the home list is in `disclosures.json` (`homeList`). Its last sentence (not paid) shows only while every listed workshop is trial.
+The approved intro above the home list is in `disclosures.json` (`homeList`). Its last sentence (not paid) shows only while every listed workshop is trial. The More info / Directions sentence follows the rule above.
 
 ### Copy shown only with workshops
 
@@ -237,7 +239,8 @@ Only two things remain:
 
 - [ ] Web3Forms access key(s), from Muhammad's own Web3Forms sign-up (one per workshop inbox)
 - [ ] The brand name (the site shows "JBCarFix" for now)
-- [ ] Real page text, once it has been checked and cleared
+- [x] Real page text for home, Kulai, tyres, battery, servicing, body and paint, and towing (both languages)
+- [ ] Real page text for the remaining area and service pages
 - [ ] The privacy notice text. Then remove its noindex rules in `public/_headers` and set `status` in `privacy.json`
 - [ ] Muhammad's GA4 measurement ID, then the DebugView check above
 

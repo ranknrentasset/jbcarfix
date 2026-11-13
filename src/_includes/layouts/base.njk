@@ -83,7 +83,7 @@
         {%- endif %}
         <p class="connect">{{ s.connectLine }}</p>
         <h1>{{ c.h1 }}</h1>
-        <p class="lede">{{ c.intro | linkify | safe }}</p>
+        <div class="lede">{{ c.intro | markup | safe }}</div>
         {%- if entry.type == "home" %}
         {% include "partials/finder.njk" %}
         {%- endif %}
@@ -135,7 +135,9 @@
     {%- endif %}
     <div class="foot-base">
       <p><a href="{{ site.privacy[entry.lang] }}">{{ s.privacyLabel }}</a></p>
+      {%- if entry.thin or (entry.type == "privacy" and entry.noindex) %}
       <p class="draft">{{ s.draft }}</p>
+      {%- endif %}
     </div>
   </div>
 </footer>

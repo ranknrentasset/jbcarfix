@@ -16,7 +16,8 @@
     {%- endif %}
   </div>
   {%- set anyTenant = list | dirTenant %}
-  <p class="dir-intro">{{ disclosures.homeList.lead[entry.lang] | fill }}{% if not anyTenant %} {{ disclosures.homeList.trialOnly[entry.lang] }}{% endif %}</p>
+  {%- set anyMore = list | dirHasMoreInfo(entry.lang, thinUrls) %}
+  <p class="dir-intro">{{ disclosures.homeList.leadStart[entry.lang] }} {{ (disclosures.homeList.tapMoreInfo if anyMore else disclosures.homeList.tapDirections)[entry.lang] }} {{ disclosures.homeList.leadEnd[entry.lang] | fill }}{% if not anyTenant %} {{ disclosures.homeList.trialOnly[entry.lang] }}{% endif %}</p>
   <div class="fbar" role="group" aria-label="{{ s.filterLabel }}">
     <button type="button" class="fchip" data-filter="" aria-pressed="true">{{ s.filterAll }}</button>
     {%- for k in site.serviceOrder %}{% if list | dirHas("svc", k) %}
@@ -47,7 +48,9 @@
         {%- if w | hasPin %}
         <a class="act act-dir" href="{{ w | directionsUrl }}" rel="noopener" data-ev="click_directions">{{ icon("route") }}<span>{{ s.directionsLabel }}</span></a>
         {%- endif %}
-        <a class="act" href="{% if e.page.type == 'area' %}{{ pre }}/{{ e.page.key }}/{% else %}{{ pre }}/{{ services[e.page.key].slug[entry.lang] }}/{% endif %}"><span>{{ s.moreInfo }}</span>{{ icon("chev") }}</a>
+        {%- if e.moreInfo[entry.lang] not in thinUrls %}
+        <a class="act" href="{{ e.moreInfo[entry.lang] }}"><span>{{ s.moreInfo }}</span>{{ icon("chev") }}</a>
+        {%- endif %}
       </p>
     </article>
     {%- endfor %}
