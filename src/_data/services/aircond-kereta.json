@@ -11,7 +11,7 @@
     "en": "Car aircon"
   },
   "ms": {
-    "title": "Aircond kereta (DRAFT) | JBCarFix",
+    "title": "Aircond kereta (DRAFT) | {{ brand }}",
     "description": "DRAFT – content pending: penerangan meta untuk Aircond kereta.",
     "h1": "Aircond kereta – DRAFT",
     "intro": "DRAFT – content pending: perenggan pembuka untuk Aircond kereta.",
@@ -32,11 +32,10 @@
         "q": "DRAFT – soalan lazim 1 (Aircond kereta)",
         "a": "DRAFT – content pending."
       }
-    ],
-    "whatsappText": "Hai, saya perlukan bantuan kereta (Aircond kereta)"
+    ]
   },
   "en": {
-    "title": "Car aircon (DRAFT) | JBCarFix",
+    "title": "Car aircon (DRAFT) | {{ brand }}",
     "description": "DRAFT – content pending: meta description for Car aircon.",
     "h1": "Car aircon – DRAFT",
     "intro": "DRAFT – content pending: opening paragraph for Car aircon.",
@@ -57,7 +56,6 @@
         "q": "DRAFT – question 1 (Car aircon)",
         "a": "DRAFT – content pending."
       }
-    ],
-    "whatsappText": "Hi, I need help with my car (Car aircon)"
+    ]
   }
 }

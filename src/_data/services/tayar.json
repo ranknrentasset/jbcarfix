@@ -11,7 +11,7 @@
     "en": "Tyres"
   },
   "ms": {
-    "title": "Tayar (DRAFT) | JBCarFix",
+    "title": "Tayar (DRAFT) | {{ brand }}",
     "description": "DRAFT – content pending: penerangan meta untuk Tayar.",
     "h1": "Tayar – DRAFT",
     "intro": "DRAFT – content pending: perenggan pembuka untuk Tayar.",
@@ -32,11 +32,10 @@
         "q": "DRAFT – soalan lazim 1 (Tayar)",
         "a": "DRAFT – content pending."
       }
-    ],
-    "whatsappText": "Hai, saya perlukan bantuan kereta (Tayar)"
+    ]
   },
   "en": {
-    "title": "Tyres (DRAFT) | JBCarFix",
+    "title": "Tyres (DRAFT) | {{ brand }}",
     "description": "DRAFT – content pending: meta description for Tyres.",
     "h1": "Tyres – DRAFT",
     "intro": "DRAFT – content pending: opening paragraph for Tyres.",
@@ -57,7 +56,6 @@
         "q": "DRAFT – question 1 (Tyres)",
         "a": "DRAFT – content pending."
       }
-    ],
-    "whatsappText": "Hi, I need help with my car (Tyres)"
+    ]
   }
 }

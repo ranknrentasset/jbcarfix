@@ -1,0 +1,21 @@
+{
+  "_comment": "Disclosure lines shown next to the contact buttons once a workshop is attached. 'independence' and 'selectionMethod' show in trial mode; 'paidBy' shows in trial and tenant mode with different text. Content supplies the final wording; the build refuses to show a TODO line on a live (trial/tenant) page.",
+  "independence": {
+    "ms": "TODO – wording to come from Content (independent guide, not affiliated)",
+    "en": "TODO – wording to come from Content (independent guide, not affiliated)"
+  },
+  "selectionMethod": {
+    "ms": "TODO – wording to come from Content (how this workshop was selected)",
+    "en": "TODO – wording to come from Content (how this workshop was selected)"
+  },
+  "paidBy": {
+    "trial": {
+      "ms": "TODO – wording to come from Content (paid-by line, trial)",
+      "en": "TODO – wording to come from Content (paid-by line, trial)"
+    },
+    "tenant": {
+      "ms": "TODO – wording to come from Content (paid-by line, tenant)",
+      "en": "TODO – wording to come from Content (paid-by line, tenant)"
+    }
+  }
+}

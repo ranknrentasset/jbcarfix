@@ -24,7 +24,7 @@
 {%- endif %}
 <link rel="alternate" hreflang="x-default" href="{{ (entry.alternates.ms or entry.alternates.en) | absUrl(site) }}">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="{{ site.name }}">
+<meta property="og:site_name" content="{{ brand }}">
 <meta property="og:title" content="{{ c.title }}">
 {%- if c.description %}
 <meta property="og:description" content="{{ c.description }}">
@@ -44,7 +44,7 @@
 <a class="skip" href="#main">{{ s.skip }}</a>
 <header class="top">
   <div class="wrap top-in">
-    <a class="brand" href="{{ pre }}/">{{ site.name }}</a>
+    <a class="brand" href="{{ pre }}/">{{ brand }}</a>
     {%- if entry.type != "notfound" %}
     <a class="lang" hreflang="{{ other }}" lang="{{ other }}" href="{{ entry.alternates[other] or ('/' if other == 'ms' else '/en/') }}">{{ s.otherLangLabel }}</a>
     {%- endif %}

@@ -23,7 +23,7 @@
     "pakar-gearbox"
   ],
   "ms": {
-    "title": "Bukit Indah (DRAFT) | JBCarFix",
+    "title": "Bukit Indah (DRAFT) | {{ brand }}",
     "description": "DRAFT – content pending: penerangan meta untuk Bukit Indah.",
     "h1": "Bukit Indah – DRAFT",
     "intro": "DRAFT – content pending: perenggan pembuka untuk Bukit Indah.",
@@ -49,11 +49,10 @@
         "q": "DRAFT – soalan lazim 1 (Bukit Indah)",
         "a": "DRAFT – content pending."
       }
-    ],
-    "whatsappText": "Hai, saya perlukan bantuan kereta (Bukit Indah)"
+    ]
   },
   "en": {
-    "title": "Bukit Indah (DRAFT) | JBCarFix",
+    "title": "Bukit Indah (DRAFT) | {{ brand }}",
     "description": "DRAFT – content pending: meta description for Bukit Indah.",
     "h1": "Bukit Indah – DRAFT",
     "intro": "DRAFT – content pending: opening paragraph for Bukit Indah.",
@@ -79,7 +78,6 @@
         "q": "DRAFT – question 1 (Bukit Indah)",
         "a": "DRAFT – content pending."
       }
-    ],
-    "whatsappText": "Hi, I need help with my car (Bukit Indah)"
+    ]
   }
 }

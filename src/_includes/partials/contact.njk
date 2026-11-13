@@ -5,20 +5,34 @@
 {%- set thanksUrl = site.thanks[entry.lang] -%}
 <section class="contact" id="contact">
   <h2>{{ s.contactHeading }}</h2>
-{%- if r.status == "unassigned" %}
+{%- if r.tenant_status == "unassigned" %}
   <p class="soon">{{ s.comingSoon }}</p>
 {%- else %}
-  <p class="routed">{{ s.routedLine | replace("{workshop}", r.workshop_name) | replace("{area}", areaName) }}</p>
+{#- Workshop name and numbers appear only in this visible block, never in JSON-LD or meta tags.
+    Analytics parameters ride on data-ev-* attributes and are read by site.js. #}
+  <div class="routing" data-ev-area="{{ entry.eventArea }}" data-ev-lang="{{ entry.lang }}" data-ev-workshop-id="{{ r.workshop_id }}" data-ev-tenant-status="{{ r.tenant_status }}" data-ev-service="{{ entry.eventService }}" data-ev-page-path="{{ entry.url }}">
+{%- if r.tenant_status == "tenant" and r.workshop.logo %}
+  <img class="ws-logo" src="{{ r.workshop.logo }}" alt="{{ r.workshop.name }}" width="120" height="60">
+{%- endif %}
+  <p class="routed">{{ s.routedLine | fill({ workshop: r.workshop }) }}</p>
   <p class="cta">
-    <a class="btn" href="tel:{{ r.phone }}">{{ s.callLabel }} {{ r.phone }}</a>
-    <a class="btn btn-wa" href="{{ r | waLink(entry.content.whatsappText + ' [ref: ' + entry.key + '-' + entry.lang + ']', entry.key, entry.lang, routing) }}" rel="noopener">{{ s.whatsappLabel }}</a>
+    <a class="btn" href="tel:{{ r.phone }}" data-ev="click_call">{{ s.callLabel }} {{ r.phone }}</a>
+    <a class="btn btn-wa" href="{{ r | waLink(i18n.whatsappText[entry.lang], entry.key, entry.lang, routing) }}" rel="noopener" data-ev="click_whatsapp">{{ s.whatsappLabel }}</a>
   </p>
+  <ul class="disclosures">
+{%- if r.tenant_status == "trial" %}
+    <li>{{ disclosures.independence[entry.lang] }}</li>
+    <li>{{ disclosures.selectionMethod[entry.lang] }}</li>
+{%- endif %}
+    <li>{{ disclosures.paidBy[r.tenant_status][entry.lang] }}</li>
+  </ul>
   <form class="lead" action="https://api.web3forms.com/submit" method="post" data-lead-form data-thanks="{{ thanksUrl }}" data-error="{{ s.formError }}" data-invalid="{{ s.formInvalid }}" data-sending="{{ s.formSending }}">
     <h3>{{ s.formHeading }}</h3>
     <input type="hidden" name="access_key" value="{{ r.web3forms_key }}">
-    <input type="hidden" name="subject" value="New lead: {{ areaName }} ({{ entry.key }}, {{ entry.lang }}) via {{ site.name }}">
-    <input type="hidden" name="from_name" value="{{ site.name }} website">
-    <input type="hidden" name="routed_to" value="{{ r.workshop_name }}">
+    <input type="hidden" name="subject" value="New lead: {{ areaName }} ({{ entry.key }}, {{ entry.lang }}) via {{ brand }}">
+    <input type="hidden" name="from_name" value="{{ brand }} website">
+    <input type="hidden" name="workshop_id" value="{{ r.workshop_id }}">
+    <input type="hidden" name="routed_to" value="{{ r.workshop.name }}">
     <input type="hidden" name="redirect" value="{{ thanksUrl | absUrl(site) }}">
     <input type="hidden" name="lang" value="{{ entry.lang }}">
     <input type="hidden" name="page" value="{{ entry.url }}">
@@ -63,5 +77,6 @@
     <button type="submit" class="btn">{{ s.formSubmit }}</button>
     <p class="status" role="status" aria-live="polite"></p>
   </form>
+  </div>
 {%- endif %}
 </section>

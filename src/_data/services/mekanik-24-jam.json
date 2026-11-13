@@ -11,7 +11,7 @@
     "en": "24-hour mechanic"
   },
   "ms": {
-    "title": "Mekanik 24 jam (DRAFT) | JBCarFix",
+    "title": "Mekanik 24 jam (DRAFT) | {{ brand }}",
     "description": "DRAFT – content pending: penerangan meta untuk Mekanik 24 jam.",
     "h1": "Mekanik 24 jam – DRAFT",
     "intro": "DRAFT – content pending: perenggan pembuka untuk Mekanik 24 jam.",
@@ -32,11 +32,10 @@
         "q": "DRAFT – soalan lazim 1 (Mekanik 24 jam)",
         "a": "DRAFT – content pending."
       }
-    ],
-    "whatsappText": "Hai, saya perlukan bantuan kereta (Mekanik 24 jam)"
+    ]
   },
   "en": {
-    "title": "24-hour mechanic (DRAFT) | JBCarFix",
+    "title": "24-hour mechanic (DRAFT) | {{ brand }}",
     "description": "DRAFT – content pending: meta description for 24-hour mechanic.",
     "h1": "24-hour mechanic – DRAFT",
     "intro": "DRAFT – content pending: opening paragraph for 24-hour mechanic.",
@@ -57,7 +56,6 @@
         "q": "DRAFT – question 1 (24-hour mechanic)",
         "a": "DRAFT – content pending."
       }
-    ],
-    "whatsappText": "Hi, I need help with my car (24-hour mechanic)"
+    ]
   }
 }

@@ -23,7 +23,23 @@
     return errors;
   }
 
-  root.JBCF = { normalisePhone: normalisePhone, validateLead: validateLead };
+  // Analytics event parameters from the data-ev-* attributes on the contact block.
+  // No analytics script is loaded by this site; events are only handed to gtag()
+  // or window.dataLayer if one is added later.
+  var EV_PARAMS = { evArea: "area", evLang: "lang", evWorkshopId: "workshop_id", evTenantStatus: "tenant_status", evService: "service", evPagePath: "page_path" };
+  function eventParams(dataset) {
+    var out = {};
+    for (var k in EV_PARAMS) if (dataset && dataset[k]) out[EV_PARAMS[k]] = String(dataset[k]);
+    return out;
+  }
+  function track(name, params) {
+    try {
+      if (typeof root.gtag === "function") root.gtag("event", name, params);
+      else if (root.dataLayer && root.dataLayer.push) root.dataLayer.push(Object.assign({ event: name }, params));
+    } catch (e) {}
+  }
+
+  root.JBCF = { normalisePhone: normalisePhone, validateLead: validateLead, eventParams: eventParams };
   if (typeof document === "undefined") return; // loaded by tests
 
   var STORE = "jbcf_utm", MAX_AGE = 90 * 24 * 3600 * 1000, utm = null;
@@ -40,6 +56,12 @@
     utm = fresh;
     try { localStorage.setItem(STORE, JSON.stringify({ t: Date.now(), v: utm })); } catch (e) {}
   }
+
+  Array.prototype.forEach.call(document.querySelectorAll(".routing a[data-ev]"), function (a) {
+    a.addEventListener("click", function () {
+      track(a.getAttribute("data-ev"), eventParams(a.closest(".routing").dataset));
+    });
+  });
 
   Array.prototype.forEach.call(document.querySelectorAll("form[data-lead-form]"), function (form) {
     var el = form.elements;
@@ -64,7 +86,12 @@
         .then(function (r) { return r.json().catch(function () { return {}; }); })
         .catch(function () { return {}; })
         .then(function (j) {
-          if (j && j.success) { location.href = thanks; return; }
+          if (j && j.success) {
+            var box = form.closest(".routing");
+            track("generate_lead", eventParams(box ? box.dataset : {}));
+            setTimeout(function () { location.href = thanks; }, 150);
+            return;
+          }
           btn.disabled = false;
           status.textContent = form.getAttribute("data-error");
         });

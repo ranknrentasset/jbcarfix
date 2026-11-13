@@ -24,7 +24,7 @@
     "pakar-gearbox"
   ],
   "ms": {
-    "title": "Skudai (DRAFT) | JBCarFix",
+    "title": "Skudai (DRAFT) | {{ brand }}",
     "description": "DRAFT – content pending: penerangan meta untuk Skudai.",
     "h1": "Skudai – DRAFT",
     "intro": "DRAFT – content pending: perenggan pembuka untuk Skudai.",
@@ -50,11 +50,10 @@
         "q": "DRAFT – soalan lazim 1 (Skudai)",
         "a": "DRAFT – content pending."
       }
-    ],
-    "whatsappText": "Hai, saya perlukan bantuan kereta (Skudai)"
+    ]
   },
   "en": {
-    "title": "Skudai (DRAFT) | JBCarFix",
+    "title": "Skudai (DRAFT) | {{ brand }}",
     "description": "DRAFT – content pending: meta description for Skudai.",
     "h1": "Skudai – DRAFT",
     "intro": "DRAFT – content pending: opening paragraph for Skudai.",
@@ -80,7 +79,6 @@
         "q": "DRAFT – question 1 (Skudai)",
         "a": "DRAFT – content pending."
       }
-    ],
-    "whatsappText": "Hi, I need help with my car (Skudai)"
+    ]
   }
 }

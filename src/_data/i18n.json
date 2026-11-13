@@ -1,0 +1,7 @@
+{
+  "_comment": "Short interface strings shared by every page. {{ brand }} is filled in from site.json at build time.",
+  "whatsappText": {
+    "ms": "Hi, saya jumpa anda di {{ brand }}",
+    "en": "Hi, I found you on {{ brand }}"
+  }
+}

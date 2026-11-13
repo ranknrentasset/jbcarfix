@@ -22,7 +22,7 @@
     "pakar-gearbox"
   ],
   "ms": {
-    "title": "Gelang Patah (DRAFT) | JBCarFix",
+    "title": "Gelang Patah (DRAFT) | {{ brand }}",
     "description": "DRAFT – content pending: penerangan meta untuk Gelang Patah.",
     "h1": "Gelang Patah – DRAFT",
     "intro": "DRAFT – content pending: perenggan pembuka untuk Gelang Patah.",
@@ -48,11 +48,10 @@
         "q": "DRAFT – soalan lazim 1 (Gelang Patah)",
         "a": "DRAFT – content pending."
       }
-    ],
-    "whatsappText": "Hai, saya perlukan bantuan kereta (Gelang Patah)"
+    ]
   },
   "en": {
-    "title": "Gelang Patah (DRAFT) | JBCarFix",
+    "title": "Gelang Patah (DRAFT) | {{ brand }}",
     "description": "DRAFT – content pending: meta description for Gelang Patah.",
     "h1": "Gelang Patah – DRAFT",
     "intro": "DRAFT – content pending: opening paragraph for Gelang Patah.",
@@ -78,7 +77,6 @@
         "q": "DRAFT – question 1 (Gelang Patah)",
         "a": "DRAFT – content pending."
       }
-    ],
-    "whatsappText": "Hi, I need help with my car (Gelang Patah)"
+    ]
   }
 }

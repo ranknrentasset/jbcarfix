@@ -11,7 +11,7 @@
     "en": "Gearbox repair"
   },
   "ms": {
-    "title": "Pakar gearbox (DRAFT) | JBCarFix",
+    "title": "Pakar gearbox (DRAFT) | {{ brand }}",
     "description": "DRAFT – content pending: penerangan meta untuk Pakar gearbox.",
     "h1": "Pakar gearbox – DRAFT",
     "intro": "DRAFT – content pending: perenggan pembuka untuk Pakar gearbox.",
@@ -32,11 +32,10 @@
         "q": "DRAFT – soalan lazim 1 (Pakar gearbox)",
         "a": "DRAFT – content pending."
       }
-    ],
-    "whatsappText": "Hai, saya perlukan bantuan kereta (Pakar gearbox)"
+    ]
   },
   "en": {
-    "title": "Gearbox repair (DRAFT) | JBCarFix",
+    "title": "Gearbox repair (DRAFT) | {{ brand }}",
     "description": "DRAFT – content pending: meta description for Gearbox repair.",
     "h1": "Gearbox repair – DRAFT",
     "intro": "DRAFT – content pending: opening paragraph for Gearbox repair.",
@@ -57,7 +56,6 @@
         "q": "DRAFT – question 1 (Gearbox repair)",
         "a": "DRAFT – content pending."
       }
-    ],
-    "whatsappText": "Hi, I need help with my car (Gearbox repair)"
+    ]
   }
 }

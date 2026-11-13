@@ -2,7 +2,7 @@
   "_comment": "Home page text in both languages.",
   "status": "placeholder",
   "ms": {
-    "title": "Laman utama (DRAFT) | JBCarFix",
+    "title": "Laman utama (DRAFT) | {{ brand }}",
     "description": "DRAFT – content pending: penerangan meta untuk Laman utama.",
     "h1": "Laman utama – DRAFT",
     "intro": "DRAFT – content pending: perenggan pembuka untuk Laman utama.",
@@ -18,11 +18,10 @@
         "q": "DRAFT – soalan lazim 1 (Laman utama)",
         "a": "DRAFT – content pending."
       }
-    ],
-    "whatsappText": "Hai, saya perlukan bantuan kereta (Laman utama)"
+    ]
   },
   "en": {
-    "title": "Home (DRAFT) | JBCarFix",
+    "title": "Home (DRAFT) | {{ brand }}",
     "description": "DRAFT – content pending: meta description for Home.",
     "h1": "Home – DRAFT",
     "intro": "DRAFT – content pending: opening paragraph for Home.",
@@ -38,7 +37,6 @@
         "q": "DRAFT – question 1 (Home)",
         "a": "DRAFT – content pending."
       }
-    ],
-    "whatsappText": "Hi, I need help with my car (Home)"
+    ]
   }
 }

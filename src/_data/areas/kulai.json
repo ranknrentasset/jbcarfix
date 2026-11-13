@@ -22,7 +22,7 @@
     "pakar-gearbox"
   ],
   "ms": {
-    "title": "Kulai (DRAFT) | JBCarFix",
+    "title": "Kulai (DRAFT) | {{ brand }}",
     "description": "DRAFT – content pending: penerangan meta untuk Kulai.",
     "h1": "Kulai – DRAFT",
     "intro": "DRAFT – content pending: perenggan pembuka untuk Kulai.",
@@ -48,11 +48,10 @@
         "q": "DRAFT – soalan lazim 1 (Kulai)",
         "a": "DRAFT – content pending."
       }
-    ],
-    "whatsappText": "Hai, saya perlukan bantuan kereta (Kulai)"
+    ]
   },
   "en": {
-    "title": "Kulai (DRAFT) | JBCarFix",
+    "title": "Kulai (DRAFT) | {{ brand }}",
     "description": "DRAFT – content pending: meta description for Kulai.",
     "h1": "Kulai – DRAFT",
     "intro": "DRAFT – content pending: opening paragraph for Kulai.",
@@ -78,7 +77,6 @@
         "q": "DRAFT – question 1 (Kulai)",
         "a": "DRAFT – content pending."
       }
-    ],
-    "whatsappText": "Hi, I need help with my car (Kulai)"
+    ]
   }
 }

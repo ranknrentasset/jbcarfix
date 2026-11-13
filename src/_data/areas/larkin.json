@@ -22,7 +22,7 @@
     "pakar-gearbox"
   ],
   "ms": {
-    "title": "Larkin (DRAFT) | JBCarFix",
+    "title": "Larkin (DRAFT) | {{ brand }}",
     "description": "DRAFT – content pending: penerangan meta untuk Larkin.",
     "h1": "Larkin – DRAFT",
     "intro": "DRAFT – content pending: perenggan pembuka untuk Larkin.",
@@ -48,11 +48,10 @@
         "q": "DRAFT – soalan lazim 1 (Larkin)",
         "a": "DRAFT – content pending."
       }
-    ],
-    "whatsappText": "Hai, saya perlukan bantuan kereta (Larkin)"
+    ]
   },
   "en": {
-    "title": "Larkin (DRAFT) | JBCarFix",
+    "title": "Larkin (DRAFT) | {{ brand }}",
     "description": "DRAFT – content pending: meta description for Larkin.",
     "h1": "Larkin – DRAFT",
     "intro": "DRAFT – content pending: opening paragraph for Larkin.",
@@ -78,7 +77,6 @@
         "q": "DRAFT – question 1 (Larkin)",
         "a": "DRAFT – content pending."
       }
-    ],
-    "whatsappText": "Hi, I need help with my car (Larkin)"
+    ]
   }
 }

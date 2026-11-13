@@ -2,7 +2,7 @@
   "_comment": "Privacy notice text. Placeholder until the real policy text is written and approved. The page stays noindex while status is 'placeholder'.",
   "status": "placeholder",
   "ms": {
-    "title": "Notis privasi (DRAFT) | JBCarFix",
+    "title": "Notis privasi (DRAFT) | {{ brand }}",
     "description": "",
     "h1": "Notis privasi – DRAFT",
     "intro": "DRAFT – content pending: notis privasi akan ditambah di sini.",
@@ -25,7 +25,7 @@
     ]
   },
   "en": {
-    "title": "Privacy notice (DRAFT) | JBCarFix",
+    "title": "Privacy notice (DRAFT) | {{ brand }}",
     "description": "",
     "h1": "Privacy notice – DRAFT",
     "intro": "DRAFT – content pending: the privacy notice will be added here.",

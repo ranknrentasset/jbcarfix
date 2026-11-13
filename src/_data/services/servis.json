@@ -11,7 +11,7 @@
     "en": "Car servicing"
   },
   "ms": {
-    "title": "Servis kereta (DRAFT) | JBCarFix",
+    "title": "Servis kereta (DRAFT) | {{ brand }}",
     "description": "DRAFT – content pending: penerangan meta untuk Servis kereta.",
     "h1": "Servis kereta – DRAFT",
     "intro": "DRAFT – content pending: perenggan pembuka untuk Servis kereta.",
@@ -32,11 +32,10 @@
         "q": "DRAFT – soalan lazim 1 (Servis kereta)",
         "a": "DRAFT – content pending."
       }
-    ],
-    "whatsappText": "Hai, saya perlukan bantuan kereta (Servis kereta)"
+    ]
   },
   "en": {
-    "title": "Car servicing (DRAFT) | JBCarFix",
+    "title": "Car servicing (DRAFT) | {{ brand }}",
     "description": "DRAFT – content pending: meta description for Car servicing.",
     "h1": "Car servicing – DRAFT",
     "intro": "DRAFT – content pending: opening paragraph for Car servicing.",
@@ -57,7 +56,6 @@
         "q": "DRAFT – question 1 (Car servicing)",
         "a": "DRAFT – content pending."
       }
-    ],
-    "whatsappText": "Hi, I need help with my car (Car servicing)"
+    ]
   }
 }

@@ -13,7 +13,7 @@
   },
   "routing": "near-ksl",
   "en": {
-    "title": "Car workshops near KSL (DRAFT) | JBCarFix",
+    "title": "Car workshops near KSL (DRAFT) | {{ brand }}",
     "description": "DRAFT – content pending: meta description for Car workshops near KSL.",
     "h1": "Car workshops near KSL – DRAFT",
     "intro": "DRAFT – content pending: opening paragraph for Car workshops near KSL.",
@@ -34,7 +34,6 @@
         "q": "DRAFT – question 1 (Car workshops near KSL)",
         "a": "DRAFT – content pending."
       }
-    ],
-    "whatsappText": "Hi, I need help with my car (Car workshops near KSL)"
+    ]
   }
 }

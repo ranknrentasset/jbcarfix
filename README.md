@@ -18,7 +18,9 @@ The pages are built by a free tool called [Eleventy](https://www.11ty.dev/). Eac
 ```
 src/
   _data/
-    site.json        Main settings: web address, brand name, the tenantMode switch, button and form wording
+    site.json        Main settings: web address, brand, the tenantMode switch, button and form wording
+    i18n.json        Short shared strings, such as the WhatsApp pre-filled message
+    disclosures.json The disclosure lines shown next to a workshop's contact buttons
     routing.json     Which phone / WhatsApp number each area uses
     home.json        Home page text (Malay + English)
     privacy.json     Privacy notice text (placeholder for now)
@@ -65,7 +67,7 @@ Every page tells Google about its other-language twin (hreflang) and its own mai
 2. Inside, set `slug` to `senai` and fill in `name`.
 3. Write **new text for every field** in both `ms` and `en`: intro, sections, FAQs and the WhatsApp message. Never copy another area's text and only change the town name.
 4. Add the area to `areaOrder` in `src/_data/site.json`.
-5. In `src/_data/routing.json`, copy an existing placeholder entry under `entries` with the area's slug as its name (status `unassigned`), and add `"senai": "senai"` under `areas`.
+5. In `src/_data/routing.json`, copy an existing placeholder entry under `entries` with the area's slug as its name (`tenant_status` `unassigned`), and add `"senai": "senai"` under `areas`.
 6. Change `status` from `placeholder` to `draft` once real text is in.
 7. Run `npm run check:unique`. It fails if two area pages share more than about 40% of their text.
 
@@ -76,20 +78,41 @@ The build stops with a clear message if something doesn't line up, for example a
 Leads never go to the site owner. Each area sends calls, WhatsApp messages and form leads to **its own workshop**, set in `src/_data/routing.json`:
 
 - `entries` holds one entry per area (`kulai`, `skudai`, ...) plus an `unassigned` default for pages that aren't tied to one area (home, services, near KSL).
-- Each entry has `workshop_name`, `phone`, `whatsapp`, `web3forms_key` (that workshop's own key, so form leads go straight to its email) and `status` (`unassigned`, `trial` or `rented`).
 - `areas` says which entry each area uses.
+- Each entry has:
+  - `workshop_id`: a short, permanent ID such as `ws-kulai-1`, sent with analytics events
+  - `workshop`: `name`, `area` (the area named on the page) and `coverage` (the neighbourhoods it covers)
+  - `phone`, `whatsapp`
+  - `web3forms_key`: that workshop's own key, so form leads go straight to its email
+  - `tenant_status`: `unassigned`, `trial` or `tenant`
 
 **Right now every entry is `unassigned`, with placeholder values.** So no page shows a call button, WhatsApp button or form. Pages show a neutral "coming soon" note instead, which means no lead can go to nobody.
 
 When a workshop agrees to take an area:
 
-1. Fill in that area's entry with its real name, numbers and Web3Forms key.
-2. Set `status` to `trial` or `rented`.
+1. Fill in that area's entry with its real details.
+2. Set `tenant_status` to `trial` or `tenant`.
 3. Open a pull request. Nothing changes on the site until you merge it.
 
-The area page then shows "Your enquiry goes to {workshop}, a local workshop in {area}" next to the buttons. The build refuses to publish an entry marked `trial` or `rented` that still has TODO or all-zero values.
+The area page then shows "Your enquiry goes to {{ workshop.name }}, a local workshop in {{ workshop.area }}" next to the buttons, plus the disclosure lines from `disclosures.json`:
 
-Each WhatsApp button is a `wa.me` link with the area's own pre-filled message, a short reference (like `[ref: kulai-ms]`) and UTM tags, so the workshop can tell which page a chat came from.
+- **trial:** an independence line (independent guide, not affiliated), how the workshop was selected, and a "paid by" line for trials
+- **tenant:** a different "paid by" line
+
+The disclosure wording is TODO until Content supplies it. The build refuses to publish a `trial` or `tenant` page while any of these are still true:
+- the entry still has TODO or all-zero values;
+- its disclosure line still says TODO;
+- a trial workshop has a logo or photo. A logo can only appear for a `tenant`.
+
+The workshop's name and numbers appear **only in visible text and buttons**, never in the page's structured data or meta tags. A test checks this on every build.
+
+### Brand and WhatsApp text
+
+Write `{{ brand }}` anywhere in the data files, and the build fills in `brand` from `site.json`. The build stops if any `{{ ... }}` is left unfilled.
+
+The WhatsApp button opens `wa.me/<number>?text=<message>` with the area's UTM tags after it. The message comes from `i18n.json`:
+- Malay: "Hi, saya jumpa anda di {{ brand }}"
+- English: "Hi, I found you on {{ brand }}"
 
 ## The contact form
 
@@ -98,9 +121,40 @@ The visitor's browser sends the form **straight to Web3Forms** (`https://api.web
 - The Web3Forms access key is public by design. It only tells Web3Forms which inbox gets the email, so it's fine for it to sit in the page.
 - The browser checks the name, phone and consent before sending: HTML rules plus a small script in `src/assets/site.js`.
 - A hidden `botcheck` box catches bots.
+- The form also sends the `workshop_id`.
 - The UTM tags the visitor arrived with are sent along, together with a per-area subject line and the workshop name.
 - Afterwards the visitor lands on the thank-you page (`/terima-kasih/` or `/en/thank-you/`), with or without JavaScript.
 - The consent line links to the privacy notice.
+
+## Analytics events
+
+When someone taps a contact button or sends the form, `src/assets/site.js` fires these events:
+
+- `click_call`
+- `click_whatsapp`
+- `generate_lead`
+
+Each event carries:
+- `area`
+- `service`: the service slug on service pages, otherwise `area` or `home`
+- `workshop_id`
+- `tenant_status`
+- `lang`
+- `page_path`
+
+**This repo does not load GA4 or any other analytics script.** The events are only passed on if a `gtag()` or `dataLayer` is present on the page. Adding GA4 is a separate decision for you to approve; it also needs its addresses added to the CSP in `public/_headers`.
+
+## Tracking must be verified on the PR preview before merge
+
+Do this on the Cloudflare preview link of the pull request, with GA4 installed and a test area set to `trial`:
+
+- [ ] Open GA4 **Admin → DebugView** and turn on debug mode for your browser, for example with the GA Debugger extension.
+- [ ] Tap the **call** button on an area page. DebugView shows `click_call` with `area`, `service`, `workshop_id`, `tenant_status` and `lang`.
+- [ ] Tap the **WhatsApp** button. DebugView shows `click_whatsapp` with the same five parameters.
+- [ ] Repeat on the English page. `lang` reads `en`.
+- [ ] Repeat on a service page. `service` shows the service slug, such as `tayar`.
+- [ ] The values match `routing.json` for that area: the right `workshop_id` and `tenant_status`.
+- [ ] WhatsApp opens with "Hi, saya jumpa anda di …" on Malay pages and "Hi, I found you on …" on English pages.
 
 ## Decisions made
 
@@ -114,6 +168,8 @@ The visitor's browser sends the form **straight to Web3Forms** (`https://api.web
 - [ ] Real page text, once it has been checked and cleared
 - [ ] Real phone and WhatsApp numbers for each workshop
 - [ ] The privacy notice text. Then remove its noindex rules in `public/_headers` and set `status` in `privacy.json`
+- [ ] Disclosure wording from Content (`disclosures.json`)
+- [ ] GA4, if you approve adding it, then the tracking check above
 
 ## Structured data (schema)
 
