@@ -10,7 +10,7 @@ const { validateLead, normalisePhone, eventParams } = ctx.JBCF;
 const good = { name: "Test User", phone: "012-345 6789", consent: true, access_key: "abc-123" };
 
 const hours = { en: Array.from({ length: 7 }, (_, i) => ({ day: "D" + i, text: "9:00 AM–6:00 PM" })), ms: Array.from({ length: 7 }, (_, i) => ({ day: "H" + i, text: "9:00 AM–6:00 PM" })) };
-const real = { workshop_id: "ws-real", workshop: { name: "Real Workshop", area: "Kulai", coverage: { en: "Workshop in X", ms: "Bengkel di X" } }, phone: "+60123456789", whatsapp: null, hours, tenant_status: "trial" };
+const real = { workshop_id: "ws-real", workshop: { name: "Real Workshop", area: "Kulai", coverage: { en: "Workshop in X", ms: "Bengkel di X" } }, phone: "+60123456789", phone_display: "012-345 6789", whatsapp: null, hours, tenant_status: "trial" };
 
 test("valid lead passes", () => assert.equal(validateLead(good).length, 0));
 
@@ -31,6 +31,8 @@ test("workshops with placeholder or missing values are refused", () => {
   assert.doesNotThrow(() => checkWorkshop("ws-real", real));
   assert.doesNotThrow(() => checkWorkshop("ws-real", { ...real, whatsapp: "60123456789", whatsapp_label: "Company WhatsApp" }));
   assert.throws(() => checkWorkshop("ws-real", { ...real, phone: "+60000000000" }), /phone/);
+  assert.throws(() => checkWorkshop("ws-real", { ...real, phone_display: undefined }), /phone_display/);
+  assert.throws(() => checkWorkshop("ws-real", { ...real, phone_display: "012-345 0000" }), /phone_display/);
   assert.throws(() => checkWorkshop("ws-real", { ...real, workshop: { ...real.workshop, name: "TODO-workshop-name" } }), /workshop.name/);
   assert.throws(() => checkWorkshop("ws-real", { ...real, workshop: { ...real.workshop, coverage: { en: "Workshop in X" } } }), /coverage/);
   assert.throws(() => checkWorkshop("ws-real", { ...real, hours: { en: hours.en } }), /hours.ms/);

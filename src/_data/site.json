@@ -89,7 +89,8 @@
       "formNoJs": "Borang ini dihantar terus kepada bengkel melalui Web3Forms.",
       "hoursLabel": "Waktu operasi (Google Maps)",
       "servicesOnlyLabel": "Perkhidmatan",
-      "generalService": "Pembaikan am dan servis"
+      "generalService": "Pembaikan am dan servis",
+      "orgDescription": "{{ brand }} ialah panduan bebas bengkel kereta di Johor Bahru. Kami bukan bengkel dan tidak bergabung dengan bengkel yang dicadangkan."
     },
     "en": {
       "htmlLang": "en",
@@ -130,7 +131,8 @@
       "formNoJs": "This form is sent directly to the workshop through Web3Forms.",
       "hoursLabel": "Opening hours (Google Maps)",
       "servicesOnlyLabel": "Services",
-      "generalService": "General repair and servicing"
+      "generalService": "General repair and servicing",
+      "orgDescription": "{{ brand }} is an independent guide to car workshops in Johor Bahru. We are not a workshop and are not affiliated with the workshops we suggest."
     }
   }
 }

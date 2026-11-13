@@ -190,7 +190,7 @@ test("tenant workshop and GA4 ID (throwaway build): form, logo, tenant line, gta
   const skudaiEn = dec(read("en/skudai/index.html", out));
   assert.ok(skudaiEn.includes("Test Tenant Workshop pays JBCarFix a flat fee to be featured here. It doesn't change the price they quote you."));
   assert.ok(read("skudai/index.html", out).includes("Test Tenant Workshop membayar yuran tetap kepada JBCarFix untuk dipaparkan di sini. Ia tidak mengubah harga yang mereka sebut kepada anda."));
-  assert.doesNotMatch(skudaiEn, /independent guide|public Google reviews/);
+  assert.doesNotMatch(skudaiEn, /<li>[^<]*(independent guide|public Google reviews)/);
   assert.match(skudaiEn, /<img[^>]+test-logo\.png/);
   assert.match(skudaiEn, /name="access_key" value="test-key-2"/);
   assert.match(skudaiEn, /name="workshop_id" value="ws-test-tenant"/);
@@ -207,6 +207,77 @@ test("tenant workshop and GA4 ID (throwaway build): form, logo, tenant line, gta
   assert.deepEqual(Array.from(gaWin.dataLayer[1]), ["config", "G-TEST12345"]);
   const calls = clickAll(read("en/skudai/index.html", out), read("assets/site.js", out));
   assert.deepEqual(calls.map((c) => [c[1], c[2].workshop_id, c[2].tenant_status]), [["click_call", "ws-test-tenant", "tenant"], ["click_whatsapp", "ws-test-tenant", "tenant"]]);
+
+  fs.rmSync(tmp, { recursive: true, force: true });
+});
+
+test("every listed workshop has a phone_display matching its tel: number", () => {
+  for (const [id, w] of Object.entries(routing.workshops)) {
+    assert.ok(w.phone_display, `${id} lacks phone_display`);
+    assert.equal(w.phone_display.replace(/\D/g, "").replace(/^0/, "60"), w.phone.replace(/\D/g, ""), id);
+  }
+});
+
+const sitemapUrls = (xml) => [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+
+test("thin-page guard: placeholder or coming-soon pages are noindex,follow, out of the sitemap, no hreflang", () => {
+  const site = path.join(ROOT, "_site");
+  assert.deepEqual(sitemapUrls(read("sitemap.xml")), [], "every page is still placeholder copy, so the sitemap is empty");
+  for (const f of htmlFiles(site)) {
+    const html = fs.readFileSync(f, "utf8");
+    assert.match(html, /<meta name="robots" content="noindex,follow">/, f);
+    assert.doesNotMatch(html, /<link rel="alternate" hreflang=/, f);
+  }
+});
+
+test("thin-page guard lifts once copy is real and workshops are listed (throwaway build)", () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "jbcf-"));
+  for (const item of ["src", "lib", "public", "eleventy.config.js", "package.json"]) {
+    fs.cpSync(path.join(ROOT, item), path.join(tmp, item), { recursive: true });
+  }
+  fs.symlinkSync(path.join(ROOT, "node_modules"), path.join(tmp, "node_modules"));
+  const realCopy = (label, lang) => ({
+    title: `${label} ${lang} title | {{ brand }}`, description: `${label} ${lang} description.`, h1: `${label} ${lang} heading`,
+    intro: `${label} ${lang} intro text written for this page.`, blocks: [{ id: "one", heading: `${label} ${lang} block`, body: `${label} ${lang} block body.` }],
+    faqs: [{ q: `${label} ${lang} question?`, a: `${label} ${lang} answer.` }],
+  });
+  const setCopy = (rel, label, langs) => {
+    const p = path.join(tmp, "src/_data", rel);
+    const d = JSON.parse(fs.readFileSync(p, "utf8"));
+    d.status = "ready";
+    for (const l of langs) d[l] = realCopy(label, l);
+    fs.writeFileSync(p, JSON.stringify(d));
+  };
+  setCopy("areas/kulai.json", "Kulai", ["ms", "en"]);   // real copy + workshops -> indexable pair
+  setCopy("areas/skudai.json", "Skudai", ["en"]);       // Malay still DRAFT -> only English indexable, no hreflang pair
+  setCopy("areas/larkin.json", "Larkin", ["ms", "en"]); // real copy but no workshops -> stays noindex
+  setCopy("services/tayar.json", "Tyres", ["ms", "en"]);
+  const rp = path.join(tmp, "src/_data/routing.json");
+  const r = JSON.parse(fs.readFileSync(rp, "utf8"));
+  r.areas.larkin = [];
+  fs.writeFileSync(rp, JSON.stringify(r));
+
+  execFileSync(process.execPath, [path.join(ROOT, "node_modules/@11ty/eleventy/cmd.cjs"), "--quiet"], { cwd: tmp, stdio: "pipe" });
+  const out = path.join(tmp, "_site");
+  const B = "https://jbcarfix.com";
+  const xml = read("sitemap.xml", out);
+  assert.deepEqual(sitemapUrls(xml).sort(), [`${B}/en/kulai/`, `${B}/en/skudai/`, `${B}/en/tyres/`, `${B}/kulai/`, `${B}/tayar/`].sort());
+
+  const entry = (u) => xml.split("<url>").find((x) => x.includes(`<loc>${B}${u}</loc>`));
+  assert.match(entry("/kulai/"), /hreflang="ms" href="https:\/\/jbcarfix\.com\/kulai\/"/);
+  assert.match(entry("/kulai/"), /hreflang="en" href="https:\/\/jbcarfix\.com\/en\/kulai\/"/);
+  assert.match(entry("/kulai/"), /hreflang="x-default" href="https:\/\/jbcarfix\.com\/kulai\/"/);
+  assert.doesNotMatch(entry("/en/skudai/"), /xhtml:link/, "partner excluded -> no hreflang pair in the sitemap");
+
+  const kulai = read("en/kulai/index.html", out);
+  assert.doesNotMatch(kulai, /name="robots"/);
+  assert.match(kulai, /<link rel="alternate" hreflang="ms" href="https:\/\/jbcarfix\.com\/kulai\/">/);
+  const skudaiEn = read("en/skudai/index.html", out);
+  assert.doesNotMatch(skudaiEn, /name="robots"/);
+  assert.doesNotMatch(skudaiEn, /<link rel="alternate" hreflang=/);
+  assert.match(read("skudai/index.html", out), /<meta name="robots" content="noindex,follow">/);
+  assert.match(read("larkin/index.html", out), /<meta name="robots" content="noindex,follow">/);
+  assert.match(read("index.html", out), /<meta name="robots" content="noindex,follow">/, "home: no workshops yet");
 
   fs.rmSync(tmp, { recursive: true, force: true });
 });

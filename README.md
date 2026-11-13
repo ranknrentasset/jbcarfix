@@ -61,7 +61,17 @@ tests/               Automatic tests for the form checks, routing safety and the
 | (none) | `/en/near-ksl/` |
 | `/privasi/` | `/en/privacy/` (placeholder, hidden from Google for now) |
 
-Every page tells Google about its other-language twin (hreflang) and its own main address (canonical). `sitemap.xml` and `robots.txt` are made automatically.
+`sitemap.xml` and `robots.txt` are made automatically.
+
+### Thin-page guard (automatic noindex)
+
+A page stays hidden from Google while **either** of these is true:
+- it shows no workshops (the "coming soon" note);
+- its copy is still placeholder (`status: "placeholder"`, or any text still marked DRAFT).
+
+A hidden page gets `<meta name="robots" content="noindex,follow">` and is left out of `sitemap.xml`. If either language of a page is hidden, the hreflang pair between the two languages is dropped, both in the page head and in the sitemap. The guard lifts by itself once a page has real copy and at least one workshop.
+
+**Right now every page is hidden**, because all the copy is still placeholder, so the sitemap is empty. Pages with trial workshops but placeholder copy stay hidden too, for now.
 
 ## How to add an area
 
@@ -100,7 +110,7 @@ Each workshop has:
 | Kulai | Tyreplus - Overseas Tyre Services Centre; Hankook Masters - Car Pit Stop Kulai |
 | Gelang Patah | Kuga Auto Workshop; Fateh Tyre & Auto - Hoof Nexen |
 | Bukit Indah | Jag Tech Auto Service; Overseas Tyre And Services |
-| Skudai | ACS CAR SERVICE - Skudai; KAR AUTO SERVICE CENTER |
+| Skudai | ACS CAR SERVICE - Skudai; KAR Auto Service Center |
 | Larkin | TIPTOP Garage Workshop; Petronas AutoExpert by Prestige Contitech - Larkin |
 | Aircond (JB-wide) | Fresh Air Car Aircond Service; ACS CAR SERVICE - Skudai |
 | Tyres (JB-wide) | Continental Syarikat Lim Chin Hin; Hawk Tyre Service Sdn Bhd - Tebrau |

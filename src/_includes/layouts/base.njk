@@ -12,17 +12,19 @@
 <meta name="description" content="{{ c.description }}">
 {%- endif %}
 {%- if entry.noindex %}
-<meta name="robots" content="noindex">
+<meta name="robots" content="noindex,follow">
 {%- endif %}
 {%- if entry.type != "notfound" %}
 <link rel="canonical" href="{{ entry.url | absUrl(site) }}">
-{%- if entry.alternates.ms %}
-<link rel="alternate" hreflang="ms" href="{{ entry.alternates.ms | absUrl(site) }}">
+{%- if entry.hreflang %}
+{%- if entry.hreflang.ms %}
+<link rel="alternate" hreflang="ms" href="{{ entry.hreflang.ms | absUrl(site) }}">
 {%- endif %}
-{%- if entry.alternates.en %}
-<link rel="alternate" hreflang="en" href="{{ entry.alternates.en | absUrl(site) }}">
+{%- if entry.hreflang.en %}
+<link rel="alternate" hreflang="en" href="{{ entry.hreflang.en | absUrl(site) }}">
 {%- endif %}
-<link rel="alternate" hreflang="x-default" href="{{ (entry.alternates.ms or entry.alternates.en) | absUrl(site) }}">
+<link rel="alternate" hreflang="x-default" href="{{ (entry.hreflang.ms or entry.hreflang.en) | absUrl(site) }}">
+{%- endif %}
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="{{ brand }}">
 <meta property="og:title" content="{{ c.title }}">

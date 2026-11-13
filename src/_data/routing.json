@@ -784,15 +784,15 @@
     "ws-kar-skudai": {
       "workshop_id": "ws-kar-skudai",
       "workshop": {
-        "name": "KAR AUTO SERVICE CENTER",
+        "name": "KAR Auto Service Center",
         "area": "Skudai",
         "coverage": {
-          "en": "Workshop in Mutiara Rini, Skudai",
-          "ms": "Bengkel di Mutiara Rini, Skudai"
+          "en": "Workshop in Taman Mutiara Rini, Skudai",
+          "ms": "Bengkel di Taman Mutiara Rini, Skudai"
         }
       },
       "phone": "+601110500094",
-      "phone_display": "+601110500094",
+      "phone_display": "011-1050 0094",
       "tenant_status": "trial",
       "hours": {
         "en": [
