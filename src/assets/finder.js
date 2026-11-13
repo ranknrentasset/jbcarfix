@@ -15,7 +15,7 @@
     var items = list.querySelectorAll("li[data-k]"), none = list.querySelector(".finder-none");
     var show = function (on) { list.hidden = !on; };
     var first = function () {
-      for (var i = 0; i < items.length; i++) if (!items[i].hidden) return items[i].querySelector("a");
+      for (var i = 0; i < items.length; i++) if (!items[i].hidden && items[i].querySelector("a")) return items[i].querySelector("a");
       return null;
     };
     input.addEventListener("input", function () {

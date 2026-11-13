@@ -63,7 +63,9 @@ test("no {{ ... }} left unfilled and brand appears", () => {
 const NO_WORKSHOP_HINTS = /coming soon|akan datang|tidak lama lagi|call us|call now|hubungi kami|we'll find|we will find|find you a (workshop|mechanic)|carikan (anda )?bengkel|will be listed|akan disenaraikan|recommended workshop|bengkel (yang )?disyorkan|contact a workshop|menghubungi bengkel|well-reviewed|ulasan baik|Call or WhatsApp|Hubungi atau WhatsApp|See workshops|Lihat bengkel/i;
 function assertNoWorkshopHints(html, label) {
   assert.doesNotMatch(html, /tel:|wa\.me|<form|class="contact"|class="soon"|class="ws-|class="btn|class="actbar"|class="jump"|href="#contact"/, label);
-  const visible = dec(html.replace(/<script[\s\S]*?<\/script>/g, "").replace(/<[^>]+>/g, " "));
+  // The home workshop list carries its own approved intro (checked in directory-map.test.js);
+  // the wording check covers everything else on the page. The markup checks above cover it all.
+  const visible = dec(html.replace(/<script[\s\S]*?<\/script>/g, "").replace(/<section class="sec dir"[\s\S]*?<\/section>/, "").replace(/<[^>]+>/g, " "));
   assert.doesNotMatch(visible, NO_WORKSHOP_HINTS, label);
 }
 

@@ -146,6 +146,16 @@ Each towing card shows `towingCardNote` from `site.json`: "Ask for the full pric
 - **when any card has WhatsApp:** a note from `i18n.json` that quotes the WhatsApp pre-fill.
 
 
+### Links to pages that are still held back
+
+Any link to one of our own pages that the thin-page guard keeps out of Google (placeholder copy, or on `indexHold`) is turned into plain words at build time: the link goes, the words stay. This applies everywhere: body copy, the home chips and search results, the service and area grids, the header, breadcrumb and footer. The language switch is the one exception and works as before. hreflang tags are unchanged. While every page is still a placeholder, almost all internal links are plain words; each one comes back by itself once its page has real copy.
+
+Body copy (intro, block text, FAQ answers) can link to another page of the site by writing `[words](/path/)`. Nothing else in copy becomes markup.
+
+### Home workshop list intro
+
+The approved intro above the home list is in `disclosures.json` (`homeList`). Its last sentence (not paid) shows only while every listed workshop is trial.
+
 ### Copy shown only with workshops
 
 Imported copy can wrap text in `[WITH-WORKSHOPS]` … `[/WITH-WORKSHOPS]`. That text only shows on a page that lists at least one workshop; on a page without workshops it is removed, and a block or FAQ left empty is dropped. The markers never reach the page: the build fails if one does.

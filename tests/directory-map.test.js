@@ -205,10 +205,16 @@ test("home list: every workshop that a page lists, once, never the backup; no ca
     assert.equal(cs.length, want.size, `${rel}: each workshop once`);
     assert.doesNotMatch(html, /ws-mega-car-paint|Mega Car Paint/, rel);
     assert.doesNotMatch(html, /tel:|wa\.me/, `${rel}: calls stay on the page that lists the workshop`);
+    const more = lang === "ms" ? "Maklumat lanjut" : "More info";
     for (const c of cs) {
-      const href = c.body.match(/<a class="act" href="([^"]+)"/)[1];
-      assert.ok(fs.existsSync(path.join(SITE, href, "index.html")), `${rel} ${c.id}: More info goes to ${href}`);
-      assert.ok(read(href.replace(/^\//, "") + "index.html").includes(`data-ev-workshop-id="${c.id}"`), `${rel} ${c.id}: ${href} lists it`);
+      const m = c.body.match(/<a class="act" href="([^"]+)"/);
+      if (m) {
+        const href = m[1];
+        assert.ok(read(href.replace(/^\//, "") + "index.html").includes(`data-ev-workshop-id="${c.id}"`), `${rel} ${c.id}: ${href} lists it`);
+        assert.doesNotMatch(read(href.replace(/^\//, "") + "index.html"), /name="robots"/, `${rel} ${c.id}: More info links only to an indexable page`);
+      } else {
+        assert.ok(c.body.includes(`<span>${more}</span>`), `${rel} ${c.id}: More info stays as words when its page is held back`);
+      }
       assert.ok(dec(c.body).includes(`<h3>${routing.workshops[c.id].workshop.name}</h3>`));
       assert.ok(c.body.includes(routing.workshops[c.id].workshop.coverage[lang]));
     }
@@ -226,9 +232,13 @@ test("home search: one link per service and area page, in the page's language", 
     assert.match(html, /<input id="finder-q" type="search"/);
     assert.match(html, /<script src="\/assets\/finder\.js\?v=[0-9a-f]+" defer><\/script>/);
     const list = html.match(/<ul class="finder-list"[^>]*>([\s\S]*?)<\/ul>/)[1];
-    const hrefs = [...list.matchAll(/href="([^"]+)"/g)].map((m) => m[1]);
-    assert.equal(hrefs.length, site.serviceOrder.length + site.areaOrder.length);
-    for (const h of hrefs) assert.ok(h.startsWith(pre + "/") && fs.existsSync(path.join(SITE, h, "index.html")), `${rel}: ${h}`);
+    const items = [...list.matchAll(/<li data-k="[^"]*">([\s\S]*?)<\/li>/g)].map((m) => m[1]);
+    assert.equal(items.length, site.serviceOrder.length + site.areaOrder.length, `${rel}: one result per service and area`);
+    for (const it of items) {
+      const h = (it.match(/href="([^"]+)"/) || [])[1];
+      assert.match(it, /<span>[^<]+<\/span>/, `${rel}: result keeps its words`);
+      if (h) assert.ok(h.startsWith(pre + "/") && fs.existsSync(path.join(SITE, h, "index.html")), `${rel}: ${h}`);
+    }
   }
   for (const { rel, html } of PAGES) if (!/^(en\/)?index\.html$/.test(rel)) assert.doesNotMatch(html, /finder\.js|data-finder/, rel);
 });

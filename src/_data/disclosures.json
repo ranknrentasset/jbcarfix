@@ -17,5 +17,16 @@
   "trialCard": {
     "en": "{{ brand }} isn't affiliated with {{ workshop.name }}. Chosen from public Google reviews and, where known, years in business. {{ workshop.name }} doesn't pay us.",
     "ms": "{{ brand }} tidak bergabung dengan {{ workshop.name }}. Dipilih berdasarkan ulasan Google awam dan, jika diketahui, tempoh beroperasi. {{ workshop.name }} tidak membayar kami."
+  },
+  "_homeListComment": "Intro above the home page workshop list (approved wording). 'lead' always shows; 'trialOnly' (the not-paid sentence) shows only while every listed workshop is trial.",
+  "homeList": {
+    "lead": {
+      "en": "Here are well-reviewed local car workshops and towing operators across Johor Bahru. Tap More info for each listing's details, or Directions to find it. {{ brand }} is an independent guide and isn't affiliated with them. Chosen from public Google ratings and reviews and, where known, years in business.",
+      "ms": "Berikut ialah bengkel kereta dan pengendali tunda tempatan di seluruh Johor Bahru yang mendapat ulasan baik. Tekan Maklumat lanjut untuk butiran setiap senarai, atau Arah untuk ke sana. {{ brand }} ialah panduan bebas dan tidak bergabung dengan mereka. Dipilih berdasarkan penilaian dan ulasan Google awam dan, jika diketahui, tempoh beroperasi."
+    },
+    "trialOnly": {
+      "en": "We aren't paid by the businesses we suggest.",
+      "ms": "Kami tidak dibayar oleh perniagaan yang kami cadangkan."
+    }
   }
 }

@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 import fs from "node:fs";
 import { buildJsonLd } from "./lib/schema.js";
-import { hasPin } from "./lib/content.js";
+import { hasPin, buildPages } from "./lib/content.js";
 
 const site = JSON.parse(fs.readFileSync("src/_data/site.json", "utf8"));
 
@@ -65,6 +65,27 @@ export function directoryEntries(routing, areas, services, siteData = site) {
   return out;
 }
 
+// Body copy (intro, block text, FAQ answers) is escaped like any other text; the only markup
+// allowed is an internal link written [words](/path/). External links are left as plain text.
+const ESC = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+export function linkify(text) {
+  const esc = String(text ?? "").replace(/[&<>"']/g, (c) => ESC[c]);
+  return esc.replace(/\[([^\]\n]+)\]\((\/(?!\/)[^\s)]*)\)/g, (m, words, href) => `<a href="${href}">${words}</a>`);
+}
+
+// Link guard. A link to one of our own pages that is kept out of Google by the thin-page
+// guard (placeholder copy or on the hold list) is turned back into plain text: the <a> goes,
+// its words stay. Applies to every link on every page (body copy, chips, search, nav, footer),
+// except the language switch, which keeps working as before.
+export function guardLinks(html, blocked) {
+  return html.replace(/<a\b([^>]*)>([\s\S]*?)<\/a>/g, (m, attrs, inner) => {
+    if (/\sclass="lang"/.test(attrs)) return m;
+    const h = attrs.match(/\shref="([^"]*)"/);
+    if (!h || !h[1].startsWith("/") || h[1].startsWith("//")) return m;
+    return blocked.has(h[1].split(/[?#]/)[0]) ? inner : m;
+  });
+}
+
 export default function (eleventyConfig) {
   // {{ brand }} in templates, from site.json.
   eleventyConfig.addGlobalData("brand", site.brand);
@@ -105,6 +126,8 @@ export default function (eleventyConfig) {
 
   // Home page workshop list: every workshop that some area or service page lists.
   eleventyConfig.addFilter("directory", (routing, areas, services) => directoryEntries(routing, areas, services, site));
+  eleventyConfig.addFilter("dirTenant", (list) => (list || []).some((e) => e.w.tenant_status === "tenant"));
+  eleventyConfig.addFilter("linkify", (text) => linkify(text));
   eleventyConfig.addFilter("dirHas", (list, kind, key) => (list || []).some((e) => (kind === "svc" ? e.services.includes(key) : e.filterArea === key)));
 
   // WhatsApp link: pre-filled text from i18n.json (brand filled in) plus the area's UTM tags.
@@ -126,6 +149,14 @@ export default function (eleventyConfig) {
     if (left) throw new Error(`${out}: unfilled template variable ${left[0]}`);
     if (/\[\/?WITH-WORKSHOPS\]/.test(filled)) throw new Error(`${out}: a [WITH-WORKSHOPS] marker reached the page`);
     return filled;
+  });
+
+  // URLs of pages that fail the thin-page guard, worked out fresh for each build.
+  let blocked = new Set();
+  eleventyConfig.on("eleventy.before", () => { blocked = new Set(buildPages().filter((p) => p.thin).map((p) => p.url)); });
+  eleventyConfig.addTransform("link-guard", function (content) {
+    if (!(this.page.outputPath || "").endsWith(".html")) return content;
+    return guardLinks(content, blocked);
   });
 
   // Lazy-load every image that doesn't say otherwise.

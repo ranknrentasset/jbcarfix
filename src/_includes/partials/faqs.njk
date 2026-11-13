@@ -5,7 +5,7 @@
   {%- for f in entry.content.faqs %}
   <details>
     <summary>{{ f.q }}</summary>
-    <p>{{ f.a }}</p>
+    <p>{{ f.a | linkify | safe }}</p>
   </details>
   {%- endfor %}
   </div>
