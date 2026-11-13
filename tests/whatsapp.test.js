@@ -7,14 +7,14 @@ const i18n = JSON.parse(fs.readFileSync(new URL("../src/_data/i18n.json", import
 const site = JSON.parse(fs.readFileSync(new URL("../src/_data/site.json", import.meta.url), "utf8"));
 
 test("i18n holds the WhatsApp texts with {{ brand }}", () => {
-  assert.equal(i18n.whatsappText.ms, "Hi, saya jumpa anda di {{ brand }}");
+  assert.equal(i18n.whatsappText.ms, "Hai, saya jumpa anda di {{ brand }}");
   assert.equal(i18n.whatsappText.en, "Hi, I found you on {{ brand }}");
 });
 
 test("Malay wa.me link is encoded correctly", () => {
   const url = waLink("60123456789", fillVars(i18n.whatsappText.ms, { brand: "JBCarFix" }));
-  assert.equal(url, "https://wa.me/60123456789?text=Hi%2C%20saya%20jumpa%20anda%20di%20JBCarFix");
-  assert.equal(new URL(url).searchParams.get("text"), "Hi, saya jumpa anda di JBCarFix");
+  assert.equal(url, "https://wa.me/60123456789?text=Hai%2C%20saya%20jumpa%20anda%20di%20JBCarFix");
+  assert.equal(new URL(url).searchParams.get("text"), "Hai, saya jumpa anda di JBCarFix");
 });
 
 test("English wa.me link is encoded correctly", () => {

@@ -49,8 +49,18 @@ test("trial workshops may not carry a logo or photo", () => {
 });
 
 test("TODO disclosure wording blocks trial/tenant pages", () => {
-  const d = { independence: { ms: "TODO" }, selectionMethod: { ms: "TODO" }, paidBy: { trial: { ms: "TODO" }, tenant: { ms: "Real" } } };
+  const d = { independence: { ms: "TODO" }, selectionMethod: { ms: "TODO" }, paidBy: { trial: { ms: "TODO" }, tenant: { ms: "Real" } }, underButtonNote: { ms: "Real" } };
   assert.doesNotThrow(() => checkDisclosures("unassigned", d, ["ms"]));
   assert.throws(() => checkDisclosures("trial", d, ["ms"]));
   assert.doesNotThrow(() => checkDisclosures("tenant", d, ["ms"]));
+  assert.throws(() => checkDisclosures("tenant", { ...d, underButtonNote: { ms: "TODO" } }, ["ms"]));
+});
+
+test("approved disclosure wording is in place; only the under-button note is still TODO", () => {
+  const d = JSON.parse(fs.readFileSync(new URL("../src/_data/disclosures.json", import.meta.url), "utf8"));
+  for (const line of [d.independence, d.selectionMethod, d.paidBy.trial, d.paidBy.tenant]) {
+    for (const l of ["ms", "en"]) assert.ok(line[l] && !/TODO/.test(line[l]), JSON.stringify(line));
+  }
+  assert.match(d.paidBy.tenant.en, /\{\{ workshop\.name \}\}/);
+  assert.match(d.underButtonNote.en, /TODO/);
 });

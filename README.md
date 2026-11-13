@@ -94,14 +94,20 @@ When a workshop agrees to take an area:
 2. Set `tenant_status` to `trial` or `tenant`.
 3. Open a pull request. Nothing changes on the site until you merge it.
 
-The area page then shows "Your enquiry goes to {{ workshop.name }}, a local workshop in {{ workshop.area }}" next to the buttons, plus the disclosure lines from `disclosures.json`:
+The area page then shows "Your enquiry goes to {{ workshop.name }}, a local workshop in {{ workshop.area }}" next to the buttons, plus these lines from `disclosures.json` (the approved wording):
 
-- **trial:** an independence line (independent guide, not affiliated), how the workshop was selected, and a "paid by" line for trials
-- **tenant:** a different "paid by" line
+- **trial:**
+  - "{{ brand }} is an independent guide and isn't affiliated with them."
+  - "Chosen from public Google reviews and, where known, years in business."
+  - "We aren't paid by the workshops we suggest."
+- **tenant:** "{{ workshop.name }} pays {{ brand }} a flat fee to be featured here. It doesn't change the price they quote you."
+- **both:** a short note under the buttons. Its wording is still TODO.
 
-The disclosure wording is TODO until Content supplies it. The build refuses to publish a `trial` or `tenant` page while any of these are still true:
+Malay versions sit alongside them in the same file. `{{ workshop.name }}` is filled from that area's `routing.json` entry.
+
+The build refuses to publish a `trial` or `tenant` page while any of these are still true:
 - the entry still has TODO or all-zero values;
-- its disclosure line still says TODO;
+- a line it needs still says TODO, which today means the under-button note;
 - a trial workshop has a logo or photo. A logo can only appear for a `tenant`.
 
 The workshop's name and numbers appear **only in visible text and buttons**, never in the page's structured data or meta tags. A test checks this on every build.
@@ -111,7 +117,7 @@ The workshop's name and numbers appear **only in visible text and buttons**, nev
 Write `{{ brand }}` anywhere in the data files, and the build fills in `brand` from `site.json`. The build stops if any `{{ ... }}` is left unfilled.
 
 The WhatsApp button opens `wa.me/<number>?text=<message>` with the area's UTM tags after it. The message comes from `i18n.json`:
-- Malay: "Hi, saya jumpa anda di {{ brand }}"
+- Malay: "Hai, saya jumpa anda di {{ brand }}"
 - English: "Hi, I found you on {{ brand }}"
 
 ## The contact form
@@ -154,7 +160,7 @@ Do this on the Cloudflare preview link of the pull request, with GA4 installed a
 - [ ] Repeat on the English page. `lang` reads `en`.
 - [ ] Repeat on a service page. `service` shows the service slug, such as `tayar`.
 - [ ] The values match `routing.json` for that area: the right `workshop_id` and `tenant_status`.
-- [ ] WhatsApp opens with "Hi, saya jumpa anda di …" on Malay pages and "Hi, I found you on …" on English pages.
+- [ ] WhatsApp opens with "Hai, saya jumpa anda di …" on Malay pages and "Hi, I found you on …" on English pages.
 
 ## Decisions made
 
@@ -168,7 +174,7 @@ Do this on the Cloudflare preview link of the pull request, with GA4 installed a
 - [ ] Real page text, once it has been checked and cleared
 - [ ] Real phone and WhatsApp numbers for each workshop
 - [ ] The privacy notice text. Then remove its noindex rules in `public/_headers` and set `status` in `privacy.json`
-- [ ] Disclosure wording from Content (`disclosures.json`)
+- [ ] The under-button note wording (`underButtonNote` in `disclosures.json`)
 - [ ] GA4, if you approve adding it, then the tracking check above
 
 ## Structured data (schema)
